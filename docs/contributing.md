@@ -27,7 +27,8 @@ requests, issues, and any future community channels accordingly.
 
 ## Repository setup
 
-Clone the repository at `<repo-url>`, install Node.js LTS, run `npm install`, and start the
+Clone the repository at `https://github.com/themanfromnepal/arabic-transliteration`, install
+Node.js 22 LTS (use `nvm use` to match `.nvmrc`), run `npm install`, and start the
 development server with `npm run dev`. These commands are illustrative; the canonical setup
 instructions live next to the project's package manifest once it is created.
 
