@@ -80,9 +80,7 @@ history easy to scan.
 
 ## Repository
 
-Canonical source: `<repo-url>`
-
-> Assumption: `<repo-url>` is a placeholder until the canonical Git remote is chosen.
+Canonical source: `https://github.com/themanfromnepal/arabic-transliteration`
 
 ## Attribution
 

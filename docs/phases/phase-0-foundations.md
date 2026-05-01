@@ -13,7 +13,7 @@ place.
   [../adr/0001-tech-stack.md](../adr/0001-tech-stack.md).
 - Decision to ship as a free and open-source MIT-licensed static site per
   [../adr/0002-no-backend-no-accounts-v1.md](../adr/0002-no-backend-no-accounts-v1.md).
-- A `<repo-url>` placeholder for the canonical Git remote, to be replaced when the remote is chosen.
+- The canonical Git remote at `https://github.com/themanfromnepal/arabic-transliteration`.
 
 ## Deliverables
 

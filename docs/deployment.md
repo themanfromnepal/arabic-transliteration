@@ -66,10 +66,8 @@ project expects.
 
 ## Repository
 
-The project's canonical Git remote is `<repo-url>`. All references to the repository in other
-documents resolve to the same placeholder until the canonical remote is chosen.
-
-> Assumption: `<repo-url>` is a placeholder until the canonical Git remote is chosen.
+The project's canonical Git remote is `https://github.com/themanfromnepal/arabic-transliteration`.
+All references to the repository in other documents resolve to the same URL.
 
 ## Out of scope (v1)
 
