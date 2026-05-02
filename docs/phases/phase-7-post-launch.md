@@ -26,7 +26,7 @@ mini-cycle (define, plan, build, verify, review) and is recorded in a new ADR.
   installability, manifest, maskable icons, and push.
 - Mobile app built with React Native and Expo.
 - UI internationalization (Urdu, French, Indonesian, others).
-- Alternate reciters for audio, extending the Mishary Alafasy default per
+- Alternate reciters for audio, extending the Saad Al-Ghamdi default per
   [../spec.md](../spec.md#audio-source).
 
 ## Workstreams

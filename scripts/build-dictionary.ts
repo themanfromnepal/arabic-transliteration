@@ -1,0 +1,97 @@
+export {};
+
+import { loadSources, sourcesAvailable } from './build/parsers';
+import { mergeSources } from './build/merge';
+
+type CliOptions = {
+  sura: number | null;
+  noCsv: boolean;
+  noValidate: boolean;
+  out: string;
+};
+
+const parseArgs = (argv: string[]): CliOptions => {
+  const opts: CliOptions = { sura: null, noCsv: false, noValidate: false, out: 'public/data' };
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === '--sura') {
+      const next = argv[++i];
+      if (!next) throw new Error('--sura requires a value');
+      const n = Number.parseInt(next, 10);
+      if (!Number.isInteger(n) || n < 1 || n > 114) {
+        throw new Error(`--sura must be an integer 1..114, got: ${next}`);
+      }
+      opts.sura = n;
+    } else if (arg === '--no-csv') {
+      opts.noCsv = true;
+    } else if (arg === '--no-validate') {
+      opts.noValidate = true;
+    } else if (arg === '--out') {
+      const next = argv[++i];
+      if (!next) throw new Error('--out requires a value');
+      opts.out = next;
+    } else if (arg === '--help' || arg === '-h') {
+      console.log(
+        'Usage: tsx scripts/build-dictionary.ts [--sura <n>] [--no-csv] [--no-validate] [--out <dir>]',
+      );
+      process.exit(0);
+    } else {
+      throw new Error(`Unknown argument: ${arg}`);
+    }
+  }
+  return opts;
+};
+
+const main = async (): Promise<void> => {
+  const start = Date.now();
+  const opts = parseArgs(process.argv.slice(2));
+
+  console.log('build-dictionary');
+  console.log(
+    `  options: sura=${opts.sura ?? 'all'} noCsv=${opts.noCsv} noValidate=${opts.noValidate} out=${opts.out}`,
+  );
+  console.log('[Stage A] (sources) — TODO');
+  if (!sourcesAvailable()) {
+    console.log(
+      '[Stage C] data/sources/ incomplete — skipping load. Run `Get-Content data/sources/README.md` for setup.',
+    );
+  } else {
+    const loaded = await loadSources();
+    let { verses, qacTokens, wbw, yusufali } = loaded;
+    console.log(
+      `[Stage C] verses=${verses.length} qacTokens=${qacTokens.length} wbw=${wbw.length} yusufali=${yusufali.length}`,
+    );
+    if (opts.sura !== null) {
+      const s = opts.sura;
+      verses = verses.filter((v) => v.sura === s);
+      qacTokens = qacTokens.filter((t) => t.sura === s);
+      wbw = wbw.filter((w) => w.sura === s);
+      yusufali = yusufali.filter((y) => y.sura === s);
+      console.log(
+        `[Stage C] (--sura ${s}) verses=${verses.length} qacTokens=${qacTokens.length} wbw=${wbw.length} yusufali=${yusufali.length}`,
+      );
+    }
+    const merged = mergeSources(
+      { verses, qacTokens, wbw, yusufali },
+      { validate: !opts.noValidate },
+    );
+    console.log(
+      `[Stage C] lemmas=${merged.stats.lemmas} occurrences=${merged.stats.occurrences} skippedTokens=${merged.stats.skippedTokens}`,
+    );
+  }
+  if (opts.noCsv) {
+    console.log('[Stage D] Curation CSV round-trip... — skipped (--no-csv)');
+  } else {
+    console.log('[Stage D] Curation CSV round-trip... — TODO');
+  }
+  console.log('[Stage E] Emitting shards... — TODO');
+  console.log('Done.');
+
+  const elapsed = ((Date.now() - start) / 1000).toFixed(2);
+  console.log(`Elapsed: ${elapsed}s`);
+};
+
+void main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
