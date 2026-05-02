@@ -5,9 +5,11 @@ import type {
   InlineIndexEntry,
   InlineIndexShard,
   LemmaEntry,
+  ManifestShard,
   Occurrence,
   OccurrencesShard,
   SuraAyah,
+  TranslationsShard,
   Verse,
   VersesShard,
   WbwEntry,
@@ -116,6 +118,37 @@ export const InlineIndexShardSchema = z.object({
   entries: z.array(InlineIndexEntrySchema),
 }) satisfies z.ZodType<InlineIndexShard>;
 
+export const TranslationsShardSchema = z.object({
+  version: SemverString,
+  translations: z.array(AyahTranslationSchema),
+}) satisfies z.ZodType<TranslationsShard>;
+
+const Sha256Hex = z.string().regex(/^[0-9a-f]{64}$/, 'must be lower-case sha256 hex');
+const NonNegInt = z.number().int().nonnegative();
+
+export const ManifestShardSchema = z
+  .object({
+    schemaVersion: SemverString,
+    sourceSha256: z
+      .object({
+        tanzil: Sha256Hex,
+        qac: Sha256Hex,
+        wbw: Sha256Hex,
+        yusufali: Sha256Hex,
+      })
+      .strict(),
+    counts: z
+      .object({
+        lemmas: NonNegInt,
+        verses: NonNegInt,
+        wbw: NonNegInt,
+        yusufali: NonNegInt,
+        occurrences: NonNegInt,
+      })
+      .strict(),
+  })
+  .strict() satisfies z.ZodType<ManifestShard>;
+
 export const parseLemmaEntry = (value: unknown): LemmaEntry => LemmaEntrySchema.parse(value);
 export const parseOccurrence = (value: unknown): Occurrence => OccurrenceSchema.parse(value);
 export const parseVerse = (value: unknown): Verse => VerseSchema.parse(value);
@@ -132,3 +165,7 @@ export const parseOccurrencesShard = (value: unknown): OccurrencesShard =>
 export const parseWbwShard = (value: unknown): WbwShard => WbwShardSchema.parse(value);
 export const parseInlineIndexShard = (value: unknown): InlineIndexShard =>
   InlineIndexShardSchema.parse(value);
+export const parseTranslationsShard = (value: unknown): TranslationsShard =>
+  TranslationsShardSchema.parse(value);
+export const parseManifestShard = (value: unknown): ManifestShard =>
+  ManifestShardSchema.parse(value);

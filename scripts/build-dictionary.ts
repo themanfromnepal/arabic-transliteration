@@ -1,8 +1,10 @@
 export {};
 
-import { loadSources, sourcesAvailable } from './build/parsers';
+import path from 'node:path';
+import { loadSources, sourcesAvailable, SOURCE_PATHS } from './build/parsers';
 import { mergeSources } from './build/merge';
 import { applyCuration } from './build/curation';
+import { emitShards } from './build/emit';
 
 type CliOptions = {
   sura: number | null;
@@ -123,8 +125,18 @@ const main = async (): Promise<void> => {
         );
       }
     }
+
+    const defaultOutDir = path.resolve(process.cwd(), 'public/data');
+    const outDir = path.resolve(opts.out);
+    const { written } = await emitShards(merged, {
+      outDir,
+      validate: !opts.noValidate,
+      suraFilter: opts.sura,
+      defaultOutDir,
+      sourcePaths: SOURCE_PATHS,
+    });
+    console.log(`[Stage E] wrote ${written.length} shards to ${outDir}: ${written.join(' ')}`);
   }
-  console.log('[Stage E] Emitting shards... — TODO');
   console.log('Done.');
 
   const elapsed = ((Date.now() - start) / 1000).toFixed(2);

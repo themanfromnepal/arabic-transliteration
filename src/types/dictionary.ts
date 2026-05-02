@@ -70,3 +70,25 @@ export type InlineIndexShard = {
   version: string;
   entries: InlineIndexEntry[];
 };
+
+export type TranslationsShard = {
+  version: string;
+  translations: AyahTranslation[];
+};
+
+export type ManifestShard = {
+  schemaVersion: string;
+  sourceSha256: {
+    tanzil: string;
+    qac: string;
+    wbw: string;
+    yusufali: string;
+  };
+  counts: {
+    lemmas: number;
+    verses: number;
+    wbw: number;
+    yusufali: number;
+    occurrences: number;
+  };
+};

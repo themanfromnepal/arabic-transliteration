@@ -52,6 +52,13 @@ const requireFile = async (file: string): Promise<string> => {
 export const sourcesAvailable = (): boolean =>
   Object.values(FILES).every((file) => existsSync(sourcePath(file)));
 
+export const SOURCE_PATHS: { tanzil: string; qac: string; wbw: string; yusufali: string } = {
+  tanzil: sourcePath(FILES.tanzil),
+  qac: sourcePath(FILES.qac),
+  wbw: sourcePath(FILES.wbw),
+  yusufali: sourcePath(FILES.yusufali),
+};
+
 export const loadSources = async (): Promise<LoadedSources> => {
   for (const { file, note } of PENDING_LICENSE_FILES) {
     console.warn(`[license] ${SOURCES_DIR}/${file} — ${note}`);
