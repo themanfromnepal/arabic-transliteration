@@ -54,7 +54,7 @@ places it is maintained.
 - Mobile app (React Native + Expo) — a native shell follows once the web product is validated.
 - UI internationalization (Urdu, French, Indonesian, others) — v1 user interface copy is
   English-only; translation comes after the surface is stable.
-- Alternate reciters for audio — v1 defaults to Mishary Alafasy per
+- Alternate reciters for audio — v1 defaults to Saad Al-Ghamdi per
   [spec.md](spec.md#audio-source); reciter selection is a post-v1 enhancement.
 
 ## Risks

@@ -16,33 +16,40 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:data": "vitest run tests/data",
+    "build:data": "tsx scripts/build-dictionary.ts",
+    "build:data:check": "tsx scripts/check-drift.ts",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@types/papaparse": "^5.5.2",
+    "clsx": "^2",
     "next": "^15",
+    "papaparse": "^5.5.3",
     "react": "^19",
     "react-dom": "^19",
-    "clsx": "^2",
-    "tailwind-merge": "^2"
+    "tailwind-merge": "^2",
+    "zod": "^4.4.2"
   },
   "devDependencies": {
-    "typescript": "^5.6",
+    "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.48",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "tailwindcss": "^4",
-    "@tailwindcss/postcss": "^4",
-    "postcss": "^8",
-    "prettier": "^3",
-    "prettier-plugin-tailwindcss": "^0.6",
     "eslint": "^9",
     "eslint-config-next": "^15",
     "eslint-config-prettier": "^9",
-    "@eslint/eslintrc": "^3",
-    "vitest": "^2",
     "jsdom": "^25",
+    "postcss": "^8",
+    "prettier": "^3",
+    "prettier-plugin-tailwindcss": "^0.6",
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0",
+    "typescript": "^5.6",
     "vite-tsconfig-paths": "^5",
-    "@playwright/test": "^1.48"
+    "vitest": "^2"
   }
 }

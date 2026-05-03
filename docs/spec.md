@@ -137,9 +137,9 @@ demand so that no audio is downloaded until the learner explicitly requests play
 
 ```text
 https://everyayah.com/data/<reciter>/<sura>0<ayah>.mp3
-example: https://everyayah.com/data/Alafasy_128kbps/001001.mp3
+example: https://everyayah.com/data/Ghamadi_40kbps/001001.mp3
 ```
 
-> Assumption: Default reciter is Mishary Alafasy at 128kbps
+> Assumption: Default reciter is Saad Al-Ghamdi at 40kbps
 > ([https://everyayah.com](https://everyayah.com)); the reciter selection is overridable in a
 > post-v1 release.

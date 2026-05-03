@@ -1,0 +1,286 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-02T12:13:46.195Z",
+    "sources": [
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 92 (license request pending)",
+        "license": "PENDING",
+        "name": "english-wbw-translation.json",
+        "sha256": null
+      },
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 124 (license request pending)",
+        "license": "PENDING",
+        "name": "quran-en-yusufali-simple.json",
+        "sha256": null
+      },
+      {
+        "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)",
+        "license": "CC-BY-ND-4.0",
+        "name": "quran-uthmani.txt",
+        "sha256": null
+      },
+      {
+        "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes",
+        "license": "GPL-3.0-or-later",
+        "name": "quranic-corpus-morphology-0.4.txt",
+        "sha256": null
+      }
+    ]
+  },
+  "version": "1.0.0",
+  "words": [
+    {
+      "arabic": "",
+      "ayah": 1,
+      "english": "In (the) name",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 1,
+      "english": "(of) Allah",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 1,
+      "english": "the Most Gracious",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 1,
+      "english": "the Most Merciful",
+      "sura": 1,
+      "wordIndex": 4
+    },
+    {
+      "arabic": "",
+      "ayah": 1,
+      "english": "(1)",
+      "sura": 1,
+      "wordIndex": 5
+    },
+    {
+      "arabic": "",
+      "ayah": 2,
+      "english": "All praises and thanks",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 2,
+      "english": "(be) to Allah",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 2,
+      "english": "the Lord",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 2,
+      "english": "of the universe",
+      "sura": 1,
+      "wordIndex": 4
+    },
+    {
+      "arabic": "",
+      "ayah": 2,
+      "english": "(2)",
+      "sura": 1,
+      "wordIndex": 5
+    },
+    {
+      "arabic": "",
+      "ayah": 3,
+      "english": "The Most Gracious",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 3,
+      "english": "the Most Merciful",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 3,
+      "english": "(3)",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 4,
+      "english": "(The) Master",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 4,
+      "english": "(of the) Day",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 4,
+      "english": "(of the) Judgment",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 4,
+      "english": "(4)",
+      "sura": 1,
+      "wordIndex": 4
+    },
+    {
+      "arabic": "",
+      "ayah": 5,
+      "english": "You Alone",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 5,
+      "english": "we worship",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 5,
+      "english": "and You Alone",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 5,
+      "english": "we ask for help",
+      "sura": 1,
+      "wordIndex": 4
+    },
+    {
+      "arabic": "",
+      "ayah": 5,
+      "english": "(5)",
+      "sura": 1,
+      "wordIndex": 5
+    },
+    {
+      "arabic": "",
+      "ayah": 6,
+      "english": "Guide us",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 6,
+      "english": "(to) the path",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 6,
+      "english": "the straight",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 6,
+      "english": "(6)",
+      "sura": 1,
+      "wordIndex": 4
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "(The) path",
+      "sura": 1,
+      "wordIndex": 1
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "(of) those",
+      "sura": 1,
+      "wordIndex": 2
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "You have bestowed (Your) Favors",
+      "sura": 1,
+      "wordIndex": 3
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "on them",
+      "sura": 1,
+      "wordIndex": 4
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "not (of)",
+      "sura": 1,
+      "wordIndex": 5
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "those who earned (Your) wrath",
+      "sura": 1,
+      "wordIndex": 6
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "on themselves",
+      "sura": 1,
+      "wordIndex": 7
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "and not",
+      "sura": 1,
+      "wordIndex": 8
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "(of) those who go astray",
+      "sura": 1,
+      "wordIndex": 9
+    },
+    {
+      "arabic": "",
+      "ayah": 7,
+      "english": "(7)",
+      "sura": 1,
+      "wordIndex": 10
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+public/data/*.json text eol=lf
+data/curation/*.csv text eol=lf
+data/sources/*.txt text eol=lf

@@ -6,3 +6,6 @@ playwright-report
 test-results
 package-lock.json
 docs
+tmp
+public/data
+

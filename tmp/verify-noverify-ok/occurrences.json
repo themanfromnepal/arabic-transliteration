@@ -1,0 +1,244 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-02T12:16:14.099Z",
+    "sources": [
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 92 (license request pending)",
+        "license": "PENDING",
+        "name": "english-wbw-translation.json",
+        "sha256": null
+      },
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 124 (license request pending)",
+        "license": "PENDING",
+        "name": "quran-en-yusufali-simple.json",
+        "sha256": null
+      },
+      {
+        "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)",
+        "license": "CC-BY-ND-4.0",
+        "name": "quran-uthmani.txt",
+        "sha256": null
+      },
+      {
+        "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes",
+        "license": "GPL-3.0-or-later",
+        "name": "quranic-corpus-morphology-0.4.txt",
+        "sha256": null
+      }
+    ]
+  },
+  "occurrences": [
+    {
+      "lemmaId": "abd-abd",
+      "occurrences": [
+        {
+          "ayah": 5,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ]
+    },
+    {
+      "lemmaId": "alh-llh",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 2
+        },
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ]
+    },
+    {
+      "lemmaId": "alm-aalmyn",
+      "occurrences": [
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 4
+        }
+      ]
+    },
+    {
+      "lemmaId": "awn-stayn",
+      "occurrences": [
+        {
+          "ayah": 5,
+          "sura": 1,
+          "wordIndex": 4
+        }
+      ]
+    },
+    {
+      "lemmaId": "dll-dal",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 9
+        }
+      ]
+    },
+    {
+      "lemmaId": "dyn-dyn",
+      "occurrences": [
+        {
+          "ayah": 4,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ]
+    },
+    {
+      "lemmaId": "ghdb-mghdwb",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 6
+        }
+      ]
+    },
+    {
+      "lemmaId": "ghyr-ghyr",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 5
+        }
+      ]
+    },
+    {
+      "lemmaId": "hdy-hda",
+      "occurrences": [
+        {
+          "ayah": 6,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ]
+    },
+    {
+      "lemmaId": "hmd-hmd",
+      "occurrences": [
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ]
+    },
+    {
+      "lemmaId": "mlk-malk",
+      "occurrences": [
+        {
+          "ayah": 4,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ]
+    },
+    {
+      "lemmaId": "nam-anam",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ]
+    },
+    {
+      "lemmaId": "qwm-mstqym",
+      "occurrences": [
+        {
+          "ayah": 6,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ]
+    },
+    {
+      "lemmaId": "rbb-rb",
+      "occurrences": [
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ]
+    },
+    {
+      "lemmaId": "rhm-rhman",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 3
+        },
+        {
+          "ayah": 3,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ]
+    },
+    {
+      "lemmaId": "rhm-rhym",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 4
+        },
+        {
+          "ayah": 3,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ]
+    },
+    {
+      "lemmaId": "smw-sm",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ]
+    },
+    {
+      "lemmaId": "srt-srat",
+      "occurrences": [
+        {
+          "ayah": 6,
+          "sura": 1,
+          "wordIndex": 2
+        },
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ]
+    },
+    {
+      "lemmaId": "ywm-ywm",
+      "occurrences": [
+        {
+          "ayah": 4,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ]
+    }
+  ],
+  "version": "1.0.0"
+}

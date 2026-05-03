@@ -1,0 +1,415 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-02T20:44:23.501Z",
+    "sources": [
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 92 (license request pending)",
+        "license": "PENDING",
+        "name": "english-wbw-translation.json",
+        "sha256": "42992eec66ae5dd98659cda9bff9d350def46d953edb2622a8e3a444d56313b9"
+      },
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 124 (license request pending)",
+        "license": "PENDING",
+        "name": "quran-en-yusufali-simple.json",
+        "sha256": "ebcdfb71089b74c7d46acd2152471fdd33b686f57c984a055f6a958b844ef9db"
+      },
+      {
+        "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)",
+        "license": "CC-BY-ND-4.0",
+        "name": "quran-uthmani.txt",
+        "sha256": "f9a45b967b4b3407d0c7ca97ac122bbc8afb2d005b0af81e3a0a2c07d64fa94f"
+      },
+      {
+        "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes",
+        "license": "GPL-3.0-or-later",
+        "name": "quranic-corpus-morphology-0.4.txt",
+        "sha256": "a1d12923815341face765083805d2148ed2d9f5cc3f7d6665219d887675d8c46"
+      }
+    ]
+  },
+  "lemmas": [
+    {
+      "arabic": "Eabada",
+      "lemma": "Eabada",
+      "lemmaId": "abd-abd",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 5,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ],
+      "partOfSpeech": "verb",
+      "phoneticKeys": [
+        "abd"
+      ],
+      "reviewStatus": "auto",
+      "root": "Ebd"
+    },
+    {
+      "arabic": "{ll~ah",
+      "lemma": "{ll~ah",
+      "lemmaId": "alh-llh",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 2
+        },
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ],
+      "partOfSpeech": "proper-noun",
+      "phoneticKeys": [
+        "llh"
+      ],
+      "reviewStatus": "auto",
+      "root": "Alh"
+    },
+    {
+      "arabic": "Ea`lamiyn",
+      "lemma": "Ea`lamiyn",
+      "lemmaId": "alm-aalmyn",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 4
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "aalmyn"
+      ],
+      "reviewStatus": "auto",
+      "root": "Elm"
+    },
+    {
+      "arabic": "{sotaEiynu",
+      "lemma": "{sotaEiynu",
+      "lemmaId": "awn-stayn",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 5,
+          "sura": 1,
+          "wordIndex": 4
+        }
+      ],
+      "partOfSpeech": "verb",
+      "phoneticKeys": [
+        "stayn"
+      ],
+      "reviewStatus": "auto",
+      "root": "Ewn"
+    },
+    {
+      "arabic": "DaA^l~",
+      "lemma": "DaA^l~",
+      "lemmaId": "dll-dal",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 9
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "dal"
+      ],
+      "reviewStatus": "auto",
+      "root": "Dll"
+    },
+    {
+      "arabic": "diyn",
+      "lemma": "diyn",
+      "lemmaId": "dyn-dyn",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 4,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "dyn"
+      ],
+      "reviewStatus": "auto",
+      "root": "dyn"
+    },
+    {
+      "arabic": "magoDuwb",
+      "lemma": "magoDuwb",
+      "lemmaId": "ghdb-mghdwb",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 6
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "mghdwb"
+      ],
+      "reviewStatus": "auto",
+      "root": "gDb"
+    },
+    {
+      "arabic": "gayor",
+      "lemma": "gayor",
+      "lemmaId": "ghyr-ghyr",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 5
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "ghyr"
+      ],
+      "reviewStatus": "auto",
+      "root": "gyr"
+    },
+    {
+      "arabic": "hadaY",
+      "lemma": "hadaY",
+      "lemmaId": "hdy-hda",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 6,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ],
+      "partOfSpeech": "verb",
+      "phoneticKeys": [
+        "hda"
+      ],
+      "reviewStatus": "auto",
+      "root": "hdy"
+    },
+    {
+      "arabic": "Hamod",
+      "lemma": "Hamod",
+      "lemmaId": "hmd-hmd",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "hmd"
+      ],
+      "reviewStatus": "auto",
+      "root": "Hmd"
+    },
+    {
+      "arabic": "ma`lik",
+      "lemma": "ma`lik",
+      "lemmaId": "mlk-malk",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 4,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "malk"
+      ],
+      "reviewStatus": "auto",
+      "root": "mlk"
+    },
+    {
+      "arabic": ">anoEama",
+      "lemma": ">anoEama",
+      "lemmaId": "nam-anam",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ],
+      "partOfSpeech": "verb",
+      "phoneticKeys": [
+        "anam"
+      ],
+      "reviewStatus": "auto",
+      "root": "nEm"
+    },
+    {
+      "arabic": "m~usotaqiym",
+      "lemma": "m~usotaqiym",
+      "lemmaId": "qwm-mstqym",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 6,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ],
+      "partOfSpeech": "adjective",
+      "phoneticKeys": [
+        "mstqym"
+      ],
+      "reviewStatus": "auto",
+      "root": "qwm"
+    },
+    {
+      "arabic": "rab~",
+      "lemma": "rab~",
+      "lemmaId": "rbb-rb",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 2,
+          "sura": 1,
+          "wordIndex": 3
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "rb"
+      ],
+      "reviewStatus": "auto",
+      "root": "rbb"
+    },
+    {
+      "arabic": "r~aHoma`n",
+      "lemma": "r~aHoma`n",
+      "lemmaId": "rhm-rhman",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 3
+        },
+        {
+          "ayah": 3,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ],
+      "partOfSpeech": "adjective",
+      "phoneticKeys": [
+        "rhman"
+      ],
+      "reviewStatus": "auto",
+      "root": "rHm"
+    },
+    {
+      "arabic": "r~aHiym",
+      "lemma": "r~aHiym",
+      "lemmaId": "rhm-rhym",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 4
+        },
+        {
+          "ayah": 3,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ],
+      "partOfSpeech": "adjective",
+      "phoneticKeys": [
+        "rhym"
+      ],
+      "reviewStatus": "auto",
+      "root": "rHm"
+    },
+    {
+      "arabic": "{som",
+      "lemma": "{som",
+      "lemmaId": "smw-sm",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 1,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "sm"
+      ],
+      "reviewStatus": "auto",
+      "root": "smw"
+    },
+    {
+      "arabic": "Sira`T",
+      "lemma": "Sira`T",
+      "lemmaId": "srt-srat",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 6,
+          "sura": 1,
+          "wordIndex": 2
+        },
+        {
+          "ayah": 7,
+          "sura": 1,
+          "wordIndex": 1
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "srat"
+      ],
+      "reviewStatus": "auto",
+      "root": "SrT"
+    },
+    {
+      "arabic": "yawom",
+      "lemma": "yawom",
+      "lemmaId": "ywm-ywm",
+      "meaning": "",
+      "occurrences": [
+        {
+          "ayah": 4,
+          "sura": 1,
+          "wordIndex": 2
+        }
+      ],
+      "partOfSpeech": "noun",
+      "phoneticKeys": [
+        "ywm"
+      ],
+      "reviewStatus": "auto",
+      "root": "ywm"
+    }
+  ],
+  "version": "1.0.0"
+}

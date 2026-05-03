@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-02T12:13:46.195Z",
+    "sources": [
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 92 (license request pending)",
+        "license": "PENDING",
+        "name": "english-wbw-translation.json",
+        "sha256": null
+      },
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 124 (license request pending)",
+        "license": "PENDING",
+        "name": "quran-en-yusufali-simple.json",
+        "sha256": null
+      },
+      {
+        "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)",
+        "license": "CC-BY-ND-4.0",
+        "name": "quran-uthmani.txt",
+        "sha256": null
+      },
+      {
+        "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes",
+        "license": "GPL-3.0-or-later",
+        "name": "quranic-corpus-morphology-0.4.txt",
+        "sha256": null
+      }
+    ]
+  },
+  "counts": {
+    "lemmas": 19,
+    "occurrences": 23,
+    "verses": 7,
+    "wbw": 36,
+    "yusufali": 7
+  },
+  "schemaVersion": "1.0.0"
+}
