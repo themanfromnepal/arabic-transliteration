@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-02T11:31:08.660Z",
+    "sources": [
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 92 (license request pending)",
+        "license": "PENDING",
+        "name": "english-wbw-translation.json",
+        "sha256": "TBD"
+      },
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 124 (license request pending)",
+        "license": "PENDING",
+        "name": "quran-en-yusufali-simple.json",
+        "sha256": "TBD"
+      },
+      {
+        "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)",
+        "license": "CC-BY-ND-4.0",
+        "name": "quran-uthmani.txt",
+        "sha256": "TBD"
+      },
+      {
+        "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes",
+        "license": "GPL-3.0-or-later",
+        "name": "quranic-corpus-morphology-0.4.txt",
+        "sha256": "TBD"
+      }
+    ]
+  },
+  "translations": [
+    {
+      "ayah": 1,
+      "english": "In the name of Allah, Most Gracious, Most Merciful.",
+      "sura": 1
+    },
+    {
+      "ayah": 2,
+      "english": "Praise be to Allah, the Cherisher and Sustainer of the worlds;",
+      "sura": 1
+    },
+    {
+      "ayah": 3,
+      "english": "Most Gracious, Most Merciful;",
+      "sura": 1
+    },
+    {
+      "ayah": 4,
+      "english": "Master of the Day of Judgment.",
+      "sura": 1
+    },
+    {
+      "ayah": 5,
+      "english": "Thee do we worship, and Thine aid we seek.",
+      "sura": 1
+    },
+    {
+      "ayah": 6,
+      "english": "Show us the straight way,",
+      "sura": 1
+    },
+    {
+      "ayah": 7,
+      "english": "The way of those on whom Thou hast bestowed Thy Grace, those whose (portion) is not wrath, and who go not astray.",
+      "sura": 1
+    }
+  ],
+  "version": "1.0.0"
+}

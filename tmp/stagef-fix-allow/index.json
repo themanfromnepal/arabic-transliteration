@@ -1,0 +1,186 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-02T12:13:12.584Z",
+    "sources": [
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 92 (license request pending)",
+        "license": "PENDING",
+        "name": "english-wbw-translation.json",
+        "sha256": "42992eec66ae5dd98659cda9bff9d350def46d953edb2622a8e3a444d56313b9"
+      },
+      {
+        "attribution": "Tarteel — qul.tarteel.ai resource 124 (license request pending)",
+        "license": "PENDING",
+        "name": "quran-en-yusufali-simple.json",
+        "sha256": "ebcdfb71089b74c7d46acd2152471fdd33b686f57c984a055f6a958b844ef9db"
+      },
+      {
+        "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)",
+        "license": "CC-BY-ND-4.0",
+        "name": "quran-uthmani.txt",
+        "sha256": "f9a45b967b4b3407d0c7ca97ac122bbc8afb2d005b0af81e3a0a2c07d64fa94f"
+      },
+      {
+        "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes",
+        "license": "GPL-3.0-or-later",
+        "name": "quranic-corpus-morphology-0.4.txt",
+        "sha256": "a1d12923815341face765083805d2148ed2d9f5cc3f7d6665219d887675d8c46"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "arabic": "Eabada",
+      "lemmaId": "abd-abd",
+      "meaning": "",
+      "phoneticKeys": [
+        "abd"
+      ]
+    },
+    {
+      "arabic": "{ll~ah",
+      "lemmaId": "alh-llh",
+      "meaning": "",
+      "phoneticKeys": [
+        "llh"
+      ]
+    },
+    {
+      "arabic": "Ea`lamiyn",
+      "lemmaId": "alm-aalmyn",
+      "meaning": "",
+      "phoneticKeys": [
+        "aalmyn"
+      ]
+    },
+    {
+      "arabic": "{sotaEiynu",
+      "lemmaId": "awn-stayn",
+      "meaning": "",
+      "phoneticKeys": [
+        "stayn"
+      ]
+    },
+    {
+      "arabic": "DaA^l~",
+      "lemmaId": "dll-dal",
+      "meaning": "",
+      "phoneticKeys": [
+        "dal"
+      ]
+    },
+    {
+      "arabic": "diyn",
+      "lemmaId": "dyn-dyn",
+      "meaning": "",
+      "phoneticKeys": [
+        "dyn"
+      ]
+    },
+    {
+      "arabic": "magoDuwb",
+      "lemmaId": "ghdb-mghdwb",
+      "meaning": "",
+      "phoneticKeys": [
+        "mghdwb"
+      ]
+    },
+    {
+      "arabic": "gayor",
+      "lemmaId": "ghyr-ghyr",
+      "meaning": "",
+      "phoneticKeys": [
+        "ghyr"
+      ]
+    },
+    {
+      "arabic": "hadaY",
+      "lemmaId": "hdy-hda",
+      "meaning": "",
+      "phoneticKeys": [
+        "hda"
+      ]
+    },
+    {
+      "arabic": "Hamod",
+      "lemmaId": "hmd-hmd",
+      "meaning": "",
+      "phoneticKeys": [
+        "hmd"
+      ]
+    },
+    {
+      "arabic": "ma`lik",
+      "lemmaId": "mlk-malk",
+      "meaning": "",
+      "phoneticKeys": [
+        "malk"
+      ]
+    },
+    {
+      "arabic": ">anoEama",
+      "lemmaId": "nam-anam",
+      "meaning": "",
+      "phoneticKeys": [
+        "anam"
+      ]
+    },
+    {
+      "arabic": "m~usotaqiym",
+      "lemmaId": "qwm-mstqym",
+      "meaning": "",
+      "phoneticKeys": [
+        "mstqym"
+      ]
+    },
+    {
+      "arabic": "rab~",
+      "lemmaId": "rbb-rb",
+      "meaning": "",
+      "phoneticKeys": [
+        "rb"
+      ]
+    },
+    {
+      "arabic": "r~aHoma`n",
+      "lemmaId": "rhm-rhman",
+      "meaning": "",
+      "phoneticKeys": [
+        "rhman"
+      ]
+    },
+    {
+      "arabic": "r~aHiym",
+      "lemmaId": "rhm-rhym",
+      "meaning": "",
+      "phoneticKeys": [
+        "rhym"
+      ]
+    },
+    {
+      "arabic": "{som",
+      "lemmaId": "smw-sm",
+      "meaning": "",
+      "phoneticKeys": [
+        "sm"
+      ]
+    },
+    {
+      "arabic": "Sira`T",
+      "lemmaId": "srt-srat",
+      "meaning": "",
+      "phoneticKeys": [
+        "srat"
+      ]
+    },
+    {
+      "arabic": "yawom",
+      "lemmaId": "ywm-ywm",
+      "meaning": "",
+      "phoneticKeys": [
+        "ywm"
+      ]
+    }
+  ],
+  "version": "1.0.0"
+}

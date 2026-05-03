@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import type { MergedCorpus } from '../merge';
+import type { ShardMeta } from '../../../src/types/dictionary';
 import { canonicalStringify } from '../json-writer';
 import {
   DictionaryShardSchema,
@@ -19,7 +20,7 @@ import {
   buildVersesShard,
   buildWbwShard,
 } from './shards';
-import { buildManifest, type SourcePaths } from './manifest';
+import { buildManifest } from './manifest';
 
 export const SHARD_VERSION = '1.0.0';
 
@@ -38,13 +39,18 @@ export type EmitShardsOptions = {
   validate: boolean;
   suraFilter: number | null;
   defaultOutDir: string;
-  sourcePaths: SourcePaths;
+  meta?: ShardMeta;
 };
 
 export type EmitShardsResult = {
   written: string[];
   skippedReason?: string;
 };
+
+// Spread payload first so the gate-supplied `_meta` is authoritative even if
+// a builder ever produced its own `_meta` field.
+const withMeta = <T extends object>(payload: T, meta: ShardMeta | undefined): T =>
+  meta === undefined ? payload : ({ ...payload, _meta: meta } as T);
 
 export const emitShards = async (
   corpus: MergedCorpus,
@@ -56,13 +62,14 @@ export const emitShards = async (
     );
   }
 
-  const dictionary = buildDictionaryShard(corpus);
-  const verses = buildVersesShard(corpus);
-  const occurrences = buildOccurrencesShard(corpus);
-  const wbw = buildWbwShard(corpus);
-  const yusufali = buildTranslationsShard(corpus);
-  const index = buildInlineIndexShard(corpus);
-  const manifest = await buildManifest(corpus, opts.sourcePaths);
+  const { meta } = opts;
+  const dictionary = withMeta(buildDictionaryShard(corpus), meta);
+  const verses = withMeta(buildVersesShard(corpus), meta);
+  const occurrences = withMeta(buildOccurrencesShard(corpus), meta);
+  const wbw = withMeta(buildWbwShard(corpus), meta);
+  const yusufali = withMeta(buildTranslationsShard(corpus), meta);
+  const index = withMeta(buildInlineIndexShard(corpus), meta);
+  const manifest = withMeta(buildManifest(corpus), meta);
 
   const shards: Record<(typeof KNOWN_SHARD_FILES)[number], unknown> = {
     'dictionary.json': dictionary,

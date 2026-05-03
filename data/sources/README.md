@@ -4,6 +4,8 @@ Upstream source files used by the data pipeline. **All files in this directory (
 
 ## Sources
 
+> Machine-readable source-of-truth: [`licenses.json`](licenses.json) (consumed by the build pipeline).
+
 | Filename                            | Upstream URL                                     | Version                                                    | License                                     | SHA-256 |
 | ----------------------------------- | ------------------------------------------------ | ---------------------------------------------------------- | ------------------------------------------- | ------- |
 | `quran-uthmani.txt`                 | https://tanzil.net/download/                     | Tanzil Uthmani v1.1 (minimal, no pause/sajdah/rub-el-hizb) | CC-BY-ND 4.0                                | `TBD`   |

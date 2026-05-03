@@ -8,6 +8,8 @@ import type {
   ManifestShard,
   Occurrence,
   OccurrencesShard,
+  ShardMeta,
+  ShardMetaSource,
   SuraAyah,
   TranslationsShard,
   Verse,
@@ -21,6 +23,18 @@ const SemverString = z.string().regex(/^\d+\.\d+\.\d+$/, 'must be semver-like (X
 const SuraNumber = z.number().int().min(1).max(114);
 const AyahNumber = z.number().int().positive();
 const WordIndex = z.number().int().nonnegative();
+
+export const ShardMetaSourceSchema = z.object({
+  name: z.string().min(1),
+  license: z.string().min(1),
+  sha256: z.union([z.string().min(1), z.null()]),
+  attribution: z.string().min(1),
+}) satisfies z.ZodType<ShardMetaSource>;
+
+export const ShardMetaSchema = z.object({
+  generatedAt: z.string().min(1),
+  sources: z.array(ShardMetaSourceSchema),
+}) satisfies z.ZodType<ShardMeta>;
 
 export const SuraAyahSchema = z.object({
   sura: SuraNumber,
@@ -89,16 +103,19 @@ export const InlineIndexEntrySchema = z.object({
 }) satisfies z.ZodType<InlineIndexEntry>;
 
 export const DictionaryShardSchema = z.object({
+  _meta: ShardMetaSchema.optional(),
   version: SemverString,
   lemmas: z.array(LemmaEntrySchema),
 }) satisfies z.ZodType<DictionaryShard>;
 
 export const VersesShardSchema = z.object({
+  _meta: ShardMetaSchema.optional(),
   version: SemverString,
   verses: z.array(VerseSchema),
 }) satisfies z.ZodType<VersesShard>;
 
 export const OccurrencesShardSchema = z.object({
+  _meta: ShardMetaSchema.optional(),
   version: SemverString,
   occurrences: z.array(
     z.object({
@@ -109,34 +126,29 @@ export const OccurrencesShardSchema = z.object({
 }) satisfies z.ZodType<OccurrencesShard>;
 
 export const WbwShardSchema = z.object({
+  _meta: ShardMetaSchema.optional(),
   version: SemverString,
   words: z.array(WbwEntrySchema),
 }) satisfies z.ZodType<WbwShard>;
 
 export const InlineIndexShardSchema = z.object({
+  _meta: ShardMetaSchema.optional(),
   version: SemverString,
   entries: z.array(InlineIndexEntrySchema),
 }) satisfies z.ZodType<InlineIndexShard>;
 
 export const TranslationsShardSchema = z.object({
+  _meta: ShardMetaSchema.optional(),
   version: SemverString,
   translations: z.array(AyahTranslationSchema),
 }) satisfies z.ZodType<TranslationsShard>;
 
-const Sha256Hex = z.string().regex(/^[0-9a-f]{64}$/, 'must be lower-case sha256 hex');
 const NonNegInt = z.number().int().nonnegative();
 
 export const ManifestShardSchema = z
   .object({
+    _meta: ShardMetaSchema.optional(),
     schemaVersion: SemverString,
-    sourceSha256: z
-      .object({
-        tanzil: Sha256Hex,
-        qac: Sha256Hex,
-        wbw: Sha256Hex,
-        yusufali: Sha256Hex,
-      })
-      .strict(),
     counts: z
       .object({
         lemmas: NonNegInt,

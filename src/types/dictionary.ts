@@ -45,45 +45,67 @@ export type AyahTranslation = {
 
 export type InlineIndexEntry = Pick<LemmaEntry, 'lemmaId' | 'arabic' | 'phoneticKeys' | 'meaning'>;
 
+/**
+ * Per-source provenance entry in `_meta.sources`.
+ *
+ * `sha256`:
+ *   - hex-encoded sha256 of the source file as computed by the license gate
+ *   - `null` indicates the source was not verified (e.g. license gate run in
+ *     `skip` mode). A null digest means "unverified" — clients must not
+ *     treat it as a trust signal.
+ */
+export type ShardMetaSource = {
+  name: string;
+  license: string;
+  sha256: string | null;
+  attribution: string;
+};
+
+export type ShardMeta = {
+  generatedAt: string;
+  sources: ShardMetaSource[];
+};
+
 export type DictionaryShard = {
+  _meta?: ShardMeta;
   version: string;
   lemmas: LemmaEntry[];
 };
 
 export type VersesShard = {
+  _meta?: ShardMeta;
   version: string;
   verses: Verse[];
 };
 
 export type OccurrencesShard = {
+  _meta?: ShardMeta;
   version: string;
   // TODO: confirm in Stage C
   occurrences: Array<{ lemmaId: string; occurrences: Occurrence[] }>;
 };
 
 export type WbwShard = {
+  _meta?: ShardMeta;
   version: string;
   words: WbwEntry[];
 };
 
 export type InlineIndexShard = {
+  _meta?: ShardMeta;
   version: string;
   entries: InlineIndexEntry[];
 };
 
 export type TranslationsShard = {
+  _meta?: ShardMeta;
   version: string;
   translations: AyahTranslation[];
 };
 
 export type ManifestShard = {
+  _meta?: ShardMeta;
   schemaVersion: string;
-  sourceSha256: {
-    tanzil: string;
-    qac: string;
-    wbw: string;
-    yusufali: string;
-  };
   counts: {
     lemmas: number;
     verses: number;
