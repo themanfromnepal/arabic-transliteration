@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { VOWELS } from '@/src/lib/transliterator/maps/vowels';
 
-const EXPECTED_KEYS = ['aa', 'ii', 'ee', 'uu', 'oo', 'a', 'i', 'u', 'e', 'o'];
+const EXPECTED_KEYS = ['aa', 'ii', 'ee', 'uu', 'oo', 'a', 'i', 'u', 'e', 'o', 'aa2'];
 
 const isArabicChar = (c: string) => c.charCodeAt(0) >= 0x0600 && c.charCodeAt(0) <= 0x06ff;
 
@@ -11,7 +11,7 @@ describe('VOWELS map', () => {
   });
 
   it('has the expected number of entries', () => {
-    expect(Object.keys(VOWELS).length).toBe(10);
+    expect(Object.keys(VOWELS).length).toBe(11);
   });
 
   it('values are either empty (dropped) or all Arabic-block characters', () => {

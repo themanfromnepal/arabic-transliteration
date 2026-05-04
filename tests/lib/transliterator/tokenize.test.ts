@@ -152,4 +152,36 @@ describe('tokenize (Stage C)', () => {
       { kind: 'passthrough', key: ' ' },
     ]);
   });
+
+  // R1d: hamza-bearer digraphs and the length-3 madda vowel.
+  it('matches length-3 aa2 as alef-with-madda', () => {
+    expect(tokenize('aa2')).toEqual<Token[]>([{ kind: 'vowel', key: 'aa2', arabic: 'آ' }]);
+  });
+
+  it('aa2 takes priority over aa+2 length-2/length-1 fallbacks', () => {
+    // Without length-3 priority this would tokenize as [aa, 2] which would
+    // emit ا + ء instead of the single آ.
+    const out = tokenize('aa2b');
+    expect(out).toEqual<Token[]>([
+      { kind: 'vowel', key: 'aa2', arabic: 'آ' },
+      { kind: 'consonant', key: 'b', arabic: 'ب' },
+    ]);
+  });
+
+  it('matches length-2 hamza-bearer digraphs (w2/y2/a2/i2)', () => {
+    expect(tokenize('w2')).toEqual<Token[]>([{ kind: 'digraph', key: 'w2', arabic: 'ؤ' }]);
+    expect(tokenize('y2')).toEqual<Token[]>([{ kind: 'digraph', key: 'y2', arabic: 'ئ' }]);
+    expect(tokenize('a2')).toEqual<Token[]>([{ kind: 'digraph', key: 'a2', arabic: 'أ' }]);
+    expect(tokenize('i2')).toEqual<Token[]>([{ kind: 'digraph', key: 'i2', arabic: 'إ' }]);
+  });
+
+  it('hamza-bearer digraph wins over a+2 split', () => {
+    const out = tokenize('a2lim');
+    expect(out).toEqual<Token[]>([
+      { kind: 'digraph', key: 'a2', arabic: 'أ' },
+      { kind: 'consonant', key: 'l', arabic: 'ل' },
+      { kind: 'vowel', key: 'i', arabic: '' },
+      { kind: 'consonant', key: 'm', arabic: 'م' },
+    ]);
+  });
 });

@@ -7,8 +7,8 @@ describe('transliterator (Stage A smoke)', () => {
     expectTypeOf(transliterate).toEqualTypeOf<(input: string) => string>();
   });
 
-  it('returns input unchanged (identity stub)', () => {
-    expect(transliterate('')).toBe('');
-    expect(transliterate('hello')).toBe('hello');
+  it('returns a string for any input', () => {
+    expect(typeof transliterate('')).toBe('string');
+    expect(typeof transliterate('a')).toBe('string');
   });
 });

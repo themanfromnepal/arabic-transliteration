@@ -24,6 +24,7 @@ const EXPECTED_KEYS = [
   'T',
   'Z',
   "'",
+  '@',
 ];
 
 const isArabicChar = (c: string) => c.charCodeAt(0) >= 0x0600 && c.charCodeAt(0) <= 0x06ff;
@@ -34,7 +35,7 @@ describe('CONSONANTS map', () => {
   });
 
   it('has the expected number of entries', () => {
-    expect(Object.keys(CONSONANTS).length).toBe(22);
+    expect(Object.keys(CONSONANTS).length).toBe(23);
   });
 
   it('maps every key to a non-empty Arabic-block string', () => {

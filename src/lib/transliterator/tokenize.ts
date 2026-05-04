@@ -10,14 +10,14 @@ export type Token =
 /**
  * Segment a Latin/Arabizi input string into the longest matching map keys.
  *
- * At each position, tries length-2 keys first (digraphs, long vowels), then
- * length-1 keys (consonants, short vowels, Arabizi numerals). Case-sensitive
- * (uppercase consonants are emphatic per ADR-0003). Unmatched characters
- * become single-char `passthrough` tokens. Pure, total, never throws.
+ * Ladder priority (R1d): length-3 first, then length-2, then length-1. The
+ * length-3 step matches against VOWELS only (currently `aa2` → آ); length-2
+ * checks vowels then digraphs; length-1 checks vowels, arabizi, consonants.
+ * Case-sensitive (uppercase consonants are emphatic per ADR-0003). Unmatched
+ * characters become single-char `passthrough` tokens. Pure, total, never throws.
  *
  * Tie-breaker for same-length matches at the same position: vowels > digraphs
- * > arabizi > consonants. (Currently no real ties exist in the locked tables;
- * the rule is fixed to lock future behavior.)
+ * > arabizi > consonants.
  *
  * @see docs/phases/phase-2-engine.md
  * @see docs/adr/0003-rule-based-transliteration.md
@@ -26,7 +26,17 @@ export function tokenize(input: string): Token[] {
   const tokens: Token[] = [];
   let i = 0;
   while (i < input.length) {
-    // Try length-2 (digraphs, long vowels) first.
+    // Try length-3 (vowels-3 first; currently only `aa2`).
+    if (i + 3 <= input.length) {
+      const three = input.slice(i, i + 3);
+      const t = matchThree(three);
+      if (t) {
+        tokens.push(t);
+        i += 3;
+        continue;
+      }
+    }
+    // Try length-2 (vowels, digraphs).
     if (i + 2 <= input.length) {
       const two = input.slice(i, i + 2);
       const t = matchTwo(two);
@@ -42,6 +52,15 @@ export function tokenize(input: string): Token[] {
     i += 1;
   }
   return tokens;
+}
+
+function matchThree(key: string): Token | null {
+  // R1d: only vowels carry length-3 keys (e.g. `aa2` → آ).
+  const vowelsMap = VOWELS as Readonly<Record<string, string>>;
+  if (key in vowelsMap) {
+    return { kind: 'vowel', key, arabic: vowelsMap[key]! };
+  }
+  return null;
 }
 
 function matchTwo(key: string): Token | null {

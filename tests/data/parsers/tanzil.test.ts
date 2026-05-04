@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { parseTanzil } from '../../../scripts/build/parsers/tanzil';
+import {
+  buildVerseWordIndex,
+  parseTanzil,
+  splitUthmaniWords,
+} from '../../../scripts/build/parsers/tanzil';
 
 const fixture = [
   '# Tanzil Quran Text (Uthmani)',
@@ -28,5 +32,32 @@ describe('parseTanzil', () => {
     const withBom = '\uFEFF# header\n\n1|1|بِسْمِ';
     const out = parseTanzil(withBom);
     expect(out).toEqual([{ sura: 1, ayah: 1, uthmani: 'بِسْمِ' }]);
+  });
+});
+
+describe('splitUthmaniWords', () => {
+  it('splits on whitespace and drops empties', () => {
+    expect(splitUthmaniWords('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ')).toEqual([
+      'بِسْمِ',
+      'ٱللَّهِ',
+      'ٱلرَّحْمَٰنِ',
+      'ٱلرَّحِيمِ',
+    ]);
+    expect(splitUthmaniWords('  a   b\tc\n')).toEqual(['a', 'b', 'c']);
+  });
+});
+
+describe('buildVerseWordIndex', () => {
+  it('returns the Uthmani word at a given (sura,ayah,wordIndex)', () => {
+    const verses = parseTanzil(
+      ['1|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', '1|2|ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ'].join(
+        '\n',
+      ),
+    );
+    const idx = buildVerseWordIndex(verses);
+    // QAC wordIndex is 1-based; lookup is words[wordIndex - 1].
+    expect(idx.get('1:1')?.[0]).toBe('بِسْمِ');
+    expect(idx.get('1:1')?.[1]).toBe('ٱللَّهِ');
+    expect(idx.get('1:2')?.[2]).toBe('رَبِّ');
   });
 });

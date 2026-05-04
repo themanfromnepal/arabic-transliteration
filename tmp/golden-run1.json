@@ -1,0 +1,965 @@
+{
+  "entries": [
+    {
+      "expectedArabic": "عِبَادَت",
+      "id": "abd-abadt",
+      "phonetic": "abadt",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَعْبُرُ",
+      "id": "abr-tabr",
+      "phonetic": "tabr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أبَاء",
+      "id": "abw-abaa",
+      "phonetic": "abaa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَّعْدُودَة",
+      "id": "add-madwdh",
+      "phonetic": "madwdh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَعَاذِير",
+      "id": "adhr-maadhyr",
+      "phonetic": "maadhyr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَدْل",
+      "id": "adl-adl",
+      "phonetic": "adl",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَاد",
+      "id": "adw-aad",
+      "phonetic": "aad",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أُفّ",
+      "id": "aff-af",
+      "phonetic": "af",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَفَا",
+      "id": "afw-afa",
+      "phonetic": "afa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عُجَاب",
+      "id": "ajb-ajab",
+      "phonetic": "ajab",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَجِيب",
+      "id": "ajb-ajyb",
+      "phonetic": "ajyb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱسْتِعْجَال",
+      "id": "ajl-stajal",
+      "phonetic": "stajal",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَاكِف",
+      "id": "akf-aakf",
+      "phonetic": "aakf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَعْكُفُ",
+      "id": "akf-yakf",
+      "phonetic": "yakf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "إِلَٰه",
+      "id": "alh-ilah",
+      "phonetic": "ilah",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَلَٰمَٰت",
+      "id": "alm-alamat",
+      "phonetic": "alamat",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَأْلَمُ",
+      "id": "alm-yalm",
+      "phonetic": "yalm",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَأْلُ",
+      "id": "alw-yal",
+      "phonetic": "yal",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَٰمِل",
+      "id": "aml-aaml",
+      "phonetic": "aaml",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَمِلَ",
+      "id": "aml-aml",
+      "phonetic": "aml",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَمَٰنَت",
+      "id": "amn-amant",
+      "phonetic": "amant",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَمَرَ",
+      "id": "amr-amr",
+      "phonetic": "amr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَمَة",
+      "id": "amw-amh",
+      "phonetic": "amh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عُمِّيَتْ",
+      "id": "amy-amyt",
+      "phonetic": "amyt",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَرَفَ",
+      "id": "arf-arf",
+      "phonetic": "arf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَعَارِج",
+      "id": "arj-maarj",
+      "phonetic": "maarj",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَصِيب",
+      "id": "asb-asyb",
+      "phonetic": "asyb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عِشَار",
+      "id": "ashr-ashar",
+      "phonetic": "ashar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَثَٰث",
+      "id": "athth-athath",
+      "phonetic": "athath",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَأْتِيٌّ",
+      "id": "aty-maty",
+      "phonetic": "maty",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَعَاد",
+      "id": "awd-maad",
+      "phonetic": "maad",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَعَانَ",
+      "id": "awn-aaan",
+      "phonetic": "aaan",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَعَاوَنُ",
+      "id": "awn-taawn",
+      "phonetic": "taawn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَعِيبَ",
+      "id": "ayb-aayb",
+      "phonetic": "aayb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَعَاش",
+      "id": "aysh-maash",
+      "phonetic": "maash",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱعْتَزَلَ",
+      "id": "azl-atzl",
+      "phonetic": "atzl",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "عَظِيم",
+      "id": "azm-azym",
+      "phonetic": "azym",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَأْسَأء",
+      "id": "bas-basaa",
+      "phonetic": "basaa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بِدَار",
+      "id": "bdr-bdar",
+      "phonetic": "bdar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَادِى",
+      "id": "bdw-bada",
+      "phonetic": "bada",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُبْدِي",
+      "id": "bdw-mbdy",
+      "phonetic": "mbdy",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَنۦبَغِى",
+      "id": "bghy-ynbgha",
+      "phonetic": "ynbgha",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَهْجَة",
+      "id": "bhj-bhjh",
+      "phonetic": "bhjh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَٰلِغَة",
+      "id": "blgh-balghh",
+      "phonetic": "balghh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَقَرَة",
+      "id": "bqr-bqrh",
+      "phonetic": "bqrh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَرَّأَ",
+      "id": "bra-bra",
+      "phonetic": "bra",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَرَأءَة",
+      "id": "bra-braah",
+      "phonetic": "braah",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَبْرَحَ",
+      "id": "brh-abrh",
+      "phonetic": "abrh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَبْصِرَة",
+      "id": "bsr-tbsrh",
+      "phonetic": "tbsrh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَطَلَ",
+      "id": "btl-btl",
+      "phonetic": "btl",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "بَطَشْ",
+      "id": "btsh-btsh",
+      "phonetic": "btsh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَبُورُ",
+      "id": "bwr-ybwr",
+      "phonetic": "ybwr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱلْفَاتِحَة",
+      "id": "canonical-al-fatiha",
+      "phonetic": "al-fatiha",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "ٱلْقُرْآن",
+      "id": "canonical-al-quran",
+      "phonetic": "al-quran",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "ٱلْحَمْدُ لِلَّٰهِ",
+      "id": "canonical-alhamdulillah",
+      "phonetic": "alhamdulillah",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "بِسْمِ ٱللَّٰهِ",
+      "id": "canonical-bismillah",
+      "phonetic": "bismillah",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "دُنْيَا",
+      "id": "canonical-dunya",
+      "phonetic": "dunya",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "إِيمَان",
+      "id": "canonical-iman",
+      "phonetic": "iman",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "رَحِيم",
+      "id": "canonical-rahim",
+      "phonetic": "rahim",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "رَحْمَٰن",
+      "id": "canonical-rahman",
+      "phonetic": "rahman",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "سَلَام",
+      "id": "canonical-salam",
+      "phonetic": "salam",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "تَقْوَىٰ",
+      "id": "canonical-taqwa",
+      "phonetic": "taqwa",
+      "source": "canonical"
+    },
+    {
+      "expectedArabic": "أَضْعَف",
+      "id": "daf-adaf",
+      "phonetic": "adaf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُدَبِّرَٰت",
+      "id": "dbr-mdbrat",
+      "phonetic": "mdbrat",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "دَافِق",
+      "id": "dfq-dafq",
+      "phonetic": "dafq",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُذْعِنِين",
+      "id": "dhan-mdhanyn",
+      "phonetic": "mdhanyn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَذْهَبَ",
+      "id": "dhhb-adhhb",
+      "phonetic": "adhhb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَذْقَان",
+      "id": "dhqn-adhqan",
+      "phonetic": "adhqan",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ذَرَأَ",
+      "id": "dhra-dhra",
+      "phonetic": "dhra",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ذَأئِقَة",
+      "id": "dhwq-dhayqh",
+      "phonetic": "dhayqh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "دُّنْيَا",
+      "id": "dnw-dnya",
+      "phonetic": "dnya",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ضَرِيع",
+      "id": "dra-drya",
+      "phonetic": "drya",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ضَأرّ",
+      "id": "drr-dar",
+      "phonetic": "dar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَضَأءَ",
+      "id": "dwa-adaa",
+      "phonetic": "adaa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "فُجَّار",
+      "id": "fjr-fjar",
+      "phonetic": "fjar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "فَلَق",
+      "id": "flq-flq",
+      "phonetic": "flq",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُفْتَر",
+      "id": "fry-mftr",
+      "phonetic": "mftr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَفَسَّحُ",
+      "id": "fsh-tfsh",
+      "phonetic": "tfsh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَفْتُون",
+      "id": "ftn-mftwn",
+      "phonetic": "mftwn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "فَوْز",
+      "id": "fwz-fwz",
+      "phonetic": "fwz",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "فَأءُ",
+      "id": "fya-faa",
+      "phonetic": "faa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "غُمَّة",
+      "id": "ghmm-ghmh",
+      "phonetic": "ghmh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُغْرَمُون",
+      "id": "ghrm-mghrmwn",
+      "phonetic": "mghrmwn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حَبَّبَ",
+      "id": "hbb-hbb",
+      "phonetic": "hbb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حِجَج",
+      "id": "hjj-hjj",
+      "phonetic": "hjj",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حَجَر",
+      "id": "hjr-hjr",
+      "phonetic": "hjr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "هَلَكَ",
+      "id": "hlk-hlk",
+      "phonetic": "hlk",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حُقُب",
+      "id": "hqb-hqb",
+      "phonetic": "hqb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱسْتَحَقَّ",
+      "id": "hqq-sthq",
+      "phonetic": "sthq",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حُصِّلَ",
+      "id": "hsl-hsl",
+      "phonetic": "hsl",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حَسَنَة",
+      "id": "hsn-hsnh",
+      "phonetic": "hsnh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حَطَب",
+      "id": "htb-htb",
+      "phonetic": "htb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُحِيط",
+      "id": "hwt-mhyt",
+      "phonetic": "mhyt",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "حَيْرَان",
+      "id": "hyr-hyran",
+      "phonetic": "hyran",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يُجْبَىٰٔ",
+      "id": "jby-yjbaa",
+      "phonetic": "yjbaa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "جَمَال",
+      "id": "jml-jmal",
+      "phonetic": "jmal",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "جَانِب",
+      "id": "jnb-janb",
+      "phonetic": "janb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "جَنَّ",
+      "id": "jnn-jn",
+      "phonetic": "jn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "كَبِير",
+      "id": "kbr-kbyr",
+      "phonetic": "kbyr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱسْتِكْبَار",
+      "id": "kbr-stkbar",
+      "phonetic": "stkbar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَكْدَىٰٔ",
+      "id": "kdy-akdaa",
+      "phonetic": "akdaa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خُبْز",
+      "id": "khbz-khbz",
+      "phonetic": "khbz",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُخْضَرَّة",
+      "id": "khdr-mkhdrh",
+      "phonetic": "mkhdrh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱسْتَخْلَفَ",
+      "id": "khlf-stkhlf",
+      "phonetic": "stkhlf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خَرَاب",
+      "id": "khrb-khrab",
+      "phonetic": "khrab",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خَشِىَ",
+      "id": "khshy-khsha",
+      "phonetic": "khsha",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَخَاصُم",
+      "id": "khsm-tkhasm",
+      "phonetic": "tkhasm",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خُسْرَان",
+      "id": "khsr-khsran",
+      "phonetic": "khsran",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خَطِئـَٕة",
+      "id": "khta-khtyh",
+      "phonetic": "khtyh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خِطَاب",
+      "id": "khtb-khtab",
+      "phonetic": "khtab",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خَاتَم",
+      "id": "khtm-khatm",
+      "phonetic": "khatm",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خَانُ",
+      "id": "khwn-khan",
+      "phonetic": "khan",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "خَأئِنِين",
+      "id": "khwn-khaynyn",
+      "phonetic": "khaynyn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "كَلَٰم",
+      "id": "klm-klam",
+      "phonetic": "klam",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "لَّٰعِنُون",
+      "id": "lan-laanwn",
+      "phonetic": "laanwn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَلْفَاف",
+      "id": "lff-alfaf",
+      "phonetic": "alfaf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَلْهَثْ",
+      "id": "lhth-ylhth",
+      "phonetic": "ylhth",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَمْكَنَ",
+      "id": "mkn-amkn",
+      "phonetic": "amkn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَٰلِك",
+      "id": "mlk-malk",
+      "phonetic": "malk",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَلَك",
+      "id": "mlk-mlk",
+      "phonetic": "mlk",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَرَجَ",
+      "id": "mrj-mrj",
+      "phonetic": "mrj",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "إِمْسَاك",
+      "id": "msk-imsak",
+      "phonetic": "imsak",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "أَندَاد",
+      "id": "ndd-andad",
+      "phonetic": "andad",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "نَّفَّٰثَٰت",
+      "id": "nfth-nfathat",
+      "phonetic": "nfathat",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَنتَشِرُ",
+      "id": "nshr-tntshr",
+      "phonetic": "tntshr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَّقْبُوضَة",
+      "id": "qbd-mqbwdh",
+      "phonetic": "mqbwdh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَقَلُّب",
+      "id": "qlb-tqlb",
+      "phonetic": "tqlb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "قَالِين",
+      "id": "qly-qalyn",
+      "phonetic": "qalyn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَقْرَبَة",
+      "id": "qrb-mqrbh",
+      "phonetic": "mqrbh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "قَرَار",
+      "id": "qrr-qrar",
+      "phonetic": "qrar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱسْتَقَرَّ",
+      "id": "qrr-stqr",
+      "phonetic": "stqr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "قَٰسِطُون",
+      "id": "qst-qastwn",
+      "phonetic": "qastwn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "رَءَا",
+      "id": "ray-raa",
+      "phonetic": "raa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "رَافِع",
+      "id": "rfa-rafa",
+      "phonetic": "rafa",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "رَغَب",
+      "id": "rghb-rghb",
+      "phonetic": "rghb",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "يَرْهَقُ",
+      "id": "rhq-yrhq",
+      "phonetic": "yrhq",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُرْسَلَٰت",
+      "id": "rsl-mrslat",
+      "phonetic": "mrslat",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "رَتَّلْ",
+      "id": "rtl-rtl",
+      "phonetic": "rtl",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "رَاغَ",
+      "id": "rwgh-ragh",
+      "phonetic": "ragh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ٱرْتَابَ",
+      "id": "ryb-rtab",
+      "phonetic": "rtab",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "إِصْبَاح",
+      "id": "sbh-isbah",
+      "phonetic": "isbah",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "صَادِق",
+      "id": "sdq-sadq",
+      "phonetic": "sadq",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "تَصْدِيَة",
+      "id": "sdy-tsdyh",
+      "phonetic": "tsdyh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَشْعَر",
+      "id": "shar-mshar",
+      "phonetic": "mshar",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "صُحُف",
+      "id": "shf-shf",
+      "phonetic": "shf",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "شَفَتَيْن",
+      "id": "shfh-shftyn",
+      "phonetic": "shftyn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُشْفِقُون",
+      "id": "shfq-mshfqwn",
+      "phonetic": "mshfqwn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "شَّفَق",
+      "id": "shfq-shfq",
+      "phonetic": "shfq",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "شَاكِلَت",
+      "id": "shkl-shaklt",
+      "phonetic": "shaklt",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "شَطْر",
+      "id": "shtr-shtr",
+      "phonetic": "shtr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "سُنبُلَة",
+      "id": "snbl-snblh",
+      "phonetic": "snblh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "سَيِّئَة",
+      "id": "swa-syyh",
+      "phonetic": "syyh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "صَّٰٔئِمِين",
+      "id": "swm-saymyn",
+      "phonetic": "saymyn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مَثْبُور",
+      "id": "thbr-mthbwr",
+      "phonetic": "mthbwr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ثَمَٰنِى",
+      "id": "thmn-thmana",
+      "phonetic": "thmana",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "ثَمَرَٰت",
+      "id": "thmr-thmrat",
+      "phonetic": "thmrat",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "طَهُور",
+      "id": "thr-thwr",
+      "phonetic": "thwr",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "مُطَّوِّعِين",
+      "id": "twa-mtwayn",
+      "phonetic": "mtwayn",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "وَرْدَة",
+      "id": "wrd-wrdh",
+      "phonetic": "wrdh",
+      "source": "sample"
+    },
+    {
+      "expectedArabic": "زَقُّوم",
+      "id": "zqm-zqwm",
+      "phonetic": "zqwm",
+      "source": "sample"
+    }
+  ],
+  "seed": 42
+}

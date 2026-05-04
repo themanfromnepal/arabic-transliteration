@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { DIGRAPHS } from '@/src/lib/transliterator/maps/digraphs';
 
-const EXPECTED_KEYS = ['th', 'kh', 'dh', 'sh', 'gh'];
+const EXPECTED_KEYS = ['th', 'kh', 'dh', 'sh', 'gh', 'w2', 'y2', 'a2', 'i2'];
 
 const isArabicChar = (c: string) => c.charCodeAt(0) >= 0x0600 && c.charCodeAt(0) <= 0x06ff;
 
@@ -10,8 +10,8 @@ describe('DIGRAPHS map', () => {
     expect(Object.keys(DIGRAPHS).every((k) => k.length > 0)).toBe(true);
   });
 
-  it('has exactly 5 entries', () => {
-    expect(Object.keys(DIGRAPHS).length).toBe(5);
+  it('has exactly 9 entries', () => {
+    expect(Object.keys(DIGRAPHS).length).toBe(9);
   });
 
   it('every key is exactly length 2', () => {

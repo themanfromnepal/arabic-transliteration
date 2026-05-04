@@ -21,4 +21,6 @@ export const CONSONANTS = {
   T: 'ط',
   Z: 'ظ',
   "'": 'ء',
+  // R1d: `@` is the slug sentinel for ة (taa-marbuta).
+  '@': 'ة',
 } as const satisfies Readonly<Record<string, string>>;
