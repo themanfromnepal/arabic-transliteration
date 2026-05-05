@@ -50,9 +50,10 @@ describe('splitUthmaniWords', () => {
 describe('buildVerseWordIndex', () => {
   it('returns the Uthmani word at a given (sura,ayah,wordIndex)', () => {
     const verses = parseTanzil(
-      ['1|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', '1|2|ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ'].join(
-        '\n',
-      ),
+      [
+        '1|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+        '1|2|ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ',
+      ].join('\n'),
     );
     const idx = buildVerseWordIndex(verses);
     // QAC wordIndex is 1-based; lookup is words[wordIndex - 1].
