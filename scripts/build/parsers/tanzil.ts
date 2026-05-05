@@ -24,3 +24,23 @@ export const parseTanzil = (input: string): Verse[] => {
   }
   return verses;
 };
+
+/**
+ * Whitespace-tokenize an Uthmani ayah string into its constituent words.
+ * Splits on any run of Unicode whitespace and drops empty fragments.
+ */
+export const splitUthmaniWords = (uthmani: string): string[] =>
+  uthmani.split(/\s+/).filter((w) => w.length > 0);
+
+/**
+ * Build a (sura,ayah) -> ordered words[] index from parsed Tanzil verses.
+ * Words are 0-indexed in the array; QAC `wordIndex` is 1-based, so callers
+ * should look up `words[wordIndex - 1]`.
+ */
+export const buildVerseWordIndex = (verses: Verse[]): Map<string, string[]> => {
+  const map = new Map<string, string[]>();
+  for (const v of verses) {
+    map.set(`${v.sura}:${v.ayah}`, splitUthmaniWords(v.uthmani));
+  }
+  return map;
+};

@@ -27,10 +27,8 @@ export type ApplyCurationResult = {
 
 const READ_ONLY_COLUMNS = [
   'arabic',
-  'lemma',
   'root',
   'partOfSpeech',
-  'phoneticKeys',
   'occurrenceCount',
   'firstRef',
 ] as const;
@@ -58,6 +56,18 @@ const rowFromLemma = (entry: LemmaEntry): string[] => {
     entry.meaning,
     entry.reviewStatus,
   ];
+};
+
+const sameStringArray = (left: readonly string[], right: readonly string[]): boolean => {
+  if (left.length !== right.length) {
+    return false;
+  }
+  for (let i = 0; i < left.length; i++) {
+    if (left[i] !== right[i]) {
+      return false;
+    }
+  }
+  return true;
 };
 
 const readCsvOrEmpty = async (
@@ -110,6 +120,17 @@ export const applyCuration = async (
       continue;
     }
     seenInCsv.add(entry.lemmaId);
+
+    if (entry.lemma !== match.row.lemma) {
+      entry.lemma = match.row.lemma;
+      edits += 1;
+    }
+
+    const curatedPhoneticKeys = match.row.phoneticKeys.split('|');
+    if (!sameStringArray(entry.phoneticKeys, curatedPhoneticKeys)) {
+      entry.phoneticKeys = curatedPhoneticKeys;
+      edits += 1;
+    }
 
     const regenerated = rowFromLemma(entry);
     if (opts.suraFilter === null) {

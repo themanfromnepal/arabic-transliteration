@@ -29,6 +29,7 @@ tsconfig.tsbuildinfo
 data/sources/*
 !data/sources/.gitkeep
 !data/sources/README.md
+tests/data/license/*
 
 # Generated data shards (rebuild via `npm run build:data`)
 public/data/*

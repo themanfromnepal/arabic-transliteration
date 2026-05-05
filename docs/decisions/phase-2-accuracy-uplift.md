@@ -1,0 +1,195 @@
+# Phase 2 Accuracy Uplift — Decision Record
+
+> Working decision record for lifting golden-test accuracy from 71.9% to ≥95%, satisfying the acceptance criterion in [docs/phases/phase-2-engine.md](../phases/phase-2-engine.md).
+
+---
+
+## 1. Problem
+
+Phase 2 is **structurally complete** — every deliverable, workstream, and three of four acceptance criteria from [docs/phases/phase-2-engine.md](../phases/phase-2-engine.md) are met. However, **acceptance criterion #1 fails**:
+
+- Required: ≥95% accuracy on a curated test set of common Quranic lemma keys.
+- Actual: **115/160 = 71.9%** (per the saved [tmp/golden-report.json](../../tmp/golden-report.json)).
+- Threshold is enforced by [tests/lib/transliterator/golden.test.ts](../../tests/lib/transliterator/golden.test.ts), which currently fails CI.
+
+Phase 2 cannot be signed off until the golden suite reaches its 95% gate.
+
+## 2. Diagnosis
+
+Root cause is NOT scattered. The 45 failures collapse into 4 buckets:
+
+| Bucket | Description | Count |
+|---|---|---|
+| A | Fixtures encode lone `a` as ع (ayn), but the engine treats `a` as a dropped short vowel | ~28 |
+| B | Render dedup wrongly collapses real geminated pairs (`Drr`, `Hff`, `khll`) | 3 |
+| C | Fixture artifacts (missing trailing ayn marker, ambiguous `dhn`, stray `2` in expected) | 4 |
+| D | "Canonical English" entries (`bismillah`, `alhamdulillah`, …) written under a different convention with no word-segmentation engine to support them | 10 |
+
+## 3. Decisions (locked) — and alternates considered
+
+For each decision the user chose one option. The other options are recorded so this file can be used to revisit the choice later.
+
+### Decision 1 — Convention for lone `a`
+
+| Option | Description | Doc alignment |
+|---|---|---|
+| 1A | Map lone `a` → ع (ayn) | **CONFLICTS** with [docs/spec.md L86](../spec.md#L86), [docs/phases/phase-2-engine.md L19](../phases/phase-2-engine.md#L19), [docs/adr/0003-rule-based-transliteration.md L9](../adr/0003-rule-based-transliteration.md#L9) — these all place ع in the Arabizi tier (`3`) and treat `a` as a vowel |
+| **1B (CHOSEN)** | Keep current behavior: `a` is a vowel, ع belongs to the Arabizi tier (`3`) | **ALIGNED** with all three docs |
+
+**Rationale for 1B:** The fixtures were the ones violating the documented Arabizi-tier convention, not the engine. Fixing fixtures is the correct response.
+
+### Decision 2 — Render dedup scope
+
+| Option | Description | User-visible effect |
+|---|---|---|
+| **2A (CHOSEN)** | Dedup only when the unit is `ل` | `rabb → ربب`, `muhammad → مهممد`, `al-llah → الله` (still works) |
+| 2B | Keep blanket dedup of any adjacent same-Arabic unit | `rabb → رب`, `muhammad → مهمد` |
+
+**Doc alignment:** Both options are doc-silent. Only [src/lib/transliterator/render.ts](../../src/lib/transliterator/render.ts) header documents the rule. The only documented constraint is that `al-lah → الله` must work; both options satisfy it.
+
+**Rationale for 2A:** Recovers 3 fixture wins; preserves real gemination as Arabic orthography demands; the `ل` carve-out keeps the article-collision tolerance test (`al-llah`) green.
+
+### Decision 3 — Fixture corrections
+
+| Option | Description |
+|---|---|
+| **3A + EXTEND (CHOSEN)** | Apply the 4 originally-flagged fixture fixes PLUS re-encode the ~28 bucket-A fixtures from `a`-as-ayn to `3`-as-ayn |
+| 3A | Apply only the 4 originally-flagged fixes |
+| 3B | Reject all fixture edits |
+
+**Doc alignment for 3A+EXTEND:** Required by the phonetic-key uniqueness and schema-validation invariants in [docs/testing-strategy.md L62-L67](../testing-strategy.md#L62-L67) and [docs/phases/phase-1-data-pipeline.md](../phases/phase-1-data-pipeline.md). Each edit shares one rationale: "ع must be encoded as `3` per ADR-0003 Arabizi tier."
+
+### Decision 4 — Canonical English entries (10 phrases)
+
+| Option | Description | Final accuracy projection |
+|---|---|---|
+| **D1 (CHOSEN)** | Drop all 10 from fixture | 148/150 = **98.7%** ✓ |
+| D2 | Re-encode 4 of 10 under engine convention | 152/160 = 95.0% (zero margin) |
+| D3 | Keep all 10 as-is | <95% — Phase 2 cannot be signed off |
+
+**Doc alignment for D1:** The 10 canonicals exist only in [scripts/build-golden.ts L25-L36](../../scripts/build-golden.ts#L25-L36) `CANONICAL_PHRASES`. No `docs/` file mentions them. Aligned with the spirit of [ADR-0003](../adr/0003-rule-based-transliteration.md) (deterministic rules over phrase memorization). Users still receive correct results for these inputs via fuzzy lookup against real lemmas.
+
+## 4. Approved edit list (for re-application)
+
+### Source-of-truth note
+
+[tests/lib/transliterator/fixtures/golden.json](../../tests/lib/transliterator/fixtures/golden.json) is a **build artifact**. Do NOT edit it directly.
+- `phoneticKeys` and `lemma` flow from [data/curation/lemmas.csv](../../data/curation/lemmas.csv).
+- `expectedArabic` flows from `public/data/dictionary.json` (built from the same CSV).
+- The fixture is regenerated by [scripts/build-golden.ts](../../scripts/build-golden.ts).
+
+All edits go to the CSV and the script. Then rebuild.
+
+### Group 1 — D3 originals (3 edits in `data/curation/lemmas.csv`)
+
+`phoneticKeys` may contain `|`-separated segments — modify ONLY the FIRST segment.
+
+| id | column | from | to |
+|---|---|---|---|
+| `Dya-a2Daa` | phoneticKeys[0] | `a2Daa` | `a2Daa3` |
+| `Twa-aastTaa` | phoneticKeys[0] | `aastTaa` | `aastTaa3` |
+| `hwd-hwd` | lemma | `هُود2` | `هُود` |
+
+### Group 2 — D3 EXTEND bucket A (27 phonetic re-encodings in `data/curation/lemmas.csv`)
+
+| id | from | to |
+|---|---|---|
+| `Daf-a2Daf` | `a2Daf` | `a2D3f` |
+| `Tan-Tan` | `Tan` | `T3n` |
+| `aDw-aDyn` | `aDyn` | `3Dyn` |
+| `aSm-aastaSm` | `aastaSm` | `aast3Sm` |
+| `aZm-a2aZm` | `a2aZm` | `a23Zm` |
+| `abd-abaadt` | `abaadt` | `3baadt` |
+| `adw-yad` | `yad` | `y3d` |
+| `ajl-ajl` | `ajl` | `3jl` |
+| `ajl-ajwl` | `ajwl` | `3jwl` |
+| `ajz-yajz` | `yajz` | `y3jz` |
+| `akf-makwf` | `makwf` | `m3kwf` |
+| `awdh-aastadh` | `aastadh` | `aast3dh` |
+| `ayl-aay2l` | `aay2l` | `3aay2l` |
+| `azb-yazb` | `yazb` | `y3zb` |
+| `azl-mazl` | `mazl` | `m3zl` |
+| `azz-az@` | `az@` | `3z@` |
+| `daw-yda` | `yda` | `yd3` |
+| `dfa-ydfa` | `ydfa` | `ydf3` |
+| `lan-lan` | `lan` | `l3n` |
+| `nza-nza` | `nza` | `nz3` |
+| `qTa-tqTa` | `tqTa` | `tqT3` |
+| `qad-qayd` | `qayd` | `q3yd` |
+| `rfa-mrfwa@` | `mrfwa@` | `mrfw3@` |
+| `shfa-yshfa` | `yshfa` | `yshf3` |
+| `tba-aatba` | `aatba` | `aatb3` |
+| `tba-tbya` | `tbya` | `tby3` |
+| `zam-zaym` | `zaym` | `z3ym` |
+
+### Group 3 — Bonus quick win
+
+| id | column | from | to |
+|---|---|---|---|
+| `Sfr-Sfraa2` | phoneticKeys[0] | `Sfraa2` | `Sfraa'` |
+
+### Group 4 — Drop canonicals
+
+In [scripts/build-golden.ts](../../scripts/build-golden.ts) (around lines 25–36), replace the `CANONICAL_PHRASES` array contents with `[]`. Keep the constant declaration and type intact.
+
+## 5. Apply procedure
+
+1. Apply CSV edits (Groups 1–3). Preserve quoting, escaping, BOM, and line endings.
+2. Apply `scripts/build-golden.ts` edit (Group 4).
+3. Rebuild dictionary if a script exists for it (check [package.json](../../package.json) — `expectedArabic` flows from `dictionary.json`).
+4. Rebuild golden fixture: `npm run build:golden`.
+5. Validate:
+   ```powershell
+   npx tsx scripts/_golden-report.ts
+   npx vitest run tests/lib/transliterator
+   npx vitest run
+   npx tsx scripts/check-drift.ts   # currently a stub
+   ```
+6. Confirm `tmp/golden-report.json` shows `pct ≥ 95` (target 99.3% with bonus).
+
+### Stop conditions (do not improvise)
+- A listed `id` is not in the CSV.
+- A first-segment `phoneticKeys` doesn't match the listed "from" value.
+- A build script fails for reasons unrelated to these edits.
+- Final `pct < 95`.
+
+## 6. Projected accuracy
+
+$$
+\frac{115 + 3_\text{(D2)} + 3_\text{(D3 orig)} + 27_\text{(D3 ext)} + 1_\text{(bonus)}}{160 - 10_\text{(D4)}} = \frac{149}{150} \approx 99.3\%
+$$
+
+Comfortably above the 95% bar.
+
+### Known residual failures (deferred — manual review)
+
+| id | Reason | Fix would require |
+|---|---|---|
+| `dhn-dhn` | Greedy tokenizer always matches `dh` → ذ; cannot disambiguate `d`+`h` | Engine escape mechanism (out of D1=1B scope) OR replace exemplar |
+| `khll-khll` | Lemma uses dagger-alef (`خِلَٰل`); phonetic key omits long vowel | Change citation form (judgment call) |
+
+These leave Phase 2 well above the 95% gate; they can be addressed in a follow-up.
+
+## 7. Current status (as of this record)
+
+| Slice | Status | Evidence |
+|---|---|---|
+| **D2 — engine fix (render dedup ل-only)** | ✅ **LANDED** | [src/lib/transliterator/render.ts](../../src/lib/transliterator/render.ts) — dedup now scoped to ل only; assertions in [tests/lib/transliterator/transliterate.test.ts](../../tests/lib/transliterator/transliterate.test.ts) updated for `rabb → ربب` and `muhammad → مهممد`; all engine tests pass |
+| **D3 + EXTEND + D4 — fixture/script edits** | ❌ **NOT APPLIED** | Apply slice was attempted; user undid edits to [data/curation/lemmas.csv](../../data/curation/lemmas.csv) and `tmp/fix-csv.ps1`. CSV is currently in its pre-apply state |
+| Final golden report | Still 115/160 (71.9%) — pending re-apply | [tmp/golden-report.json](../../tmp/golden-report.json) |
+
+**Next step when ready:** re-apply Groups 1–4 from §4 following the procedure in §5. All decisions are locked; no further design work is needed.
+
+## 8. References
+
+- Spec: [docs/spec.md](../spec.md)
+- Phase 2 doc: [docs/phases/phase-2-engine.md](../phases/phase-2-engine.md)
+- Phase 1 data pipeline: [docs/phases/phase-1-data-pipeline.md](../phases/phase-1-data-pipeline.md)
+- ADR — rule-based transliteration: [docs/adr/0003-rule-based-transliteration.md](../adr/0003-rule-based-transliteration.md)
+- ADR — curation strategy: [docs/adr/0005-curation-strategy.md](../adr/0005-curation-strategy.md)
+- Testing strategy: [docs/testing-strategy.md](../testing-strategy.md)
+- Engine entry point: [src/lib/transliterator/transliterate.ts](../../src/lib/transliterator/transliterate.ts)
+- Fixture source: [data/curation/lemmas.csv](../../data/curation/lemmas.csv)
+- Build script: [scripts/build-golden.ts](../../scripts/build-golden.ts)
+- Golden test: [tests/lib/transliterator/golden.test.ts](../../tests/lib/transliterator/golden.test.ts)
+- Latest report snapshot: [tmp/golden-report.json](../../tmp/golden-report.json)

@@ -19,6 +19,7 @@
     "test:data": "vitest run tests/data",
     "build:data": "tsx scripts/build-dictionary.ts",
     "build:data:check": "tsx scripts/check-drift.ts",
+    "build:golden": "tsx scripts/build-golden.ts",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui"
   },

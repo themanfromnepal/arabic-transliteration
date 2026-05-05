@@ -111,6 +111,28 @@ describe('applyCuration', () => {
     expect(r.readOnlyEditWarnings).toContain('rbb-rabb');
   });
 
+  it('applies curated lemma and phoneticKeys durably', async () => {
+    const csvPath = tmpFile();
+    const corpus = makeCorpus([makeLemma()]);
+    await applyCuration(corpus, { csvPath, dryRun: false, suraFilter: null });
+
+    let text = await fs.readFile(csvPath, 'utf8');
+    text = text.replace('"rabb","rbb","noun","rabb"', '"rab-b","rbb","noun","rab|rabb"');
+    await fs.writeFile(csvPath, text, 'utf8');
+
+    const corpus2 = makeCorpus([makeLemma()]);
+    const first = await applyCuration(corpus2, { csvPath, dryRun: false, suraFilter: null });
+    expect(first.edits).toBe(2);
+    expect(first.readOnlyEditWarnings).toEqual([]);
+    expect(corpus2.lemmas[0]?.lemma).toBe('rab-b');
+    expect(corpus2.lemmas[0]?.phoneticKeys).toEqual(['rab', 'rabb']);
+
+    const corpus3 = makeCorpus([makeLemma({ lemma: 'rab-b', phoneticKeys: ['rab', 'rabb'] })]);
+    const second = await applyCuration(corpus3, { csvPath, dryRun: false, suraFilter: null });
+    expect(second.edits).toBe(0);
+    expect(second.readOnlyEditWarnings).toEqual([]);
+  });
+
   it('dryRun does not write the file', async () => {
     const csvPath = tmpFile();
     const corpus = makeCorpus([makeLemma()]);
