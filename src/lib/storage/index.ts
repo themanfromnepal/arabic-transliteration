@@ -1,1 +1,7 @@
-// Barrel file for storage module — exports will be added in later stages.
+export {
+  getShardFromCache,
+  putShardToCache,
+  getCachedManifestVersion,
+  setCachedManifestVersion,
+  clearCache,
+} from './cache';
