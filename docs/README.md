@@ -6,7 +6,7 @@ transliteration, English word meaning, root letters, verse occurrences by sura:a
 pronunciation. The project is MIT-licensed and built as a pure static site so that it remains fast,
 private, and offline-capable after first use.
 
-Status: pre-v1 (planning)
+Status: pre-v1 (Phase 2 complete, Phase 3 next)
 
 License: MIT
 

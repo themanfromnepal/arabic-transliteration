@@ -1,5 +1,7 @@
 # Phase 0: Foundations
 
+> **Status: ✅ Complete**
+
 ## Goal
 
 Stand up an empty but production-shaped repository so that subsequent phases can build features

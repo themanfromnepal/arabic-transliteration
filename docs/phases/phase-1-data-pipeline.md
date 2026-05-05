@@ -1,5 +1,7 @@
 # Phase 1: Data Pipeline
 
+> **Status: ✅ Complete**
+
 ## Goal
 
 Produce the full Quranic lemma corpus as queryable JSON shards shipped from `public/data/`, so

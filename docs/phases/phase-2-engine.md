@@ -1,5 +1,10 @@
 # Phase 2: Transliteration Engine
 
+> **Status: ✅ Complete** — May 5, 2026
+>
+> 98.7% accuracy (148/150 golden entries pass, 2 known residuals documented).
+> All deliverables shipped. Pure, synchronous, zero runtime dependencies. Unit tests gate CI.
+
 ## Goal
 
 Deliver a pure TypeScript function that maps phonetic English to Arabic Uthmani script using a
