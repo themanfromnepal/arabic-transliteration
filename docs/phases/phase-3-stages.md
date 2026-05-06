@@ -12,19 +12,19 @@ offline support after first load.
 
 ## Summary
 
-| Stage | Title                                    | Complexity | Dependencies       |
-| ----- | ---------------------------------------- | ---------- | -------------------|
-| 1     | Dependencies and Project Setup           | Small      | None               |
-| 2     | Storage Layer                            | Medium     | Stage 1            |
-| 3     | Dictionary Loader                        | Medium     | Stages 1, 2        |
-| 4     | Search Index — Fuse.js Integration       | Large      | Stage 3            |
-| 5     | Query Router — Dual-Path Lookup          | Large      | Stages 3, 4        |
-| 6     | Offline Support and Cache Warming        | Medium     | Stages 2, 3, 5     |
-| 7     | Integration Testing and Performance      | Medium     | All prior stages   |
+| Stage | Title                                    | Complexity | Dependencies       | Status  |
+| ----- | ---------------------------------------- | ---------- | -------------------| ------- |
+| 1     | Dependencies and Project Setup           | Small      | None               | ✅ Done |
+| 2     | Storage Layer                            | Medium     | Stage 1            | ✅ Done |
+| 3     | Dictionary Loader                        | Medium     | Stages 1, 2        | ✅ Done |
+| 4     | Search Index — Fuse.js Integration       | Large      | Stage 3            | —       |
+| 5     | Query Router — Dual-Path Lookup          | Large      | Stages 3, 4        | —       |
+| 6     | Offline Support and Cache Warming        | Medium     | Stages 2, 3, 5     | —       |
+| 7     | Integration Testing and Performance      | Medium     | All prior stages   | —       |
 
 ---
 
-### Stage 1: Dependencies and Project Setup
+### Stage 1: Dependencies and Project Setup ✅
 
 **Goal:** Install runtime dependencies and scaffold the directory structure so later stages can
 import from `src/lib/dictionary/` and `src/lib/storage/` immediately.
@@ -51,7 +51,7 @@ import from `src/lib/dictionary/` and `src/lib/storage/` immediately.
 
 ---
 
-### Stage 2: Storage Layer
+### Stage 2: Storage Layer ✅
 
 **Goal:** Provide a thin IndexedDB cache wrapper that stores and retrieves dictionary shards by
 key, tracks the manifest version for invalidation, and degrades gracefully when IndexedDB is
@@ -84,7 +84,7 @@ unavailable.
 
 ---
 
-### Stage 3: Dictionary Loader
+### Stage 3: Dictionary Loader ✅
 
 **Goal:** Fetch dictionary shards with a two-tier strategy — return the lightweight inline index
 immediately, then lazy-load the full dictionary on demand — using the storage layer as a
