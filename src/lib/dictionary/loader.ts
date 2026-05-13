@@ -35,32 +35,41 @@ export async function loadFullDictionary(): Promise<DictionaryShard> {
 async function doLoad(): Promise<DictionaryShard> {
   const cached = await getShardFromCache<DictionaryShard>('dictionary');
 
-  const manifestRes = await fetch('/data/manifest.json');
-  if (!manifestRes.ok) throw new Error(`Manifest fetch failed: ${manifestRes.status}`);
-  const manifest = (await manifestRes.json()) as ManifestShard;
-  const freshVersion = manifest._meta?.generatedAt;
-  if (!freshVersion) throw new Error('Manifest missing _meta.generatedAt');
+  try {
+    const manifestRes = await fetch('/data/manifest.json');
+    if (!manifestRes.ok) throw new Error(`Manifest fetch failed: ${manifestRes.status}`);
+    const manifest = (await manifestRes.json()) as ManifestShard;
+    const freshVersion = manifest._meta?.generatedAt;
+    if (!freshVersion) throw new Error('Manifest missing _meta.generatedAt');
 
-  const cachedVersion = await getCachedManifestVersion();
+    const cachedVersion = await getCachedManifestVersion();
 
-  if (cached && cachedVersion === freshVersion) {
-    memoryCache = cached;
-    return cached;
+    if (cached && cachedVersion === freshVersion) {
+      memoryCache = cached;
+      return cached;
+    }
+
+    if (cachedVersion !== null && cachedVersion !== freshVersion) {
+      await clearCache();
+    }
+
+    const dictRes = await fetch('/data/dictionary.json');
+    if (!dictRes.ok) throw new Error(`Dictionary fetch failed: ${dictRes.status}`);
+    const dict = (await dictRes.json()) as DictionaryShard;
+
+    await putShardToCache('dictionary', dict);
+    await setCachedManifestVersion(freshVersion);
+
+    memoryCache = dict;
+    return dict;
+  } catch (err) {
+    if (cached) {
+      console.warn('Network unavailable — serving cached dictionary without staleness check');
+      memoryCache = cached;
+      return cached;
+    }
+    throw err;
   }
-
-  if (cachedVersion !== null && cachedVersion !== freshVersion) {
-    await clearCache();
-  }
-
-  const dictRes = await fetch('/data/dictionary.json');
-  if (!dictRes.ok) throw new Error(`Dictionary fetch failed: ${dictRes.status}`);
-  const dict = (await dictRes.json()) as DictionaryShard;
-
-  await putShardToCache('dictionary', dict);
-  await setCachedManifestVersion(freshVersion);
-
-  memoryCache = dict;
-  return dict;
 }
 
 export function _resetForTesting(): void {

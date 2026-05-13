@@ -5,13 +5,10 @@
 | Source                                     | URL                                          | License                                                                                                                                                                                       | Provides                                                           | Attribution requirement                                 |
 | ------------------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------- |
 | Tanzil Quran text (Uthmani)                | [tanzil.net](https://tanzil.net)             | Tanzil license; free use, text must not be modified                                                                                                                                           | Uthmani script for every ayah                                      | Credit Tanzil and link to the source                    |
-| Quranic Arabic Corpus (`<corpus-version>`) | [corpus.quran.com](https://corpus.quran.com) | GPL v3 — copyleft. Use is pending written permission from the maintainers; if not obtained, derived data shards are dual-licensed under GPL while project code remains MIT.                   | Lemma identifiers, root letters, morphology, occurrences           | Credit the Quranic Arabic Corpus and link to the source |
-| Quran.com word-by-word translations        | [quran.com](https://quran.com)               | License varies by contributor; pin a specific dataset snapshot (e.g., Qul / Quran.com WBW) and verify CC-BY or compatible terms before bundling. Document the resolved license on `/credits`. | English glosses at the word level                                  | Credit Quran.com and link to the source                 |
+| Quranic Arabic Corpus (v0.4) | [corpus.quran.com](https://corpus.quran.com) | Custom (LicenseRef-QAC-0.4); use permitted in any website or application with attribution and link to corpus.quran.com. Verbatim copying allowed; modification of the source file is not. See [docs/licensing.md](licensing.md).                   | Lemma identifiers, root letters, morphology, occurrences           | Credit the Quranic Arabic Corpus and link to the source |
+| Tarteel/Qul word-by-word translations        | [qul.tarteel.ai](https://qul.tarteel.ai)               | LicenseRef-Tarteel-free-use; free and open to use, permission granted by Tarteel Team (6 May 2026). See [docs/licensing.md](licensing.md). | English glosses at the word level                                  | Credit Tarteel / qul.tarteel.ai and link to the source                 |
 | everyayah.com (audio)                      | [everyayah.com](https://everyayah.com)       | Public free CDN                                                                                                                                                                               | Per-ayah MP3 recitations; default reciter Saad Al-Ghamdi 40 kbps | Credit everyayah.com and the reciter                    |
 
-> Assumption: `<corpus-version>` is a placeholder until the exact Quranic Arabic Corpus dataset version is selected and pinned.
-
-> Assumption: The exact word-by-word dataset version and its license are pinned in Phase 1 before any data is bundled.
 
 ## Pipeline overview
 
@@ -24,7 +21,7 @@ flowchart LR
     subgraph Sources[/data/sources/ raw, committed]
         TZ[Tanzil Uthmani]
         QC[Quranic Arabic Corpus]
-        WBW[Quran.com word-by-word]
+        WBW[Tarteel/Qul word-by-word]
     end
 
     NORM[Normalize] --> MERGE[Merge by lemma id]
@@ -101,16 +98,14 @@ fails the build, which prevents accidental divergence between sources and shippe
 ## Licensing and attribution
 
 The MIT license covers project code only; it does not relicense the source datasets. Tanzil text
-is used unmodified under the Tanzil license. Quranic Arabic Corpus data is used under GPL v3
-with attribution; per [ADR-0007](adr/0007-data-licensing-strategy.md), the project first requests
-written permission from the corpus maintainers to bundle derived morphology data under permissive
-terms. If permission is not obtained, the project falls back to a dual-license model: project
-code remains MIT (`LICENSE`), and data shards derived from the Quranic Arabic Corpus are released
-under GPL v3 (`LICENSE-DATA`). Quran.com word-by-word translations are pinned to a specific
-snapshot whose license is verified and documented on `/credits` before bundling; the same
-dual-license fallback applies if no permissive snapshot is available. everyayah.com audio is
-streamed from its public CDN with credit to the reciter. The site renders a `/credits` page that
-lists every source, license, and required attribution.
+is used unmodified under CC-BY-ND 4.0. Quranic Arabic Corpus v0.4 data is used under its custom
+license (LicenseRef-QAC-0.4), which permits use in any website or application with attribution
+and a link to corpus.quran.com; the source file must not be modified. Tarteel/Qul word-by-word
+translations and the Yusuf Ali English translation are used with permission from the Tarteel Team
+(granted 6 May 2026; free and open to use with attribution). everyayah.com audio is streamed from
+its public CDN with credit to the reciter; formal permission is pending. The site renders a
+`/credits` page that lists every source, license, and required attribution. The full license
+record with proof of permissions is maintained in [licensing.md](licensing.md).
 
 ## Related decisions
 

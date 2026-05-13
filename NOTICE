@@ -1,8 +1,9 @@
 This project incorporates data from the following upstream sources. Each is the property of its respective copyright holder and is used under the terms of its license.
 
 - Tanzil Quran Text (Uthmani) — © Tanzil Project, licensed CC-BY-ND 4.0 — https://tanzil.net/
-- Quranic Arabic Corpus v0.4 — © Kais Dukes 2011, licensed under GNU GPL — https://corpus.quran.com/ (attribution required by GPL)
-- English Word-by-Word Translation (Tarteel/Qul, resource 92) — license confirmation pending
-- Quran English Translation by Yusuf Ali (Tarteel/Qul, resource 124) — license confirmation pending
+- Quranic Arabic Corpus v0.4 — © Kais Dukes 2011, custom license (use permitted in any website or application with attribution and link to source; verbatim copying allowed, modification of the file is not) — https://corpus.quran.com/
+- English Word-by-Word Translation (Tarteel/Qul, resource 92) — free and open to use, permission granted by Tarteel Team (6 May 2026) — https://qul.tarteel.ai/
+- Quran English Translation by Yusuf Ali (Tarteel/Qul, resource 124) — free and open to use, permission granted by Tarteel Team (6 May 2026) — https://qul.tarteel.ai/
 
 See data/sources/README.md for source file metadata and re-acquisition instructions.
+See docs/licensing.md for the full license record including proof of permissions.

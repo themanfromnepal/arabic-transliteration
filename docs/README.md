@@ -87,6 +87,6 @@ Canonical source: `https://github.com/themanfromnepal/arabic-transliteration`
 Quranic data is assembled from several openly licensed community sources. The Uthmani script text is
 sourced from [Tanzil](https://tanzil.net). Morphological information, including root letters, comes
 from the [Quranic Arabic Corpus](https://corpus.quran.com). Word-by-word English translations are
-drawn from [Quran.com](https://quran.com). Audio recitation is streamed from
+drawn from [Tarteel/Qul](https://qul.tarteel.ai). Audio recitation is streamed from
 [everyayah.com](https://everyayah.com). The exact dataset versions, licensing terms, and
 normalization steps are documented in [data-pipeline.md](data-pipeline.md).

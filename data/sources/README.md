@@ -6,12 +6,12 @@ Upstream source files used by the data pipeline. **All files in this directory (
 
 > Machine-readable source-of-truth: [`licenses.json`](licenses.json) (consumed by the build pipeline).
 
-| Filename                            | Upstream URL                                     | Version                                                    | License                                     | SHA-256 |
-| ----------------------------------- | ------------------------------------------------ | ---------------------------------------------------------- | ------------------------------------------- | ------- |
-| `quran-uthmani.txt`                 | https://tanzil.net/download/                     | Tanzil Uthmani v1.1 (minimal, no pause/sajdah/rub-el-hizb) | CC-BY-ND 4.0                                | `TBD`   |
-| `quranic-corpus-morphology-0.4.txt` | https://corpus.quran.com/download/               | Quranic Arabic Corpus v0.4 (Kais Dukes)                    | GPL                                         | `TBD`   |
-| `english-wbw-translation.json`      | https://qul.tarteel.ai/resources/translation/92  | current                                                    | License PENDING (Tarteel — request emailed) | `TBD`   |
-| `quran-en-yusufali-simple.json`     | https://qul.tarteel.ai/resources/translation/124 | current                                                    | License PENDING (Tarteel — request emailed) | `TBD`   |
+| Filename                            | Upstream URL                                     | Version                                                    | License                                             | SHA-256 |
+| ----------------------------------- | ------------------------------------------------ | ---------------------------------------------------------- | --------------------------------------------------- | ------- |
+| `quran-uthmani.txt`                 | https://tanzil.net/download/                     | Tanzil Uthmani v1.1 (minimal, no pause/sajdah/rub-el-hizb) | CC-BY-ND 4.0                                        | `TBD`   |
+| `quranic-corpus-morphology-0.4.txt` | https://corpus.quran.com/download/               | Quranic Arabic Corpus v0.4 (Kais Dukes)                    | LicenseRef-QAC-0.4 (custom, see docs/licensing.md)  | `TBD`   |
+| `english-wbw-translation.json`      | https://qul.tarteel.ai/resources/translation/92  | current                                                    | LicenseRef-Tarteel-free-use (see docs/licensing.md) | `TBD`   |
+| `quran-en-yusufali-simple.json`     | https://qul.tarteel.ai/resources/translation/124 | current                                                    | LicenseRef-Tarteel-free-use (see docs/licensing.md) | `TBD`   |
 
 ## Re-acquisition
 

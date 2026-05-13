@@ -72,7 +72,7 @@ sequenceDiagram
 | ------------------------- | ----------------------------------- | --------------------------------------------------------------------------------- |
 | Arabic (Uthmani)          | Tanzil Uthmani text                 | Rendered in an Arabic display font with adjustable size and full diacritics.      |
 | Scholarly transliteration | Curated lemma data                  | Uses standard diacritic conventions; intended for reference, not input.           |
-| English meaning           | Quran.com word-by-word translations | Concise gloss at the lemma level; longer meanings are wrapped to multiple lines.  |
+| English meaning           | Tarteel/Qul word-by-word translations | Concise gloss at the lemma level; longer meanings are wrapped to multiple lines.  |
 | Root letters              | Quranic Arabic Corpus               | Displayed as three or four root letters separated by a hyphen, for example ر-ح-م. |
 | Audio URL                 | everyayah.com                       | Per-ayah recitation; resolved by sura:ayah and lazy-loaded on user action.        |
 | Verse occurrences         | Quranic Arabic Corpus               | List of sura:ayah references with a "show all N" expansion when the list is long. |

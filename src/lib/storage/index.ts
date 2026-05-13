@@ -4,4 +4,5 @@ export {
   getCachedManifestVersion,
   setCachedManifestVersion,
   clearCache,
+  _resetCacheForTesting,
 } from './cache';

@@ -17,9 +17,9 @@ offline support after first load.
 | 1     | Dependencies and Project Setup           | Small      | None               | ✅ Done |
 | 2     | Storage Layer                            | Medium     | Stage 1            | ✅ Done |
 | 3     | Dictionary Loader                        | Medium     | Stages 1, 2        | ✅ Done |
-| 4     | Search Index — Fuse.js Integration       | Large      | Stage 3            | —       |
-| 5     | Query Router — Dual-Path Lookup          | Large      | Stages 3, 4        | —       |
-| 6     | Offline Support and Cache Warming        | Medium     | Stages 2, 3, 5     | —       |
+| 4     | Search Index — Fuse.js Integration       | Large      | Stage 3            | ✅ Done |
+| 5     | Query Router — Dual-Path Lookup          | Large      | Stages 3, 4        | ✅ Done |
+| 6     | Offline Support and Cache Warming        | Medium     | Stages 2, 3, 5     | ✅ Done |
 | 7     | Integration Testing and Performance      | Medium     | All prior stages   | —       |
 
 ---
@@ -190,7 +190,7 @@ merged, deduplicated, ranked list of `LemmaEntry` results.
 
 ---
 
-### Stage 6: Offline Support and Cache Warming
+### Stage 6: Offline Support and Cache Warming ✅
 
 **Goal:** Ensure the lookup pipeline works fully offline after one successful load, and degrade
 gracefully when IndexedDB is unavailable.
