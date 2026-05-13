@@ -63,7 +63,7 @@ beforeEach(() => {
   vi.mocked(getCachedManifestVersion).mockResolvedValue(null);
   vi.mocked(setCachedManifestVersion).mockResolvedValue(undefined);
   vi.mocked(clearCache).mockResolvedValue(undefined);
-  fetchSpy = vi.spyOn(globalThis, 'fetch');
+  fetchSpy = vi.spyOn(globalThis, 'fetch') as unknown as typeof fetchSpy;
 });
 
 afterEach(() => {

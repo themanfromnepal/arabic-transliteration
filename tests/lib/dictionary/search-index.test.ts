@@ -1,11 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import Fuse from 'fuse.js';
 import type { LemmaEntry } from '@/src/types/dictionary';
-import {
-  normalizeQuery,
-  createSearchIndex,
-  fuzzySearch,
-} from '@/src/lib/dictionary/search-index';
+import { normalizeQuery, createSearchIndex, fuzzySearch } from '@/src/lib/dictionary/search-index';
 
 const FIXTURES: LemmaEntry[] = [
   {
