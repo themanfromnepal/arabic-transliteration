@@ -1,6 +1,6 @@
 # ADR-0007: Data Licensing Strategy
 
-Status: Accepted
+Status: Accepted — resolved
 
 ## Context
 
@@ -89,3 +89,23 @@ dual-license fallback applies to the affected shards.
 - [../data-pipeline.md](../data-pipeline.md)
 - [0004-quranic-vocabulary-scope.md](0004-quranic-vocabulary-scope.md)
 - [../contributing.md](../contributing.md)
+
+## Resolution (May 2026)
+
+The two-step strategy has been resolved for all bundled data sources:
+
+1. **Quranic Arabic Corpus v0.4** — The source file's own copyright block (lines 1–28 of
+   `quranic-corpus-morphology-0.4.txt`) grants explicit permission to use the annotation in any
+   website or application, provided the source is clearly indicated and a link to
+   http://corpus.quran.com is made. The file must not be modified, and the copyright notice must
+   be included in derived works. This is a custom license recorded as `LicenseRef-QAC-0.4`. The
+   dual-license fallback (step 2) is not needed for this source.
+2. **Tarteel/Qul word-by-word data** (resources 92 and 124) — Written permission was obtained
+   from the Tarteel Team on 6 May 2026 (email from Hazem, hazem.talha@tarteel). The resources are
+   free and open to use with no specific license. Recorded as `LicenseRef-Tarteel-free-use`.
+3. **everyayah.com audio** — Streamed from a public CDN, not bundled. Formal permission status
+   remains pending; attribution is provided on `/credits`.
+
+The `LICENSE-DATA` fallback file described in the original decision was never needed and has not
+been created. All bundled data is usable under the terms documented in
+[../licensing.md](../licensing.md).

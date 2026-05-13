@@ -25,12 +25,6 @@
 # typescript incremental build cache
 tsconfig.tsbuildinfo
 
-# Phase 1 data pipeline — upstream source files (acquired locally, never committed)
-data/sources/*
-!data/sources/.gitkeep
-!data/sources/README.md
-tests/data/license/*
-
 # Generated data shards (rebuild via `npm run build:data`)
 public/data/*
 !public/data/.gitkeep

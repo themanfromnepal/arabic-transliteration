@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "filename": "quran-uthmani.txt",
+      "license": "CC-BY-ND-4.0",
+      "status": "approved",
+      "sha256": "f9a45b967b4b3407d0c7ca97ac122bbc8afb2d005b0af81e3a0a2c07d64fa94f",
+      "attribution": "Tanzil Project — Tanzil Quran Text (Uthmani, v1.1)"
+    },
+    {
+      "filename": "quranic-corpus-morphology-0.4.txt",
+      "license": "LicenseRef-QAC-0.4",
+      "status": "approved",
+      "sha256": "910b721a8f04f4334ac5d4c62b19e858f5d720c525bb975f2e750ea2c6bb532d",
+      "attribution": "Quranic Arabic Corpus v0.4 — Kais Dukes"
+    },
+    {
+      "filename": "english-wbw-translation.json",
+      "license": "LicenseRef-Tarteel-free-use",
+      "status": "approved",
+      "sha256": "42992eec66ae5dd98659cda9bff9d350def46d953edb2622a8e3a444d56313b9",
+      "attribution": "Tarteel — qul.tarteel.ai resource 92"
+    },
+    {
+      "filename": "quran-en-yusufali-simple.json",
+      "license": "LicenseRef-Tarteel-free-use",
+      "status": "approved",
+      "sha256": "ebcdfb71089b74c7d46acd2152471fdd33b686f57c984a055f6a958b844ef9db",
+      "attribution": "Tarteel — qul.tarteel.ai resource 124"
+    }
+  ]
+}

@@ -86,7 +86,7 @@ implementation:
 - `/public/fonts`: self-hosted Amiri, Scheherazade New, and Inter font files.
 - `/scripts`: build-time tooling, including `build-dictionary.ts`.
 - `/data/sources`: raw, committed source datasets from Tanzil, the Quranic Arabic Corpus, and
-  Quran.com.
+  Tarteel/Qul.
 - `/tests/unit`: Vitest unit tests.
 - `/tests/e2e`: Playwright end-to-end tests.
 

@@ -11,16 +11,16 @@ inputs, deliverables, workstreams, acceptance criteria, and risks.
 
 ## Phase summary
 
-| Phase | Title                  | Goal                                                                     | Link                                                               |
-| ----- | ---------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| 0     | Foundations            | Initialize the repository, tooling, and documentation set.               | [phases/phase-0-foundations.md](phases/phase-0-foundations.md)     |
-| 1     | Data Pipeline          | Produce the queryable lemma corpus shipped from `public/data/`.          | [phases/phase-1-data-pipeline.md](phases/phase-1-data-pipeline.md) |
-| 2     | Transliteration Engine | Implement the rule-based phonetic English to Uthmani script engine.      | [phases/phase-2-engine.md](phases/phase-2-engine.md)               |
-| 3     | Search and Lookup      | Resolve user input to the right lemma fast and offline-after-first-load. | [phases/phase-3-search.md](phases/phase-3-search.md)               |
-| 4     | UI / Frontend          | Build the reverent, accessible search experience.                        | [phases/phase-4-ui.md](phases/phase-4-ui.md)                       |
-| 5     | Hardening              | Harden security, performance, accessibility, and observability.          | [phases/phase-5-hardening.md](phases/phase-5-hardening.md)         |
-| 6     | Launch                 | Ship the static site to the production domain.                           | [phases/phase-6-launch.md](phases/phase-6-launch.md)               |
-| 7     | Post-launch            | Run continuous improvement and ship deferred features.                   | [phases/phase-7-post-launch.md](phases/phase-7-post-launch.md)     |
+| Phase | Title                  | Status         | Goal                                                                     | Link                                                               |
+| ----- | ---------------------- | -------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| 0     | Foundations            | ✅ Complete     | Initialize the repository, tooling, and documentation set.               | [phases/phase-0-foundations.md](phases/phase-0-foundations.md)     |
+| 1     | Data Pipeline          | ✅ Complete     | Produce the queryable lemma corpus shipped from `public/data/`.          | [phases/phase-1-data-pipeline.md](phases/phase-1-data-pipeline.md) |
+| 2     | Transliteration Engine | ✅ Complete     | Implement the rule-based phonetic English to Uthmani script engine.      | [phases/phase-2-engine.md](phases/phase-2-engine.md)               |
+| 3     | Search and Lookup      | Not started    | Resolve user input to the right lemma fast and offline-after-first-load. | [phases/phase-3-search.md](phases/phase-3-search.md)               |
+| 4     | UI / Frontend          | Not started    | Build the reverent, accessible search experience.                        | [phases/phase-4-ui.md](phases/phase-4-ui.md)                       |
+| 5     | Hardening              | Not started    | Harden security, performance, accessibility, and observability.          | [phases/phase-5-hardening.md](phases/phase-5-hardening.md)         |
+| 6     | Launch                 | Not started    | Ship the static site to the production domain.                           | [phases/phase-6-launch.md](phases/phase-6-launch.md)               |
+| 7     | Post-launch            | Not started    | Run continuous improvement and ship deferred features.                   | [phases/phase-7-post-launch.md](phases/phase-7-post-launch.md)     |
 
 ## v1 launch criteria
 

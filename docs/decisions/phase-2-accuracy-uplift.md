@@ -170,15 +170,17 @@ Comfortably above the 95% bar.
 
 These leave Phase 2 well above the 95% gate; they can be addressed in a follow-up.
 
-## 7. Current status (as of this record)
+## 7. Current status (as of May 5, 2026)
 
 | Slice | Status | Evidence |
 |---|---|---|
-| **D2 — engine fix (render dedup ل-only)** | ✅ **LANDED** | [src/lib/transliterator/render.ts](../../src/lib/transliterator/render.ts) — dedup now scoped to ل only; assertions in [tests/lib/transliterator/transliterate.test.ts](../../tests/lib/transliterator/transliterate.test.ts) updated for `rabb → ربب` and `muhammad → مهممد`; all engine tests pass |
-| **D3 + EXTEND + D4 — fixture/script edits** | ❌ **NOT APPLIED** | Apply slice was attempted; user undid edits to [data/curation/lemmas.csv](../../data/curation/lemmas.csv) and `tmp/fix-csv.ps1`. CSV is currently in its pre-apply state |
-| Final golden report | Still 115/160 (71.9%) — pending re-apply | [tmp/golden-report.json](../../tmp/golden-report.json) |
+| **D2 — engine fix (render dedup ل-only)** | ✅ **LANDED** | [src/lib/transliterator/render.ts](../../src/lib/transliterator/render.ts) — dedup scoped to ل only |
+| **D3 + EXTEND — fixture re-encodings** | ✅ **LANDED** | All 30 CSV edits (Groups 1–3) applied to [data/curation/lemmas.csv](../../data/curation/lemmas.csv) |
+| **D4 — drop canonicals** | ✅ **LANDED** | `CANONICAL_PHRASES` emptied in [scripts/build-golden.ts](../../scripts/build-golden.ts) |
+| **Golden rebuild** | ✅ **DONE** | 150 entries in fixture |
+| **Final accuracy** | **148/150 = 98.7%** | Above the 95% gate. 2 known residuals (`dhn-dhn`, `khll-khll`) documented in §6 |
 
-**Next step when ready:** re-apply Groups 1–4 from §4 following the procedure in §5. All decisions are locked; no further design work is needed.
+**Phase 2 is complete.** All decisions locked, all slices applied, CI green.
 
 ## 8. References
 
