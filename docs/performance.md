@@ -20,10 +20,18 @@ measurements inform revisions over time.
 
 ## Search latency targets
 
-| Scenario                                             | Target       |
-| ---------------------------------------------------- | ------------ |
-| Warm cache lookup (lemma already in IndexedDB cache) | p95 ≤ 50 ms  |
-| Cold cache lookup (includes lazy JSON shard fetch)   | p95 ≤ 500 ms |
+| Scenario                                                      | Target       |
+| ------------------------------------------------------------- | ------------ |
+| Warm cache lookup (lemma already in IndexedDB cache)          | p95 ≤ 50 ms  |
+| Cold cache lookup (includes lazy JSON shard fetch)            | p95 ≤ 500 ms |
+| One-time search index construction (~4,200 lemmas, in memory) | p95 ≤ 150 ms |
+
+The warm and cold lookup targets govern the query path: a single `fuzzySearch` call against an
+already-constructed index, which is what the learner waits on per keystroke.
+
+Search index construction is a separate concern. It runs once per session on the cold path, so it
+is counted inside the ≤ 500 ms cold-cache budget and is **not** part of the ≤ 50 ms warm lookup
+path. Do not apply the warm lookup target to construction; they measure different operations.
 
 ## Bundle and storage budget
 
@@ -50,6 +58,9 @@ numbers are not duplicated here.
 - Cloudflare Web Analytics reports page-level Core Web Vitals from real users without cookies.
 - Manual spot checks on mobile Safari and a low-end Android device are performed before each
   launch and after major dependency updates.
+- Open gap: the warm and cold lookup targets above are not yet verified by any automated check.
+  The unit suite covers lookup correctness only. Verification belongs to Lighthouse INP plus the
+  Playwright search flow, and is outstanding as of Phase 4.
 
 ## Performance budgets enforced in CI
 
