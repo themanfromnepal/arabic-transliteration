@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
@@ -31,7 +30,7 @@ describe('IntegratedResultCard', () => {
     ).toBeInTheDocument();
   });
 
-  it('uses the playing control label and reduced-motion-safe spinner classes', () => {
+  it('exposes a pause action while playing', () => {
     render(
       <IntegratedResultCard
         result={{
@@ -44,14 +43,12 @@ describe('IntegratedResultCard', () => {
       />,
     );
 
-    const button = screen.getByRole('button', {
-      name: lemmaResultCardFixture.audio.controlLabels.playing,
-    });
-    const icon = button.querySelector('svg');
-
-    expect(button).toHaveAttribute('aria-pressed', 'true');
-    expect(icon).toHaveClass('motion-safe:animate-spin');
-    expect(icon).toHaveClass('motion-reduce:animate-none');
+    expect(
+      screen.getByRole('button', {
+        name: lemmaResultCardFixture.audio.controlLabels.playing,
+      }),
+    ).toHaveTextContent('Pause audio');
+    expect(screen.getByText('Playing')).toBeInTheDocument();
   });
 
   it('keeps the audio button available in the error state for retry semantics', () => {
@@ -72,5 +69,13 @@ describe('IntegratedResultCard', () => {
         name: lemmaResultCardFixture.audio.controlLabels.error,
       }),
     ).toBeEnabled();
+  });
+
+  it('shows the offline-ready badge only for a cache-served result', () => {
+    const { rerender } = render(<IntegratedResultCard result={lemmaResultCardFixture} />);
+    expect(screen.queryByText('Offline copy')).not.toBeInTheDocument();
+
+    rerender(<IntegratedResultCard result={lemmaResultCardFixture} servedFromCache />);
+    expect(screen.getByText('Offline copy')).toBeInTheDocument();
   });
 });

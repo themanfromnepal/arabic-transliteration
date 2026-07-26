@@ -30,8 +30,8 @@ Step 1 (this update) is complete as docs-only truth alignment. The board below t
 
 | Step | Objective | Dependencies | Deliverables | Exit Criteria | Owner / Status | Blockers / Risks | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2 | Lock and approve design artifacts before implementation. | Step 1 complete; [design.html](../design/design.html) and design annotations updated; reviewer availability. | Approved design snapshots for all in-scope Stage 4 components and states; recorded design review sign-off. | Every in-scope component/state has approved design evidence and PRs can reference it. | Owner: `TBD`<br>Status: `Not started` | `TBD` | Design review links: `TBD`<br>Artifact references: `TBD` |
-| 3 | Implement Phase 4 UI slices in stage order under approved designs. | Step 2 approved artifacts; Stage sequencing/dependencies in this file. | Landed UI implementation PRs for Stages 4.1-4.8 with linked approved artifacts. | All stage deliverables are implemented with no gate violations and with traceable artifact links. | Owner: `TBD`<br>Status: `Not started` | `TBD` | PR links: `TBD`<br>Stage completion notes: `TBD` |
+| 2 | Lock and approve design artifacts before implementation. | Step 1 complete; [design.html](../design/design.html) and design annotations updated; reviewer availability. | Approved design snapshots for all in-scope Stage 4 components and states; recorded design review sign-off. | Every in-scope component/state has approved design evidence and PRs can reference it. | Owner: user<br>Status: `Complete for 4.5/4.6` | Stage 4.8 interaction-flow artifacts not yet reviewed | Result card sign-off: `design.html` Integrated Result Card section, 2026-05-17<br>UX states sign-off: `design.html` UX States section, 2026-07-26 |
+| 3 | Implement Phase 4 UI slices in stage order under approved designs. | Step 2 approved artifacts; Stage sequencing/dependencies in this file. | Landed UI implementation PRs for Stages 4.1-4.8 with linked approved artifacts. | All stage deliverables are implemented with no gate violations and with traceable artifact links. | Owner: user<br>Status: `In progress` | Stages 4.8 and 4.9 outstanding | Stages 4.0-4.7 implemented; see Stage 4.5/4.6 Delivery Record (2026-07-26) below |
 | 4 | Validate quality, accessibility, responsive behavior, and integration. | Step 3 merged implementation; QA plans from Stages 4.6-4.9. | Test and QA evidence for component behavior, a11y checks, and responsive pass criteria. | QA evidence demonstrates all Stage 4 exit conditions are met or formally waived. | Owner: `TBD`<br>Status: `Not started` | `TBD` | Test run links: `TBD`<br>QA checklist evidence: `TBD` |
 | 5 | Prepare final Phase 4 handoff and readiness sign-off. | Step 4 validated evidence; open-risk review complete. | Phase 4 completion summary, remaining risks/blockers log, and handoff decision record. | Explicit go/no-go decision recorded with accountable owners for any carry-over risks. | Owner: `TBD`<br>Status: `Not started` | `TBD` | Handoff notes: `TBD`<br>Decision record: `TBD` |
 
@@ -597,3 +597,76 @@ flowchart LR
 ### Readiness conclusion
 
 Phase 4 is not ready for final handoff. Current status is constrained by Red outcomes in Step 4 and Step 5, plus Red stages 4.8 and 4.9. Canonical acceptance criteria AC2/AC3 (`docs/phases/phase-4-ui.md:50-53`) remain insufficiently evidenced in this artifact despite strong progress in prerequisites and core UI shell implementation.
+
+## Stage 4.5 / 4.6 Delivery Record (2026-07-26)
+
+Supersedes the Amber ratings for Stages 4.5 and 4.6 in the 2026-07-05 verifier tables above. That
+section is retained as a historical record and is not edited.
+
+### Design gate
+
+Stage 4.6 required a design artifact that did not exist: `design.html` specified the loading
+skeleton (section 12.4) and the inline audio error, but empty, no-results, and offline-ready had no
+visual specification — only a `WifiOff` row in the icon inventory and a transition-token comment.
+A `#ux-states` section was authored and approved on 2026-07-26 before any Stage 4.6 code was
+written, and is summarised in [design.md](../design/design.md). Implementation therefore remains
+downstream of an approved artifact.
+
+### Stage 4.5 — Result Components: Green
+
+The components existed but diverged from the approved design and the spec contract. Defects found
+and fixed:
+
+| Defect | Evidence of fix |
+| --- | --- |
+| The Arabic font was defined but applied to nothing — `--font-arabic` had no consumer, so Arabic text inherited Inter and fell through to an OS substitute | `:lang(ar)` rule in `app/globals.css`; asserted against computed style in `e2e/home.spec.ts` |
+| FontSizeControl did not reach the Arabic: the hook wrote `--font-size-arabic` on `<html>` but `WordCard` hardcoded `text-3xl sm:text-4xl` | `components/result-card/word-card.tsx`; computed-size assertion in `e2e/home.spec.ts` covers the S/M/L/XL requirement in `docs/testing-strategy.md` |
+| Arabic headline had no display surface | Gradient panel in `components/result-card/word-card.tsx` per the approved card demo |
+| Playing state showed a spinning loader instead of a Pause control, and the label named the state rather than the action | `components/result-card/audio-player-shell.tsx`; `tests/components/audio-player-shell.test.tsx` |
+| Audio error had no inline error block | Same component; the control survives the error state so retry stays one action away |
+| VerseList had no long-content behavior | Height cap and own scroll, keyboard reachable; `tests/components/verse-list.test.tsx` |
+| `RootDisplay` carried `aria-label` on a roleless `div`, so it was never exposed, and the spec's hyphenated form was absent | `tests/components/root-display.test.tsx` asserts the `ر-ح-م` form and that pills are hidden from the accessibility tree |
+| VerseList animated with `animate-in` / `fade-in-0` from `tailwindcss-animate`, which is not a dependency, so the classes compiled to nothing | Real CSS animation `panel-fade-in` in `globals.css`, verified present in the built stylesheet |
+
+The last two had passing tests that asserted the class strings rather than the behavior, which is
+how they survived. Those assertions were replaced with behavioral ones.
+
+### Stage 4.6 — UX States: Green
+
+All five canonical states are implemented as alternate contents of one region:
+
+- `components/results/results-region.tsx` — the single container, reserved height, one shared
+  `role="status"` announcement channel, crossfade keyed on state change.
+- `components/results/empty-state.tsx`, `no-results-state.tsx`, `search-error-state.tsx`.
+- `components/result-card/result-card-skeleton.tsx` plus the `skeleton-block` shimmer in
+  `globals.css`, including the flat-block fallback under `prefers-reduced-motion`.
+- `components/result-card/offline-badge.tsx`, rendered by `IntegratedResultCard` only when
+  `servedFromCache`.
+
+Coverage is `tests/components/results-region.test.tsx` (15 cases) and
+`tests/components/result-card-skeleton.test.tsx`. Affordances that cannot yet act — the example
+chips, the suggestion, Retry and Dismiss — render as static content until Stage 4.8 supplies
+handlers, rather than shipping as inert buttons; both branches are covered.
+
+`tests/setup.ts` is now registered through `setupFiles`, satisfying the requirement earlier in this
+document.
+
+### Verification
+
+`npm run lint`, `npm run format:check`, `npm run typecheck`, `npm test` (300 tests, up from 270),
+`npm run build`, and `npx playwright test` (7 tests) all pass. The built stylesheet was inspected
+directly to confirm the new rules compile, after the `tailwindcss-animate` finding showed that a
+class name in source is not evidence of a rule in the output.
+
+### Carried forward
+
+- Stage 4.8 and Stage 4.9 remain Red; blockers B1-B4 are unchanged.
+- The home route still renders a fixture, so AC1 end-to-end behavior stays partially evidenced
+  until Stage 4.8 wires live query execution.
+- The no-results suggestion needs a source. Fuse.js can supply the top rejected candidate, which is
+  Stage 4.8 work; the component takes it as a prop today.
+- The offline badge has unit coverage only. It has no runtime trigger until the IndexedDB cache path
+  is wired in Stage 4.8.
+- `components/ui/tooltip.tsx` still carries `animate-in` / `zoom-in-95` classes from the shadcn
+  default that compile to nothing for the same reason as the VerseList finding. Cosmetic only — the
+  tooltip appears and dismisses without animation — but worth cleaning up alongside Stage 4.9.

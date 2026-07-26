@@ -1,4 +1,4 @@
-import { IntegratedResultCard } from '@/components/result-card/integrated-result-card';
+import { ResultsRegion } from '@/components/results/results-region';
 import { SearchBox } from '@/components/search-box';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
@@ -21,16 +21,20 @@ export default function HomePage() {
               <p className="text-xs font-semibold tracking-[0.24em] text-(--color-primary) uppercase">
                 Results region
               </p>
+              {/*
+                The heading stays stable across every state — empty, loading, no-results, error, and
+                the result card are alternate contents of the region below it, not separate screens.
+              */}
               <h2
                 id="results-heading"
                 className="text-foreground mt-2 text-2xl font-semibold tracking-tight"
               >
-                Fixture-backed integrated result card
+                Results
               </h2>
               <p className="text-muted-foreground mt-3 text-sm leading-7 sm:text-[0.95rem]">
-                This staged slice mounts one composed result card inside the existing search shell.
-                Live search execution, real audio playback, and multi-result states remain out of
-                scope.
+                This staged slice renders the resolved state from a fixture. Live query execution
+                and real audio playback are wired in a later slice, which is what supplies the
+                remaining states at runtime.
               </p>
             </div>
 
@@ -41,21 +45,10 @@ export default function HomePage() {
             </aside>
           </div>
 
-          <div className="mt-8 grid gap-4 lg:grid-cols-[1.35fr_0.85fr]">
-            <section aria-label="Primary staged result" className="min-h-72">
-              <IntegratedResultCard result={lemmaResultCardFixture} />
-            </section>
-
-            <aside
-              aria-label="Secondary details placeholder"
-              className="border-border/80 min-h-72 rounded-2xl border border-dashed bg-(--color-surface-warm-soft) p-5"
-            >
-              <h3 className="text-foreground text-lg font-medium">Details panel</h3>
-              <p className="text-muted-foreground mt-2 text-sm">
-                Reserved for future supporting metadata, context, and interaction affordances.
-              </p>
-            </aside>
-          </div>
+          <ResultsRegion
+            className="mt-8"
+            state={{ kind: 'ready', result: lemmaResultCardFixture }}
+          />
         </section>
       </main>
 

@@ -18,8 +18,10 @@ No Phase 4 implementation may begin until the corresponding design artifact is p
 
 ## Inputs
 
-- Current truth state: Phase 0 and Phase 2 are complete; Phase 3 is planned next.
-- Execution prerequisite: Phase 3 must be complete before Phase 4 implementation begins.
+- Current truth state: Phases 0, 2, and 3 are complete; tooling, the transliteration engine, and the
+  search pipeline are available to Phase 4.
+- Execution prerequisite: Phase 3 must be complete before Phase 4 implementation begins. This
+  prerequisite is satisfied (Phase 3 merged in `1a46e04`).
 - Design tokens and component inventory from [../ux-design.md](../ux-design.md).
 
 ## Deliverables

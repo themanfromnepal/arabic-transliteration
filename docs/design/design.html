@@ -1853,6 +1853,191 @@ export default function RootLayout({ children }) {
 
   <!--
   ====================================================================
+  UX States (Stage 4.6)
+  ====================================================================
+  -->
+  <section id="ux-states">
+    <h2>UX States</h2>
+    <p class="section-lead">
+      The five canonical states from <a href="../ux-design.md">ux-design.md</a> — <strong>empty</strong>, <strong>loading</strong>, <strong>no-results</strong>, <strong>error</strong>, and <strong>offline-ready</strong> — all occupy the same <em>results region</em> beneath the SearchBox. They are alternate contents of one container, not separate screens, so the page must not reflow as the learner moves between them.
+    </p>
+
+    <h3>Results region container</h3>
+    <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      <li><strong>One container, five contents:</strong> the results region is a single <code>section</code> with a stable heading; empty, loading, no-results, error, and the result card all render inside it.</li>
+      <li><strong>Reserved height:</strong> the region holds a minimum height matching the collapsed result card so the footer does not jump between states. This protects the CLS ≤ 0.1 budget in <a href="../performance.md">performance.md</a>.</li>
+      <li><strong>Crossfade:</strong> state changes use <code>--transition-fade</code> (200ms ease-out). Under <code>prefers-reduced-motion: reduce</code> the swap is instant.</li>
+      <li><strong>One announcement channel:</strong> a single <code>role="status"</code> / <code>aria-live="polite"</code> region reports the outcome (result count, no-results, error). Individual state blocks do not each carry their own live region; that would double-announce.</li>
+      <li><strong>Focus never moves on its own:</strong> keyboard focus stays in the SearchBox across every state transition. Focus only moves on explicit user action (VerseList expand, Retry, an example chip).</li>
+    </ul>
+
+    <!-- 1. Empty -->
+    <h3>1. Empty (initial)</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">First render, and after the learner clears the input. It teaches the input format instead of showing an inert placeholder.</p>
+    <div class="component-demo" style="align-items:flex-start;">
+      <div class="component-box" style="flex:1 1 320px;max-width:460px;display:flex;flex-direction:column;gap:var(--space-md);padding:var(--space-lg);">
+        <div style="font-size:var(--font-size-sm);text-transform:uppercase;letter-spacing:0.08em;color:var(--color-primary);">Start here</div>
+        <div style="font-size:var(--font-size-xl);font-weight:700;">Start with a word you have heard</div>
+        <p style="margin:0;color:var(--color-muted);font-size:var(--font-size-sm);">
+          Type it the way it sounds — Roman letters are enough. Arabizi digits work too: <code>7</code> → ح, <code>3</code> → ع, <code>5</code> → خ, <code>9</code> → ص.
+        </p>
+        <div>
+          <div style="font-size:var(--font-size-sm);text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:var(--space-xs);">Try one of these</div>
+          <div class="pill-row" style="margin:0;gap:var(--space-sm);justify-content:flex-start;">
+            <button type="button" style="display:inline-flex;align-items:center;padding:6px 14px;border-radius:9999px;background:var(--color-surface-alt);border:1px solid var(--color-border);color:var(--color-fg);font:inherit;font-size:var(--font-size-sm);cursor:pointer;">rahman</button>
+            <button type="button" style="display:inline-flex;align-items:center;padding:6px 14px;border-radius:9999px;background:var(--color-surface-alt);border:1px solid var(--color-border);color:var(--color-fg);font:inherit;font-size:var(--font-size-sm);cursor:pointer;">kitab</button>
+            <button type="button" style="display:inline-flex;align-items:center;padding:6px 14px;border-radius:9999px;background:var(--color-surface-alt);border:1px solid var(--color-border);color:var(--color-fg);font:inherit;font-size:var(--font-size-sm);cursor:pointer;">salaam</button>
+            <button type="button" style="display:inline-flex;align-items:center;padding:6px 14px;border-radius:9999px;background:var(--color-surface-alt);border:1px solid var(--color-border);color:var(--color-fg);font:inherit;font-size:var(--font-size-sm);cursor:pointer;">7abibi</button>
+          </div>
+        </div>
+        <p style="margin:0;font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Annotation:</strong> No card chrome and no skeleton here — an empty region should read as an invitation, not as something that failed to load.</p>
+      </div>
+      <div class="component-box" style="flex:1 1 260px;max-width:340px;padding:var(--space-lg);">
+        <strong style="display:block;margin-bottom:var(--space-sm);">Behavior &amp; accessibility</strong>
+        <ul style="font-size:var(--font-size-sm);color:var(--color-muted);margin:0;padding-left:1.1rem;">
+          <li>Example chips are real <code>button</code> elements. Activating one fills the SearchBox, runs the query, and returns focus to the input.</li>
+          <li>Chips hover/focus to <code>--color-primary-tint</code> with the standard <code>--color-focus</code> focus ring; they are not links and must not navigate.</li>
+          <li>The empty state is <em>not</em> announced through the live region — nothing changed yet.</li>
+          <li>Copy stays reverent and plain: no exclamation marks, no mascot, no illustration.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. Loading -->
+    <h3>2. Loading (lazy shard fetch)</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      The visual form is already specified as the <a href="#shadcn-primitives"><strong>Skeleton (WordCard shimmer)</strong></a> demo in Section 12.4, and the swap rule is in <strong>Loading Handoff</strong> above. This entry adds only the state-level rules that were previously unstated.
+    </p>
+    <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      <li><strong>Skeleton, never a spinner.</strong> <code>Loader2</code> remains in the icon inventory for future use but is not the loading affordance for the results region.</li>
+      <li><strong>Announcement:</strong> the skeleton's own <code>role="status"</code> with <code>aria-label="Loading result…"</code> is the only announcement. The shared outcome live region stays silent until the result resolves, so screen reader users hear "Loading result" then the count, not two competing messages.</li>
+      <li><strong>Reduced motion:</strong> replace the gradient sweep with static <code>--color-surface-alt</code> blocks. Suppressing the animation alone is not sufficient — a frozen gradient reads as a rendering fault.</li>
+      <li><strong>Threshold:</strong> show the skeleton as soon as a lookup begins. Do not add an artificial minimum display time; a warm cache hit that resolves immediately should go straight to the card.</li>
+    </ul>
+
+    <!-- 3. No-results -->
+    <h3>3. No-results</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">The query was understood and executed; nothing matched. This is a normal outcome, not a failure.</p>
+    <div class="component-demo" style="align-items:flex-start;">
+      <div class="component-box" style="flex:1 1 320px;max-width:460px;display:flex;flex-direction:column;gap:var(--space-md);padding:var(--space-lg);">
+        <div style="display:flex;align-items:flex-start;gap:var(--space-sm);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-top:4px;flex:none;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <div>
+            <div style="font-size:var(--font-size-lg);font-weight:700;">No match for “rahmen”</div>
+            <p style="margin:4px 0 0 0;color:var(--color-muted);font-size:var(--font-size-sm);">
+              Did you mean <button type="button" style="border:none;background:none;padding:0;font:inherit;font-weight:600;color:var(--color-primary);text-decoration:underline;text-underline-offset:3px;cursor:pointer;">rahman</button>?
+            </p>
+          </div>
+        </div>
+        <p style="margin:0;color:var(--color-muted);font-size:var(--font-size-sm);">
+          Other things to try: a shorter stem, a different vowel spelling (<code>aa</code>, <code>ii</code>, <code>uu</code>), or Arabizi digits for the emphatic letters.
+        </p>
+        <p style="margin:0;font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Annotation:</strong> Neutral surface and muted icon. The suggestion is the primary action and sits above the generic advice.</p>
+      </div>
+      <div class="component-box" style="flex:1 1 260px;max-width:340px;padding:var(--space-lg);">
+        <strong style="display:block;margin-bottom:var(--space-sm);">Behavior &amp; accessibility</strong>
+        <ul style="font-size:var(--font-size-sm);color:var(--color-muted);margin:0;padding-left:1.1rem;">
+          <li><strong>Not an error treatment.</strong> Do not use <code>--color-error</code>, and do not put the SearchBox into its red invalid state — the input was valid, it simply has no match. The <code>Input</code> error variant in Section 12.2 covers validation failures only; its “No results found.” sample copy does not govern this region.</li>
+          <li>Announced through the shared live region as “No results for rahmen.” Focus stays in the SearchBox.</li>
+          <li>The suggestion is a <code>button</code>, not a link. When no suggestion is available, the line is omitted rather than replaced with filler.</li>
+          <li>The query is echoed in quotes so the learner can spot a typo without looking back at the input.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. Error -->
+    <h3>4. Error (dismissable, with retry)</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      Covers recoverable data failures: a shard fetch that failed, or a cache read that could not be satisfied. Audio failures keep the inline treatment already approved in the <strong>Integrated Result Card</strong> section and are not duplicated here.
+    </p>
+    <div class="component-demo" style="align-items:flex-start;">
+      <div class="component-box" style="flex:1 1 320px;max-width:460px;display:flex;flex-direction:column;gap:var(--space-md);padding:var(--space-lg);">
+        <div style="display:flex;align-items:flex-start;gap:var(--space-sm);padding:var(--space-md);border-radius:12px;background:var(--color-error-fg);border:1px solid rgba(166,70,59,0.18);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-top:3px;flex:none;"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          <div style="flex:1 1 auto;min-width:0;">
+            <div style="font-size:var(--font-size-sm);color:var(--color-error);"><strong>Could not load the dictionary</strong><br />Check your connection and try again.</div>
+            <div style="margin-top:var(--space-sm);">
+              <button type="button" style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(166,70,59,0.32);border-radius:0.5rem;background:transparent;color:var(--color-error);padding:6px 12px;font:inherit;font-size:var(--font-size-sm);font-weight:600;cursor:pointer;">Retry</button>
+            </div>
+          </div>
+          <button type="button" aria-label="Dismiss error" style="border:none;background:none;padding:2px;color:var(--color-error);cursor:pointer;line-height:0;flex:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+        <p style="margin:0;font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Annotation:</strong> Retry sits inside the message block, next to the cause. Dismiss is secondary and visually quiet.</p>
+      </div>
+      <div class="component-box" style="flex:1 1 260px;max-width:340px;padding:var(--space-lg);">
+        <strong style="display:block;margin-bottom:var(--space-sm);">Behavior &amp; accessibility</strong>
+        <ul style="font-size:var(--font-size-sm);color:var(--color-muted);margin:0;padding-left:1.1rem;">
+          <li><code>role="alert"</code> on the block. This is the one state that interrupts: the learner asked for a result and did not get one.</li>
+          <li>Tab order inside the block is Retry, then Dismiss. Retry re-runs the last query; Dismiss returns the region to the empty state and focus to the SearchBox.</li>
+          <li>Copy names what failed and what to do. No status codes, no stack traces, no blame.</li>
+          <li><strong>Scope boundary:</strong> this inline state handles recoverable failures. <code>app/error.tsx</code> is the route-level boundary for render crashes only and is not a substitute for it.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5. Offline-ready -->
+    <h3>5. Offline-ready (cache hit indicator)</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">A discreet confirmation that the lookup was served from the IndexedDB copy on the device. It accompanies a successful result; it is never a state on its own.</p>
+    <div class="component-demo" style="align-items:flex-start;">
+      <div class="component-box" style="flex:1 1 320px;max-width:460px;display:flex;flex-direction:column;gap:var(--space-md);padding:var(--space-lg);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);flex-wrap:wrap;">
+          <strong>Result card header row</strong>
+          <span tabindex="0" title="Served from the dictionary saved on this device." style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:9999px;background:var(--color-success-fg);border:1px solid rgba(63,119,82,0.24);color:var(--color-success-strong);font-size:var(--font-size-sm);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
+            Offline copy
+          </span>
+        </div>
+        <div lang="ar" dir="rtl" style="font-family:var(--font-arabic);font-size:var(--font-size-arabic);line-height:1.35;background:linear-gradient(135deg,var(--color-surface-alt),var(--color-surface-arabic));border-radius:14px;padding:var(--space-md);">رَحْمَة</div>
+        <p style="margin:0;font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Annotation:</strong> Top-right of the card header, opposite the Arabic headline block. Success tint, not primary green — it must not compete with the Arabic for attention.</p>
+      </div>
+      <div class="component-box" style="flex:1 1 260px;max-width:340px;padding:var(--space-lg);">
+        <strong style="display:block;margin-bottom:var(--space-sm);">Behavior &amp; accessibility</strong>
+        <ul style="font-size:var(--font-size-sm);color:var(--color-muted);margin:0;padding-left:1.1rem;">
+          <li>Carries the visible word “Offline” — never icon-only, so the meaning survives without colour or tooltip.</li>
+          <li>Not a live region and not a control. It appears with the card and is announced as part of it; it must not fire its own announcement on every cache hit.</li>
+          <li>Focusable (<code>tabindex="0"</code>) so the Tooltip from Section 12.6 is reachable by keyboard, not hover-only.</li>
+          <li>Absence carries no meaning — a network-served result simply omits the badge rather than showing an "online" counterpart.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>State matrix</h3>
+    <div style="overflow-x:auto;">
+      <table style="border-collapse:collapse;font-size:var(--font-size-sm);min-width:640px;">
+        <thead>
+          <tr style="text-align:left;background:var(--color-surface-alt);">
+            <th style="padding:6px 12px;border-bottom:1px solid var(--color-border);">State</th>
+            <th style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Trigger</th>
+            <th style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Announcement</th>
+            <th style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Focus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Empty</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">First render; input cleared; error dismissed</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">None</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">SearchBox</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Loading</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Lookup started; shard not yet resolved</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Skeleton <code>role="status"</code>: “Loading result…”</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">SearchBox</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Result</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Lookup resolved with at least one match</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Live region: result count</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">SearchBox</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">No-results</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Lookup resolved with zero matches</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Live region: “No results for …”</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">SearchBox</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Error</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Shard fetch or cache read failed</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>role="alert"</code> on the message block</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">SearchBox (Retry is the first stop inside the block)</td></tr>
+          <tr><td style="padding:6px 12px;">Offline-ready</td><td style="padding:6px 12px;">Result served from the IndexedDB cache</td><td style="padding:6px 12px;">None (part of the card)</td><td style="padding:6px 12px;">Unchanged</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Review Checklist</h3>
+    <ol style="font-size:var(--font-size-sm);color:var(--color-muted);padding-left:1.25rem;">
+      <li>All five canonical states from <a href="../ux-design.md">ux-design.md</a> are represented, and each one states its trigger, announcement, and focus behavior.</li>
+      <li>Empty invites a first query with example phonetic inputs; no-results offers a suggestion and reads as an outcome rather than a fault.</li>
+      <li>Error is dismissable, carries a retry affordance, and its boundary against the route-level error page is explicit.</li>
+      <li>Offline-ready is discreet, labelled in words as well as an icon, and never the only signal of a successful lookup.</li>
+      <li>Reserved height, single announcement channel, and reduced-motion handling are specified clearly enough to implement without further guesswork.</li>
+    </ol>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Sign-off note:</strong> User approval recorded on 2026-07-26 after confirming the review checklist and explicitly approving this section as the implementation reference for Stage 4.6. Empty, no-results, and offline-ready had no prior visual specification in this file; loading and audio error are carried forward from Section 12.4 and the Integrated Result Card section respectively. Treat this section as approved unless a later revision supersedes this note.</p>
+  </section>
+
+  <!--
+  ====================================================================
   Meta: Frameworks, Packages & Conventions
   ====================================================================
   -->

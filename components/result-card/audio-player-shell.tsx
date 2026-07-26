@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AlertCircle, LoaderCircle, Play } from 'lucide-react';
+import { Pause, Play, Volume2, VolumeX } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -11,57 +11,85 @@ type AudioPlayerShellProps = {
   className?: string;
 };
 
+/*
+ * Per the approved design, the control exposes the action rather than the state: Play, Pause, or
+ * Retry. The playing state is a Pause control paired with a separate "Playing" indicator — it is
+ * deliberately not a spinner, because playback is not loading.
+ */
 const stateCopy = {
   idle: {
+    actionText: 'Play audio',
     helperText: 'Audio preview is ready.',
     icon: Play,
-    iconClassName: 'text-foreground',
   },
   playing: {
+    actionText: 'Pause audio',
     helperText: 'Audio preview is playing.',
-    icon: LoaderCircle,
-    iconClassName: 'text-primary motion-safe:animate-spin motion-reduce:animate-none',
+    icon: Pause,
   },
   error: {
+    actionText: 'Retry audio',
     helperText: 'Audio preview is unavailable.',
-    icon: AlertCircle,
-    iconClassName: 'text-destructive',
+    icon: Play,
   },
 } as const;
 
 export function AudioPlayerShell({ audio, className }: AudioPlayerShellProps) {
-  const { helperText, icon: Icon, iconClassName } = stateCopy[audio.state];
+  const { actionText, helperText, icon: Icon } = stateCopy[audio.state];
   const controlLabel = audio.controlLabels[audio.state];
   const statusMessage = audio.statusMessage ?? helperText;
+  const isPlaying = audio.state === 'playing';
   const isUnavailable = audio.state === 'error';
 
   return (
     <section className={cn('space-y-3', className)} aria-label="Audio preview">
-      <div className="flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-foreground truncate text-sm font-semibold">{audio.label}</p>
-          <p
-            className={cn('text-sm', isUnavailable ? 'text-destructive' : 'text-muted-foreground')}
-            aria-live="polite"
-            role="status"
-          >
-            {statusMessage}
-          </p>
-        </div>
+      <p className="text-foreground truncate text-sm font-semibold">{audio.label}</p>
 
+      <div className="flex flex-wrap items-center gap-3">
+        {/*
+          The control survives the error state so retry stays one action away, which is the
+          recommendation recorded in the design's interactive-states annotation.
+        */}
         <Button
           type="button"
-          variant={isUnavailable ? 'outline' : 'secondary'}
-          size="icon-sm"
+          variant={isUnavailable ? 'outline' : 'default'}
+          size="sm"
           className={cn(
-            'rounded-full border',
+            'rounded-lg',
             isUnavailable && 'border-destructive/40 text-destructive hover:bg-destructive/10',
           )}
           aria-label={controlLabel}
-          aria-pressed={audio.state === 'playing'}
         >
-          <Icon aria-hidden className={cn('size-4', iconClassName)} />
+          <Icon aria-hidden />
+          <span>{actionText}</span>
         </Button>
+
+        {isPlaying ? (
+          <span className="bg-primary/10 text-primary inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium">
+            <Volume2 aria-hidden className="size-4" />
+            Playing
+          </span>
+        ) : null}
+      </div>
+
+      {/*
+        One polite live region for the whole audio row. Its content swaps between the plain helper
+        line and the inline error block, so a state change is announced exactly once — two separate
+        live regions would double-announce.
+      */}
+      <div role="status" aria-live="polite">
+        {isUnavailable ? (
+          <div className="border-destructive/20 bg-destructive/5 flex items-start gap-2 rounded-xl border p-3">
+            <VolumeX aria-hidden className="text-destructive mt-0.5 size-4 shrink-0" />
+            <p className="text-destructive text-sm">
+              <span className="font-semibold">Audio error</span>
+              <br />
+              {statusMessage}
+            </p>
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-sm">{statusMessage}</p>
+        )}
       </div>
     </section>
   );

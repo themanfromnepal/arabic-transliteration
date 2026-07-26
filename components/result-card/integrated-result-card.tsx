@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { AudioPlayerShell } from '@/components/result-card/audio-player-shell';
+import { OfflineBadge } from '@/components/result-card/offline-badge';
 import { VerseList } from '@/components/result-card/verse-list';
 import { WordCard } from '@/components/result-card/word-card';
 import { Separator } from '@/components/ui/separator';
@@ -9,10 +10,16 @@ import type { ResultCard } from '@/src/types/result-card';
 
 type IntegratedResultCardProps = {
   result: ResultCard;
+  /** Renders the offline-ready badge. Omit for a network-served result; there is no "online" badge. */
+  servedFromCache?: boolean;
   className?: string;
 };
 
-export function IntegratedResultCard({ result, className }: IntegratedResultCardProps) {
+export function IntegratedResultCard({
+  result,
+  servedFromCache = false,
+  className,
+}: IntegratedResultCardProps) {
   return (
     <article
       className={cn(
@@ -21,6 +28,12 @@ export function IntegratedResultCard({ result, className }: IntegratedResultCard
       )}
       aria-label={`Result for ${result.transliteration}`}
     >
+      {servedFromCache ? (
+        <div className="mb-4 flex justify-end">
+          <OfflineBadge />
+        </div>
+      ) : null}
+
       <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,0.9fr)_auto_minmax(0,1.1fr)] lg:items-start lg:gap-6">
         <div className="space-y-5">
           <WordCard word={result} />

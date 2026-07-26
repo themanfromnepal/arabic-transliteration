@@ -6,9 +6,7 @@ test('home renders title and the results region', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Read Quranic Arabic with transliteration support',
   );
-  await expect(
-    page.getByRole('heading', { level: 2, name: 'Fixture-backed integrated result card' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Results' })).toBeVisible();
 });
 
 test('home renders the staged result card', async ({ page }) => {
@@ -20,6 +18,49 @@ test('home renders the staged result card', async ({ page }) => {
   await expect(wordCard.getByRole('heading', { level: 2 })).toHaveText('رحمة');
   await expect(wordCard.getByText('rahmah')).toBeVisible();
   await expect(wordCard.getByText('mercy')).toBeVisible();
+});
+
+test('the Arabic headline renders in the self-hosted Arabic font', async ({ page }) => {
+  await page.goto('/');
+
+  const headline = page.getByRole('region', { name: 'Word details' }).getByRole('heading', {
+    level: 2,
+  });
+  const gloss = page.getByText('mercy', { exact: true });
+
+  // The :lang(ar) rule is what applies the family; before it existed the Arabic inherited Inter,
+  // which carries no Arabic glyphs, and fell through to whatever the OS happened to substitute.
+  const arabicFamily = await headline.evaluate((el) => getComputedStyle(el).fontFamily);
+  const uiFamily = await gloss.evaluate((el) => getComputedStyle(el).fontFamily);
+
+  // next/font mangles the family name, so match case-insensitively on the stem.
+  expect(arabicFamily.toLowerCase()).toContain('scheherazade');
+  expect(arabicFamily).not.toBe(uiFamily);
+});
+
+test('the font size control scales the Arabic headline and nothing else', async ({ page }) => {
+  await page.goto('/');
+
+  const headline = page.getByRole('region', { name: 'Word details' }).getByRole('heading', {
+    level: 2,
+  });
+  const gloss = page.getByText('mercy', { exact: true });
+
+  const readFontSize = (locator: typeof headline) =>
+    locator.evaluate((el) => Number.parseFloat(getComputedStyle(el).fontSize));
+
+  const baselineArabic = await readFontSize(headline);
+  const baselineGloss = await readFontSize(gloss);
+
+  await page.getByRole('button', { name: 'Extra Large' }).click();
+
+  expect(await readFontSize(headline)).toBeGreaterThan(baselineArabic);
+  expect(await readFontSize(gloss)).toBe(baselineGloss);
+
+  await page.getByRole('button', { name: 'Small' }).click();
+
+  expect(await readFontSize(headline)).toBeLessThan(baselineArabic);
+  expect(await readFontSize(gloss)).toBe(baselineGloss);
 });
 
 test('slash shortcut focuses the shell search input on desktop', async ({ page }) => {

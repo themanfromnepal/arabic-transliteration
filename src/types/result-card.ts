@@ -35,3 +35,17 @@ export type ResultCard = {
   audio: ResultCardAudio;
   occurrences: ResultCardOccurrences;
 };
+
+/**
+ * The canonical UX states from docs/ux-design.md, modelled as one discriminated union because they
+ * are alternate contents of a single results region rather than separate screens.
+ *
+ * Callbacks are intentionally not part of the state: they belong to the component that renders it,
+ * so the state stays serializable and can cross the server/client boundary.
+ */
+export type ResultsState =
+  | { kind: 'empty' }
+  | { kind: 'loading' }
+  | { kind: 'ready'; result: ResultCard; servedFromCache?: boolean }
+  | { kind: 'no-results'; query: string; suggestion?: string }
+  | { kind: 'error'; message: string };

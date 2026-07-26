@@ -172,6 +172,18 @@
     font-family: var(--font-inter);
   }
 
+  /*
+   * Arabic script rendering. Keyed off the lang attribute rather than a utility class so every
+   * Arabic region — result headline, verse snippets, future surfaces — picks up the self-hosted
+   * display font and its shaping features without each component remembering to opt in.
+   * Explicit font-feature-settings are the mitigation recorded in docs/phases/phase-4-ui.md for
+   * cross-OS Arabic rendering differences.
+   */
+  :lang(ar) {
+    font-family: var(--font-arabic);
+    font-feature-settings: var(--font-feature-arabic);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -179,5 +191,65 @@
       transition: none !important;
       animation: none !important;
     }
+  }
+}
+
+@layer components {
+  /*
+   * Loading shimmer for the results region, per the approved Skeleton (WordCard shimmer) spec in
+   * docs/design/design.html section 12.4. A gradient sweep rather than a pulse, and CSS-only per
+   * the Phase 4 no-JS-animation decision.
+   */
+  @keyframes shimmer {
+    0% {
+      background-position: -400px 0;
+    }
+    100% {
+      background-position: 400px 0;
+    }
+  }
+
+  .skeleton-block {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface-alt) 25%,
+      var(--color-surface-warm) 50%,
+      var(--color-surface-alt) 75%
+    );
+    background-size: 800px 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  /*
+   * The base reduced-motion rule already stops the animation, but stopping it alone leaves the
+   * gradient frozen mid-sweep, which reads as a rendering fault. The design requires flat blocks.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-block {
+      background: var(--color-surface-alt);
+    }
+  }
+
+  /*
+   * Results-region crossfade between UX states (--transition-fade). Applied to the state content,
+   * which React remounts on every state change, so the animation replays. Suppressed by the base
+   * reduced-motion rule above, leaving an instant swap.
+   */
+  @keyframes state-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .state-fade-in {
+    animation: state-fade-in 200ms ease-out;
+  }
+
+  /* VerseList collapsible open (--transition-panel). Same curve, slower than a state swap. */
+  .panel-fade-in {
+    animation: state-fade-in 250ms ease-in-out;
   }
 }

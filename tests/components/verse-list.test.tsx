@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
@@ -22,8 +21,10 @@ describe('VerseList', () => {
 
     const panel = document.getElementById(panelId!);
     expect(panel).toHaveAttribute('hidden');
-    expect(panel).toHaveClass('motion-safe:data-[state=open]:animate-in');
-    expect(panel).toHaveClass('motion-reduce:data-[state=open]:animate-none');
+    // The panel caps its height and scrolls on its own for long occurrence lists, and stays
+    // keyboard reachable so the scroll is operable without a pointer.
+    expect(panel).toHaveClass('max-h-52.5', 'overflow-y-auto');
+    expect(panel).toHaveAttribute('tabindex', '0');
 
     const arabicSnippet = screen.getByText(
       lemmaResultCardFixture.occurrences.allLoadedItems[0]!.arabicSnippet,
@@ -71,14 +72,25 @@ describe('VerseList', () => {
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
-    const chevron = toggle.querySelector('svg');
-    expect(chevron).toHaveClass('motion-reduce:transition-none');
-
     const firstVerseReference = screen.getByText(
       lemmaResultCardFixture.occurrences.allLoadedItems[0]!.referenceLabel,
     );
     const firstVerseItem = firstVerseReference.closest('li');
 
     expect(firstVerseItem).toHaveFocus();
+  });
+
+  it('numbers occurrences visually without repeating the ordinal to screen readers', () => {
+    render(<VerseList occurrences={lemmaResultCardFixture.occurrences} />);
+
+    const firstOrdinal = screen.getByText('1.');
+
+    expect(firstOrdinal).toBeInTheDocument();
+    // The list already conveys position through its own semantics, so the visible ordinal is
+    // decorative rather than something to announce twice.
+    expect(firstOrdinal).toHaveAttribute('aria-hidden', 'true');
+    expect(
+      screen.getByText(`${lemmaResultCardFixture.occurrences.totalCount}.`),
+    ).toBeInTheDocument();
   });
 });
