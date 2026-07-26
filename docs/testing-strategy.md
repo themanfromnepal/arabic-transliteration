@@ -84,6 +84,18 @@ component library change.
 Lighthouse CI runs on every pull request and enforces the budgets defined in
 [performance.md](performance.md). Regressions on the budgeted metrics block merge.
 
+Latency budgets are enforced by Lighthouse CI, not by wall-clock assertions in Vitest. Where the
+unit suite times a hot path, the assertion is a deliberately generous algorithmic-blowup guard —
+it asserts the median with several multiples of headroom over the observed cost, and its purpose
+is to catch a complexity regression such as an accidental O(n²) path, not to verify a budget.
+Vitest workers compete for CPU, so a tight timing assertion measures scheduler luck and flakes on
+shared runners; the numeric budgets remain the responsibility of
+[performance.md](performance.md#search-latency-targets).
+
+When adding such a guard: assert the median rather than a percentile of a small sample, set the
+ceiling at several multiples of the measured cost, and state in a comment which budget the timing
+relates to and where that budget is actually enforced.
+
 ## CI gates
 
 | Gate           | Blocking                                | Tool                                                    |

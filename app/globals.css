@@ -1,1 +1,183 @@
 @import 'tailwindcss';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  :root {
+    --background: #f7f3ea;
+    --foreground: #18352f;
+    --card: #fffdfa;
+    --card-foreground: #18352f;
+    --popover: #fffdfa;
+    --popover-foreground: #18352f;
+    --primary: #2f6f5c;
+    --primary-foreground: #fffdfa;
+    --secondary: #e7efe8;
+    --secondary-foreground: #18352f;
+    --muted: #e7efe8;
+    --muted-foreground: #5f746d;
+    --accent: #a7863a;
+    --accent-foreground: #fffdfa;
+    --destructive: #a6463b;
+    --destructive-foreground: #fff3f0;
+    --border: #cfd8cb;
+    --input: #cfd8cb;
+    --ring: #7c6121;
+    --radius: 0.5rem;
+    /* Extended project tokens */
+    --color-bg: #f7f3ea;
+    --color-surface: #fffdfa;
+    --color-surface-alt: #e7efe8;
+    --color-fg: #18352f;
+    --color-primary: #2f6f5c;
+    --color-primary-strong: #1f5444;
+    --color-secondary: #bfd2c4;
+    --color-accent: #a7863a;
+    --color-accent-soft: #d4c08a;
+    --color-bg-raised: #fcfaf5;
+    --color-surface-warm: #f4efe3;
+    --color-surface-warm-soft: #f7f1e5;
+    --color-surface-arabic: #f1ece0;
+    --color-grid-tint: #f8f4e8;
+    --color-error: #a6463b;
+    --color-error-fg: #fff3f0;
+    --color-success: #3f7752;
+    --color-success-fg: #f4fbf5;
+    --color-success-strong: #2f6142;
+    --color-muted: #5f746d;
+    --color-border: #cfd8cb;
+    --color-focus: #7c6121;
+    --color-shadow: rgba(24, 53, 47, 0.12);
+    --color-primary-shadow: rgba(47, 111, 92, 0.22);
+    --color-primary-tint: rgba(47, 111, 92, 0.08);
+    --color-accent-tint: rgba(167, 134, 58, 0.14);
+    --color-accent-soft-glow: rgba(212, 192, 138, 0.18);
+    --color-surface-overlay: rgba(255, 253, 250, 0.95);
+    --token-chip-border: rgba(0, 0, 0, 0.08);
+    --color-accent-border: rgba(167, 134, 58, 0.32);
+    --color-accent-shadow: rgba(167, 134, 58, 0.28);
+    /* Motion tokens */
+    --transition-base: 150ms ease-in-out;
+    --transition-panel: 250ms ease-in-out;
+    --transition-fade: 200ms ease-out;
+
+    /* Font family tokens (populated at runtime by next/font CSS variables) */
+    --font-inter: var(--font-inter-variable, 'Inter', 'Segoe UI', Arial, sans-serif);
+    --font-scheherazade: var(--font-scheherazade-variable, 'Scheherazade New', 'Amiri', serif);
+    /* Legacy aliases */
+    --font-sans: var(--font-inter);
+    --font-arabic: var(--font-scheherazade);
+
+    /* Arabic FontSizeControl scale */
+    --font-size-arabic-s: 1.75rem;
+    --font-size-arabic-m: 2.25rem;
+    --font-size-arabic-l: 3rem;
+    --font-size-arabic-xl: 3.75rem;
+    --font-size-arabic: var(--font-size-arabic-m); /* active level; JS overrides this on <html> */
+
+    /* Arabic font feature settings */
+    --font-feature-arabic: 'calt' 1, 'kern' 1, 'mark' 1, 'mkmk' 1;
+  }
+
+  .dark {
+    --background: #0f1f1b;
+    --foreground: #edf3eb;
+    --card: #163029;
+    --card-foreground: #edf3eb;
+    --popover: #163029;
+    --popover-foreground: #edf3eb;
+    --primary: #72ab96;
+    --primary-foreground: #0f1f1b;
+    --secondary: #1b352e;
+    --secondary-foreground: #edf3eb;
+    --muted: #1b352e;
+    --muted-foreground: #aabdb5;
+    --accent: #c6ab63;
+    --accent-foreground: #0f1f1b;
+    --destructive: #a6463b;
+    --destructive-foreground: #fff3f0;
+    --border: #315548;
+    --input: #315548;
+    --ring: #d8bf79;
+    /* Extended project tokens — dark */
+    --color-bg: #0f1f1b;
+    --color-surface: #163029;
+    --color-surface-alt: #1e4137;
+    --color-fg: #edf3eb;
+    --color-primary: #72ab96;
+    --color-primary-strong: #8dc2ad;
+    --color-accent: #c6ab63;
+    --color-accent-soft: #8f7740;
+    --color-muted: #aabdb5;
+    --color-border: #315548;
+    --color-focus: #d8bf79;
+    --color-error: #a6463b;
+    --color-error-fg: #fff3f0;
+    --color-success: #48896b;
+    --color-success-fg: #f4fbf5;
+    --color-surface-overlay: rgba(22, 48, 41, 0.95);
+    --token-chip-border: rgba(255, 255, 255, 0.14);
+    --color-primary-tint: rgba(114, 171, 150, 0.12);
+    --color-accent-tint: rgba(198, 171, 99, 0.14);
+    --color-accent-border: rgba(198, 171, 99, 0.32);
+    --color-accent-shadow: rgba(198, 171, 99, 0.22);
+    --color-accent-soft-glow: rgba(198, 171, 99, 0.1);
+    --color-shadow: rgba(15, 31, 27, 0.28);
+    --color-bg-raised: #131f1c;
+    --color-surface-warm: #182f27;
+    --color-surface-warm-soft: #162c25;
+    --color-surface-arabic: #17312b;
+    --color-grid-tint: rgba(47, 111, 92, 0.06);
+    --color-success-strong: #5da07f;
+    --color-primary-shadow: rgba(114, 171, 150, 0.22);
+    --color-secondary: #315548;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

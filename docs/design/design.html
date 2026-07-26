@@ -1,0 +1,1876 @@
+<!--
+  design.html
+  Living visual reference for Arabic Transliteration UI/UX
+  This file is the single source of truth for UI/UX and must be kept up to date with any design changes.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arabic Transliteration UI/UX Design Reference</title>
+    <style>
+      :root {
+        /* Core design tokens: light theme, inspired by the Green Dome of Masjid Nabawi */
+        --color-bg: #f7f3ea;
+        --color-surface: #fffdfa;
+        --color-surface-alt: #e7efe8;
+        --color-fg: #18352f;
+        --color-primary: #2f6f5c;
+        --color-primary-strong: #1f5444;
+        --color-secondary: #bfd2c4;
+        --color-accent: #a7863a;
+        --color-accent-soft: #d4c08a;
+        --color-bg-raised: #fcfaf5;
+        --color-surface-warm: #f4efe3;
+        --color-surface-warm-soft: #f7f1e5;
+        --color-surface-arabic: #f1ece0;
+        --color-grid-tint: #f8f4e8;
+        --color-error: #a6463b;
+        --color-error-fg: #fff3f0;
+        --color-success: #3f7752;
+        --color-success-strong: #2f6142;
+        --color-success-fg: #f4fbf5;
+        --color-muted: #5f746d;
+        --color-border: #cfd8cb;
+        --color-focus: #7c6121;
+        --color-shadow: rgba(24, 53, 47, 0.12);
+        --color-primary-shadow: rgba(47, 111, 92, 0.22);
+        --color-primary-tint: rgba(47, 111, 92, 0.08);
+        --color-accent-shadow: rgba(167, 134, 58, 0.28);
+        --color-accent-tint: rgba(167, 134, 58, 0.14);
+        --color-accent-border: rgba(167, 134, 58, 0.32);
+        --color-accent-soft-glow: rgba(212, 192, 138, 0.18);
+        --color-surface-overlay: rgba(255, 253, 250, 0.95);
+        --token-chip-border: rgba(0, 0, 0, 0.08);
+        --theme-dark-bg: #0f1f1b;
+        --theme-dark-bg-elevated: #1b352e;
+        --theme-dark-surface: #163029;
+        --theme-dark-surface-alt: #1e4137;
+        --theme-dark-fg: #edf3eb;
+        --theme-dark-primary: #72ab96;
+        --theme-dark-primary-strong: #8dc2ad;
+        --theme-dark-primary-alt: #4b8a74;
+        --theme-dark-secondary: #315548;
+        --theme-dark-accent: #c6ab63;
+        --theme-dark-accent-soft: #8f7740;
+        --theme-dark-muted: #aabdb5;
+        --theme-dark-border: #315548;
+        --theme-dark-focus: #d8bf79;
+        --theme-dark-shadow: rgba(15, 31, 27, 0.28);
+        --theme-dark-token-chip-border: rgba(255, 255, 255, 0.14);
+        --theme-dark-error: #a6463b;
+        --theme-dark-error-fg: #fff3f0;
+        --theme-dark-success: #48896b;
+        --theme-dark-success-fg: #f4fbf5;
+        --theme-dark-primary-tint: rgba(114, 171, 150, 0.12);
+        --theme-dark-accent-tint: rgba(198, 171, 99, 0.14);
+        --theme-dark-accent-border: rgba(198, 171, 99, 0.32);
+        --theme-dark-accent-shadow: rgba(198, 171, 99, 0.22);
+        --theme-dark-accent-soft-glow: rgba(198, 171, 99, 0.10);
+        --theme-dark-surface-overlay: rgba(22, 48, 41, 0.95);
+        /* Typography tokens */
+        --font-inter: 'Inter', 'Segoe UI', Arial, sans-serif;
+        --font-scheherazade: 'Scheherazade New', 'Amiri', serif;
+        /* Legacy aliases for design.html demo styles */
+        --font-sans: var(--font-inter);
+        --font-arabic: var(--font-scheherazade);
+        --font-size-base: 1rem;
+        --font-size-lg: 1.25rem;
+        --font-size-xl: 1.5rem;
+        --font-size-sm: 0.875rem;
+        /* Arabic font size — JS overrides this on <html>; default is M (2.25rem) */
+        --font-size-arabic: 2.25rem;
+        --font-size-arabic-s: 1.75rem;
+        --font-size-arabic-m: 2.25rem;
+        --font-size-arabic-l: 3rem;
+        --font-size-arabic-xl: 3.75rem;
+        /* Spacing tokens */
+        --space-xs: 4px;
+        --space-sm: 8px;
+        --space-md: 16px;
+        --space-lg: 24px;
+        --space-xl: 40px;
+        /* Motion tokens — CSS-only; no JS animation library */
+        --transition-base: 150ms ease-in-out;   /* button hover/focus, input focus ring */
+        --transition-panel: 250ms ease-in-out;  /* VerseList collapsible open/close */
+        --transition-fade: 200ms ease-out;      /* UX state transitions (empty → loading → result) */
+        /* Grid */
+        --grid-columns: 12;
+        --grid-gutter: 16px;
+        /* Breakpoints */
+        --breakpoint-sm: 480px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 1024px;
+      }
+      body {
+        font-family: var(--font-sans);
+        background:
+          radial-gradient(circle at top left, var(--color-accent-soft-glow), transparent 28%),
+          linear-gradient(180deg, var(--color-bg-raised) 0%, var(--color-bg) 100%);
+        color: var(--color-fg);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+      header,
+      section {
+        padding: var(--space-lg) var(--space-xl);
+        border-bottom: 1px solid var(--color-border);
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-sans);
+        margin-top: 0;
+      }
+      /* Responsive demo rows and boxes for all UI samples */
+      .palette,
+      .contrast-sample,
+      .button-demo,
+      .icon-demo,
+      .motion-demo,
+      .spacing-demo,
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+        margin: var(--space-md) 0;
+        align-items: center;
+      }
+
+      /* Responsive box styles for demo rows */
+      .palette > *,
+      .contrast-sample > *,
+      .button-demo > *,
+      .icon-demo > *,
+      .motion-demo > *,
+      .spacing-demo > *,
+      .pill-row > * {
+        min-width: 0;
+        box-sizing: border-box;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        flex: 1 1 120px;
+        max-width: 100%;
+      }
+
+      /* Prevent demo boxes from stretching too much on large screens */
+      .palette > *,
+      .contrast-sample > *,
+      .button-demo > *,
+      .icon-demo > *,
+      .motion-demo > *,
+      .spacing-demo > *,
+      .pill-row > * {
+        flex-basis: 160px;
+        max-width: 220px;
+      }
+
+      /* Allow smaller boxes for pills and spacing */
+      .pill-row > * {
+        flex-basis: 80px;
+        max-width: 120px;
+      }
+      .spacing-demo > * {
+        flex-basis: 40px;
+        max-width: 80px;
+      }
+
+      /* Responsive wrapping for mobile */
+      @media (max-width: 768px) {
+        .palette,
+        .contrast-sample,
+        .button-demo,
+        .icon-demo,
+        .motion-demo,
+        .spacing-demo,
+        .pill-row {
+          gap: var(--space-sm);
+        }
+        .palette > *,
+        .contrast-sample > *,
+        .button-demo > *,
+        .icon-demo > *,
+        .motion-demo > *,
+        .spacing-demo > *,
+        .pill-row > * {
+          flex-basis: 120px;
+          max-width: 160px;
+        }
+        .pill-row > * {
+          flex-basis: 60px;
+          max-width: 90px;
+        }
+        .spacing-demo > * {
+          flex-basis: 28px;
+          max-width: 48px;
+        }
+      }
+      @media (max-width: 480px) {
+        .palette,
+        .contrast-sample,
+        .button-demo,
+        .icon-demo,
+        .motion-demo,
+        .spacing-demo,
+        .pill-row {
+          gap: var(--space-xs);
+        }
+        .palette > *,
+        .contrast-sample > *,
+        .button-demo > *,
+        .icon-demo > *,
+        .motion-demo > *,
+        .spacing-demo > *,
+        .pill-row > * {
+          flex-basis: 90px;
+          max-width: 100%;
+        }
+        .pill-row > * {
+          flex-basis: 40px;
+          max-width: 60px;
+        }
+        .spacing-demo > * {
+          flex-basis: 18px;
+          max-width: 32px;
+        }
+      }
+
+      /* Ensure text never overflows demo boxes */
+      .palette > *,
+      .contrast-sample > *,
+      .button-demo > *,
+      .icon-demo > *,
+      .motion-demo > *,
+      .spacing-demo > *,
+      .pill-row > * {
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .swatch {
+        width: 104px;
+        height: 82px;
+        border-radius: 12px;
+        border: 1px solid var(--color-border);
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        font-size: var(--font-size-sm);
+        color: var(--color-fg);
+        box-shadow: 0 10px 24px var(--color-shadow);
+        padding: 10px;
+        box-sizing: border-box;
+        font-weight: 600;
+      }
+      .swatch.bg {
+        background: var(--color-bg);
+      }
+      .swatch.surface {
+        background: var(--color-surface);
+      }
+      .swatch.fg {
+        background: var(--color-fg);
+        color: var(--color-surface);
+      }
+      .swatch.primary {
+        background: var(--color-primary);
+        color: var(--color-surface);
+      }
+      .swatch.secondary {
+        background: var(--color-secondary);
+      }
+      .swatch.accent {
+        background: linear-gradient(
+          180deg,
+          var(--color-accent) 0 56%,
+          var(--color-accent-soft) 56% 100%
+        );
+        color: var(--color-fg);
+      }
+      .swatch.error {
+        background: var(--color-error);
+        color: var(--color-error-fg);
+      }
+      .swatch.success {
+        background: var(--color-success);
+        color: var(--color-success-fg);
+      }
+      .swatch.muted {
+        background: var(--color-muted);
+        color: var(--color-bg);
+      }
+      .swatch.border {
+        background: var(--color-border);
+      }
+      .section-lead {
+        max-width: 72ch;
+      }
+      .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-lg);
+        margin: var(--space-lg) 0;
+      }
+      .theme-card {
+        border-radius: 20px;
+        padding: var(--space-lg);
+        border: 1px solid var(--color-border);
+        box-shadow: 0 18px 40px var(--color-shadow);
+      }
+      .theme-card.light {
+        background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-warm) 100%);
+        color: var(--color-fg);
+      }
+      .theme-card.dark {
+        background: linear-gradient(180deg, var(--theme-dark-bg-elevated) 0%, var(--theme-dark-bg) 100%);
+        color: var(--theme-dark-fg);
+        border-color: var(--theme-dark-border);
+      }
+      .theme-card h3,
+      .theme-card p {
+        margin-bottom: 0.75rem;
+      }
+      .token-list {
+        display: grid;
+        gap: 10px;
+        margin-top: var(--space-md);
+      }
+      .token-row {
+        display: grid;
+        grid-template-columns: 84px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        font-size: var(--font-size-sm);
+      }
+      .token-chip {
+        height: 28px;
+        border-radius: 999px;
+        border: 1px solid var(--token-chip-border);
+      }
+      .theme-card.dark .token-chip {
+        border-color: var(--theme-dark-token-chip-border);
+      }
+      .typography-sample {
+        margin-bottom: var(--space-md);
+      }
+      .font-arabic {
+        font-family: var(--font-arabic);
+        font-size: var(--font-size-xl);
+        direction: rtl;
+        background: linear-gradient(135deg, var(--color-surface-alt), var(--color-surface-arabic));
+        padding: var(--space-sm);
+        border-radius: 12px;
+        display: inline-block;
+      }
+      .component-demo {
+        display: flex;
+        gap: var(--space-lg);
+        flex-wrap: wrap;
+        margin: var(--space-md) 0;
+      }
+      .component-box {
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        padding: var(--space-md);
+        min-width: 180px;
+        background: var(--color-surface);
+        box-shadow: 0 12px 28px var(--color-shadow);
+      }
+      .grid-demo {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: var(--grid-gutter);
+        margin: var(--space-md) 0;
+      }
+      .grid-col {
+        background: linear-gradient(180deg, var(--color-grid-tint) 0%, var(--color-surface-alt) 100%);
+        border: 1px solid var(--color-border);
+        text-align: center;
+        padding: var(--space-sm) 0;
+        font-size: var(--font-size-sm);
+        border-radius: 10px;
+      }
+      /* .spacing-demo now covered by unified responsive block above */
+      .space-box {
+        background: linear-gradient(180deg, var(--color-accent) 0%, var(--color-accent-soft) 100%);
+        height: 24px;
+        border-radius: 999px;
+        display: inline-block;
+      }
+      .space-xs {
+        width: var(--space-xs);
+      }
+      .space-sm {
+        width: var(--space-sm);
+      }
+      .space-md {
+        width: var(--space-md);
+      }
+      .space-lg {
+        width: var(--space-lg);
+      }
+      .space-xl {
+        width: var(--space-xl);
+      }
+      /* .contrast-sample now covered by unified responsive block above */
+      .contrast-box {
+        width: 120px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: var(--font-size-sm);
+        border: 1px solid var(--color-border);
+      }
+      .contrast-light {
+        background: var(--color-bg);
+        color: var(--color-fg);
+      }
+      .contrast-dark {
+        background: var(--color-fg);
+        color: var(--color-surface);
+      }
+      .contrast-primary {
+        background: var(--color-primary);
+        color: var(--color-surface);
+      }
+      .contrast-accent {
+        background: var(--color-accent-soft);
+        color: var(--color-fg);
+        border-color: var(--color-accent-border);
+        box-shadow: inset 0 12px 0 var(--color-accent);
+      }
+      .contrast-error {
+        background: var(--color-error);
+        color: var(--color-error-fg);
+      }
+      .contrast-success {
+        background: var(--color-success);
+        color: var(--color-success-fg);
+      }
+      /* Responsive demo */
+      .responsive-demo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+        margin: var(--space-md) 0;
+      }
+      .responsive-box {
+        flex: 1 1 200px;
+        min-width: 120px;
+        background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-alt) 100%);
+        border: 1px solid var(--color-border);
+        padding: var(--space-md);
+        border-radius: 14px;
+        text-align: center;
+      }
+      @media (max-width: 1024px) {
+        .grid-demo {
+          grid-template-columns: repeat(9, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .grid-demo {
+          grid-template-columns: repeat(6, 1fr);
+        }
+      }
+      @media (max-width: 480px) {
+        .grid-demo {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      /* Accessibility focus states */
+      .component-box:focus-within,
+      .component-box:focus {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 3px;
+      }
+      /* .button-demo now covered by unified responsive block above */
+      .btn {
+        padding: var(--space-sm) var(--space-md);
+        border-radius: 999px;
+        border: 1px solid var(--color-primary-strong);
+        background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-strong) 100%);
+        color: var(--color-surface);
+        font-family: var(--font-sans);
+        font-size: var(--font-size-base);
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.2s;
+        box-shadow: 0 10px 20px var(--color-primary-shadow);
+      }
+      .btn:hover {
+        background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-strong) 100%);
+        border-color: var(--color-focus);
+        box-shadow:
+          0 0 0 1px var(--color-accent-soft),
+          0 12px 24px var(--color-accent-shadow);
+        transform: translateY(-1px);
+      }
+      .btn:focus {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 3px;
+      }
+      .btn:active {
+        background: linear-gradient(180deg, var(--color-primary-strong) 0%, var(--color-primary) 100%);
+      }
+      .btn:disabled {
+        background: var(--color-muted);
+        border-color: var(--color-muted);
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--color-primary-strong);
+        border-color: var(--color-border);
+        box-shadow: none;
+      }
+      .btn-secondary:hover {
+        background: var(--color-surface-alt);
+        color: var(--color-primary-strong);
+        border-color: var(--color-secondary);
+      }
+      /* Icon demo */
+      /* .icon-demo now covered by unified responsive block above */
+      .icon-sample {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--color-surface-alt);
+        border: 1px solid var(--color-border);
+      }
+      /* Motion demo */
+      /* .motion-demo now covered by unified responsive block above */
+      .motion-box {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(180deg, var(--color-accent) 0%, var(--color-accent-soft) 100%);
+        border-radius: 50%;
+        animation: bounce 1.2s infinite alternate;
+        box-shadow: 0 10px 24px var(--color-accent-shadow);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .motion-box {
+          animation: none;
+        }
+
+        .btn {
+          transition: none;
+        }
+
+        .btn:hover {
+          transform: none;
+        }
+      }
+      .input-demo,
+      .card-demo,
+      .usage-demo {
+        margin-top: 8px;
+        border-radius: 14px;
+        border: 1px solid var(--color-border);
+        background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-warm-soft) 100%);
+        padding: 12px;
+      }
+      .field-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .field-input {
+        padding: 10px 12px;
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        background: var(--color-surface-overlay);
+        color: var(--color-fg);
+      }
+      .field-input:focus {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 1px;
+        border-color: var(--color-focus);
+      }
+      .helper-text {
+        font-size: 0.9em;
+        color: var(--color-muted);
+        margin-top: 6px;
+      }
+      /* .pill-row now covered by unified responsive block above */
+      .pill {
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.875rem;
+        background: var(--color-surface-alt);
+        color: var(--color-primary-strong);
+        border: 1px solid var(--color-border);
+      }
+      .pill.accent {
+        background: var(--color-accent-tint);
+        color: var(--color-focus);
+        border-color: var(--color-accent-border);
+      }
+      .note-box {
+        margin-top: var(--space-md);
+        padding: 14px 16px;
+        background: var(--color-primary-tint);
+        border-left: 4px solid var(--color-primary);
+        border-radius: 12px;
+      }
+      .component-box.dark {
+        background: linear-gradient(180deg, var(--theme-dark-surface-alt) 0%, var(--theme-dark-bg) 100%);
+        border-color: var(--theme-dark-border);
+        color: var(--theme-dark-fg);
+        box-shadow: 0 18px 32px var(--theme-dark-shadow);
+      }
+      .component-box.dark .input-demo,
+      .component-box.dark .card-demo,
+      .component-box.dark .usage-demo {
+        background: linear-gradient(180deg, var(--theme-dark-surface) 0%, var(--theme-dark-bg) 100%);
+        border-color: var(--theme-dark-border);
+      }
+      .component-box.dark .field-label {
+        color: var(--theme-dark-fg);
+      }
+      .component-box.dark .field-input {
+        background: var(--theme-dark-bg);
+        border-color: var(--theme-dark-border);
+        color: var(--theme-dark-fg);
+      }
+      .component-box.dark .field-input::placeholder {
+        color: var(--theme-dark-muted);
+      }
+      .component-box.dark .helper-text {
+        color: var(--theme-dark-muted);
+      }
+      .component-box.dark .pill {
+        background: var(--theme-dark-secondary);
+        color: var(--theme-dark-fg);
+        border-color: var(--theme-dark-border);
+      }
+      .component-box.dark .pill.accent {
+        background: var(--theme-dark-surface-alt);
+        color: var(--theme-dark-accent);
+        border-color: var(--theme-dark-accent-soft);
+      }
+      .component-box.dark .btn {
+        background: linear-gradient(180deg, var(--theme-dark-primary-strong) 0%, var(--theme-dark-primary) 100%);
+        color: var(--theme-dark-bg);
+        border-color: var(--theme-dark-primary-alt);
+        box-shadow: 0 10px 20px var(--theme-dark-shadow);
+      }
+      .component-box.dark .btn:hover {
+        background: linear-gradient(180deg, var(--theme-dark-primary-strong) 0%, var(--theme-dark-primary) 100%);
+        border-color: var(--theme-dark-focus);
+        box-shadow:
+          0 0 0 1px rgba(216, 191, 121, 0.32),
+          0 12px 24px var(--theme-dark-shadow);
+      }
+      .component-box.dark .btn:active {
+        background: linear-gradient(180deg, var(--theme-dark-primary-alt) 0%, var(--theme-dark-primary) 100%);
+      }
+      .component-box.dark .btn-secondary {
+        background: transparent;
+        color: var(--theme-dark-fg);
+        border-color: var(--theme-dark-border);
+        box-shadow: none;
+      }
+      .component-box.dark .btn-secondary:hover {
+        background: var(--theme-dark-surface-alt);
+        color: var(--theme-dark-fg);
+        border-color: var(--theme-dark-accent-soft);
+        box-shadow: 0 10px 20px var(--theme-dark-shadow);
+      }
+      .dark-component-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-top: var(--space-sm);
+      }
+      .btn-hover-preview {
+        border-color: var(--color-focus);
+        box-shadow:
+          0 0 0 1px var(--color-accent-soft),
+          0 12px 24px var(--color-accent-shadow);
+        transform: translateY(-1px);
+      }
+      .btn-active-preview {
+        background: linear-gradient(180deg, var(--color-primary-strong) 0%, var(--color-primary) 100%);
+      }
+      .dark-state-demo {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-sm) var(--space-md);
+        border-radius: 999px;
+        background: linear-gradient(180deg, var(--theme-dark-surface-alt) 0%, var(--theme-dark-bg) 100%);
+        color: var(--theme-dark-fg);
+        border: 1px solid var(--theme-dark-border);
+      }
+      .dark-state-demo .btn {
+        background: linear-gradient(180deg, var(--theme-dark-primary-strong) 0%, var(--theme-dark-primary) 100%);
+        color: var(--theme-dark-bg);
+        border-color: var(--theme-dark-primary);
+        box-shadow: 0 10px 20px var(--theme-dark-shadow);
+      }
+      .dark-state-demo .btn:focus,
+      .btn-dark-focus-preview {
+        outline: 3px solid var(--theme-dark-focus);
+        outline-offset: 3px;
+      }
+      .icon-sample {
+        color: var(--color-primary-strong);
+      }
+      .icon-sample.accent {
+        color: var(--color-accent);
+      }
+      .icon-sample svg [stroke] {
+        stroke: currentColor;
+      }
+      @keyframes bounce {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-24px);
+        }
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Arabic Transliteration UI/UX Design Reference</h1>
+      <p>
+        <strong>Note:</strong> This file is the single source of truth for UI/UX and must be kept up
+        to date with any design changes. All implementation should reference this document for
+        colors, typography, components, and interaction patterns.
+      </p>
+      <div class="note-box">
+        Palette direction: inspired by the Green Dome of Masjid Nabawi, using dome green as the
+        primary family, warm stone neutrals for surfaces, and aged brass as the accent family.
+        Both light and dark themes below are implementation targets, not placeholder samples.
+      </div>
+    </header>
+
+    <section id="colors">
+      <h2>1. Colors</h2>
+      <p class="section-lead">
+        Masjid Nabawi-inspired palette for core UI tokens. The light theme carries the calm,
+        mineral green of the Green Dome over warm courtyard stone, while the dark theme deepens
+        the same hues into evening prayer tones. The brass accent is reserved for emphasis,
+        selection, and focus moments.
+      </p>
+      <div class="palette">
+        <div class="swatch bg">BG</div>
+        <div class="swatch surface">Surface</div>
+        <div class="swatch fg">FG</div>
+        <div class="swatch primary">Primary</div>
+        <div class="swatch secondary">Secondary</div>
+        <div class="swatch accent">Accent</div>
+        <div class="swatch error">Error</div>
+        <div class="swatch success">Success</div>
+        <div class="swatch muted">Muted</div>
+        <div class="swatch border">Border</div>
+      </div>
+      <h3>Dark Palette</h3>
+      <div style="background:var(--theme-dark-bg);border-radius:12px;padding:var(--space-md);display:flex;flex-wrap:wrap;gap:var(--space-md);">
+        <div class="swatch" style="background:var(--theme-dark-bg);color:var(--theme-dark-fg);border-color:var(--theme-dark-border);">BG</div>
+        <div class="swatch" style="background:var(--theme-dark-surface);color:var(--theme-dark-fg);border-color:var(--theme-dark-border);">Surface</div>
+        <div class="swatch" style="background:var(--theme-dark-fg);color:var(--theme-dark-bg);border-color:var(--theme-dark-border);">FG</div>
+        <div class="swatch" style="background:var(--theme-dark-primary);color:var(--theme-dark-bg);border-color:var(--theme-dark-border);">Primary</div>
+        <div class="swatch" style="background:var(--theme-dark-secondary);color:var(--theme-dark-fg);border-color:var(--theme-dark-border);">Secondary</div>
+        <div class="swatch" style="background:var(--theme-dark-accent);color:var(--theme-dark-bg);border-color:var(--theme-dark-border);">Accent</div>
+        <div class="swatch" style="background:var(--theme-dark-error);color:var(--theme-dark-error-fg);border-color:var(--theme-dark-border);">Error</div>
+        <div class="swatch" style="background:var(--theme-dark-success);color:var(--theme-dark-success-fg);border-color:var(--theme-dark-border);">Success</div>
+        <div class="swatch" style="background:var(--theme-dark-muted);color:var(--theme-dark-bg);border-color:var(--theme-dark-border);">Muted</div>
+        <div class="swatch" style="background:var(--theme-dark-border);color:var(--theme-dark-fg);border-color:var(--theme-dark-border);">Border</div>
+      </div>
+      <h3>Contrast Samples</h3>
+      <div class="contrast-sample">
+        <div class="contrast-box contrast-light">Dark on Light</div>
+        <div class="contrast-box contrast-dark">Light on Dark</div>
+        <div class="contrast-box contrast-primary">Primary</div>
+        <div class="contrast-box contrast-accent">Accent</div>
+        <div class="contrast-box contrast-error">Error</div>
+        <div class="contrast-box contrast-success">Success</div>
+      </div>
+      <div class="theme-grid">
+        <article class="theme-card light">
+          <h3>Light Theme Direction</h3>
+          <p>
+            Use for the default reading and study experience. Surfaces stay warm and bright, with
+            Green Dome tones carrying headers, actions, and structured emphasis.
+          </p>
+          <div class="token-list">
+            <div class="token-row">
+              <span>Canvas</span>
+              <span class="token-chip" style="background: var(--color-bg)"></span>
+              <span>#F7F3EA</span>
+            </div>
+            <div class="token-row">
+              <span>Surface</span>
+              <span class="token-chip" style="background: var(--color-surface)"></span>
+              <span>#FFFDFA</span>
+            </div>
+            <div class="token-row">
+              <span>Primary</span>
+              <span class="token-chip" style="background: var(--color-primary)"></span>
+              <span>#2F6F5C</span>
+            </div>
+            <div class="token-row">
+              <span>Accent</span>
+              <span class="token-chip" style="background: var(--color-accent)"></span>
+              <span>#A7863A</span>
+            </div>
+            <div class="token-row">
+              <span>Text</span>
+              <span class="token-chip" style="background: var(--color-fg)"></span>
+              <span>#18352F</span>
+            </div>
+          </div>
+        </article>
+        <article class="theme-card dark">
+          <h3>Dark Theme Direction</h3>
+          <p>
+            Use for late-evening reading and low-glare study. Keep the same hierarchy: deep green
+            planes, lifted dome-green actions, and muted brass highlights instead of bright gold.
+          </p>
+          <div class="token-list">
+            <div class="token-row">
+              <span>Canvas</span>
+              <span class="token-chip" style="background: var(--theme-dark-bg)"></span>
+              <span>#0F1F1B</span>
+            </div>
+            <div class="token-row">
+              <span>Surface</span>
+              <span class="token-chip" style="background: var(--theme-dark-surface)"></span>
+              <span>#163029</span>
+            </div>
+            <div class="token-row">
+              <span>Primary</span>
+              <span class="token-chip" style="background: var(--theme-dark-primary)"></span>
+              <span>#72AB96</span>
+            </div>
+            <div class="token-row">
+              <span>Accent</span>
+              <span class="token-chip" style="background: var(--theme-dark-accent)"></span>
+              <span>#C6AB63</span>
+            </div>
+            <div class="token-row">
+              <span>Text</span>
+              <span class="token-chip" style="background: var(--theme-dark-fg)"></span>
+              <span>#EDF3EB</span>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p>See <a href="#accessibility">Accessibility</a> for contrast guidelines.</p>
+    </section>
+
+    <section id="typography">
+      <h2>2. Typography</h2>
+      <p>
+        Two font families only: <strong>Inter</strong> (all UI and English text) and
+        <strong>Scheherazade New</strong> (all Quranic Arabic text). Amiri is kept as a local backup
+        but is not loaded by the app.
+      </p>
+
+      <!-- Font pairing table -->
+      <h3>Font Pairing &amp; Loading Strategy</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin-bottom:var(--space-lg);">
+        <thead>
+          <tr style="background:var(--color-primary);color:#fff;">
+            <th style="padding:8px 12px;text-align:left;">Family</th>
+            <th style="padding:8px 12px;text-align:left;">Role</th>
+            <th style="padding:8px 12px;text-align:left;">Format</th>
+            <th style="padding:8px 12px;text-align:left;">font-display</th>
+            <th style="padding:8px 12px;text-align:left;">Fallback stack</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);"><strong>Inter</strong> (variable)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);">UI, labels, English copy, metadata</td>
+            <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);">Variable TTF → woff2 (via next/font)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);"><code>swap</code> — text always visible</td>
+            <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);">‘Segoe UI’, Arial, sans-serif</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;"><strong>Scheherazade New</strong></td>
+            <td style="padding:8px 12px;">Quranic Arabic display text</td>
+            <td style="padding:8px 12px;">4 weights · subsetted woff2</td>
+            <td style="padding:8px 12px;"><code>optional</code> — no layout shift; fallback if slow</td>
+            <td style="padding:8px 12px;">‘Amiri’, serif</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        <strong>Why <code>optional</code> for Arabic?</strong> Quranic Arabic text is large (2–4rem). Loading it with <code>swap</code> would cause visible font swap flash on first load. <code>optional</code> shows fallback on first load and the correct font from cache on every subsequent visit — no layout shift ever.
+      </p>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        <strong>Why Scheherazade New?</strong> Purpose-built for Quranic Arabic — comprehensive diacritic (tashkeel/harakat) support, optimised for Uthmani script rendering. Cleaner single family (4 weights) vs Amiri. Better for a Quranic vocabulary app.
+      </p>
+
+      <!-- Subsetting -->
+      <h3>Arabic Font Subsetting</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        Scheherazade New is subsetted using <code>pyftsubset</code> (fonttools) against the full Quranic Unicode range before shipping. Run once from the project root: <code>npm run subset-fonts</code>. Output: <code>public/fonts/Scheherazade_New/ScheherazadeNew-{weight}-quran-subset.woff2</code>.
+      </p>
+      <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-bottom:var(--space-md);">
+        <thead>
+          <tr style="background:var(--color-surface-alt);">
+            <th style="padding:6px 12px;text-align:left;">Unicode Block</th>
+            <th style="padding:6px 12px;text-align:left;">Range</th>
+            <th style="padding:6px 12px;text-align:left;">Contents</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Arabic</td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);"><code>U+0600–06FF</code></td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Core Arabic letters + diacritics</td></tr>
+          <tr><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Arabic Supplement</td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);"><code>U+0750–077F</code></td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Extended Arabic letters</td></tr>
+          <tr><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Arabic Extended-A</td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);"><code>U+08A0–08FF</code></td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Quranic annotations</td></tr>
+          <tr><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Arabic Presentation Forms-A</td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);"><code>U+FB50–FDFF</code></td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Ligatures, positional forms</td></tr>
+          <tr><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Arabic Presentation Forms-B</td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);"><code>U+FE70–FEFF</code></td><td style="padding:5px 12px;border-bottom:1px solid var(--color-border);">Positional forms</td></tr>
+          <tr><td style="padding:5px 12px;">Arabic Mathematical / Rumi</td><td style="padding:5px 12px;"><code>U+10E60–10E7F</code></td><td style="padding:5px 12px;">Rumi numeral signs</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Type scale -->
+      <h3>Type Scale</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin-bottom:var(--space-lg);">
+        <thead>
+          <tr style="background:var(--color-primary);color:#fff;">
+            <th style="padding:8px 12px;text-align:left;">Token</th>
+            <th style="padding:8px 12px;text-align:left;">Size</th>
+            <th style="padding:8px 12px;text-align:left;">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--font-size-sm</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">0.75rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Labels, metadata, captions</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--font-size-base</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">1rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Body copy, inputs</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--font-size-lg</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">1.25rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Subheadings, transliteration</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--font-size-xl</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">1.5rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Section headings</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-primary);">Arabic S</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);font-weight:600;">1.75rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Arabic text — compact / small screens</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-primary);">Arabic M ❆ default</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);font-weight:600;">2.25rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Arabic text — default</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);font-weight:600;color:var(--color-primary);">Arabic L</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);font-weight:600;">3rem</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Arabic text — comfortable reading</td></tr>
+          <tr><td style="padding:6px 12px;font-weight:600;color:var(--color-primary);">Arabic XL</td><td style="padding:6px 12px;font-weight:600;">3.75rem</td><td style="padding:6px 12px;">Arabic text — accessibility / large display</td></tr>
+        </tbody>
+      </table>
+
+      <!-- FontSizeControl explanation -->
+      <h3>FontSizeControl (S / M / L / XL)</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        Four buttons let the user resize Arabic text. Tapping a level changes <code>--font-size-arabic</code> on the <code>&lt;html&gt;</code> element. The choice is saved to <code>localStorage</code> and restored on every visit. All Arabic text elements read <code>font-size: var(--font-size-arabic)</code>.
+      </p>
+      <div style="display:flex;gap:var(--space-sm);align-items:center;margin-bottom:var(--space-md);">
+        <button style="padding:6px 14px;border-radius:0.375rem;border:1.5px solid var(--color-border);background:var(--color-surface);font-family:var(--font-sans);font-size:0.875rem;cursor:pointer;">S</button>
+        <button style="padding:6px 14px;border-radius:0.375rem;border:1.5px solid var(--color-primary);background:var(--color-primary);color:#fff;font-family:var(--font-sans);font-size:0.875rem;cursor:pointer;">M</button>
+        <button style="padding:6px 14px;border-radius:0.375rem;border:1.5px solid var(--color-border);background:var(--color-surface);font-family:var(--font-sans);font-size:0.875rem;cursor:pointer;">L</button>
+        <button style="padding:6px 14px;border-radius:0.375rem;border:1.5px solid var(--color-border);background:var(--color-surface);font-family:var(--font-sans);font-size:0.875rem;cursor:pointer;">XL</button>
+        <span style="font-size:var(--font-size-sm);color:var(--color-muted);">← M is default (highlighted)</span>
+      </div>
+
+      <!-- Visual demos -->
+      <h3>Inter — UI Font Samples</h3>
+      <div style="display:flex;flex-direction:column;gap:var(--space-sm);background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:var(--space-lg);">
+        <span style="font-size:0.75rem;font-family:var(--font-sans);">0.75rem — Label / metadata / caption text</span>
+        <span style="font-size:1rem;font-family:var(--font-sans);">1rem — Body copy. Type phonetic English to search.</span>
+        <span style="font-size:1.25rem;font-family:var(--font-sans);">1.25rem — Transliteration: ra-ḥ-mān</span>
+        <span style="font-size:1.5rem;font-family:var(--font-sans);">1.5rem — Section heading</span>
+        <span style="font-size:0.75rem;color:var(--color-muted);font-family:var(--font-sans);margin-top:var(--space-xs);">Inter variable font · weights 100–900 · optical sizing (opsz) · font-display: swap</span>
+      </div>
+
+      <h3 style="margin-top:var(--space-lg);">Scheherazade New — Arabic Font Samples</h3>
+      <div style="display:flex;flex-direction:column;gap:var(--space-md);background:var(--color-surface-arabic);border:1px solid var(--color-border);border-radius:8px;padding:var(--space-lg);">
+        <div style="text-align:right;direction:rtl;">
+          <div style="font-size:1.75rem;font-family:'Scheherazade New','Amiri',serif;line-height:1.8;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+          <div style="font-size:0.75rem;color:var(--color-muted);text-align:left;direction:ltr;margin-top:2px;">S — 1.75rem</div>
+        </div>
+        <div style="text-align:right;direction:rtl;border-top:1px solid var(--color-border);padding-top:var(--space-md);">
+          <div style="font-size:2.25rem;font-family:'Scheherazade New','Amiri',serif;line-height:1.8;">الرَّحْمَٰنُ</div>
+          <div style="font-size:0.75rem;color:var(--color-muted);text-align:left;direction:ltr;margin-top:2px;">M — 2.25rem (default) · ar-raḥmān · The Most Merciful</div>
+        </div>
+        <div style="text-align:right;direction:rtl;border-top:1px solid var(--color-border);padding-top:var(--space-md);">
+          <div style="font-size:3rem;font-family:'Scheherazade New','Amiri',serif;line-height:1.8;">اللَّهِ</div>
+          <div style="font-size:0.75rem;color:var(--color-muted);text-align:left;direction:ltr;margin-top:2px;">L — 3rem</div>
+        </div>
+        <div style="text-align:right;direction:rtl;border-top:1px solid var(--color-border);padding-top:var(--space-md);">
+          <div style="font-size:3.75rem;font-family:'Scheherazade New','Amiri',serif;line-height:1.6;">كِتَابٌ</div>
+          <div style="font-size:0.75rem;color:var(--color-muted);text-align:left;direction:ltr;margin-top:2px;">XL — 3.75rem · Scheherazade New · font-display: optional</div>
+        </div>
+      </div>
+
+      <!-- Dark mode demo -->
+      <div style="margin-top:var(--space-md);background:var(--theme-dark-bg);border-radius:8px;padding:var(--space-lg);">
+        <p style="color:var(--theme-dark-muted);font-size:var(--font-size-sm);margin:0 0 var(--space-md) 0;">Dark mode — Arabic M default (2.25rem)</p>
+        <div style="text-align:right;direction:rtl;font-size:2.25rem;font-family:'Scheherazade New','Amiri',serif;line-height:1.8;color:var(--theme-dark-fg);">الرَّحِيمُ</div>
+        <div style="font-size:0.875rem;color:var(--theme-dark-muted);margin-top:var(--space-xs);">ar-raḥīm · The Most Compassionate</div>
+      </div>
+
+      <!-- Rules -->
+      <h3 style="margin-top:var(--space-lg);">Rules</h3>
+      <ul style="font-size:var(--font-size-sm);">
+        <li>Use <code>var(--font-size-arabic)</code> for all Arabic text elements — never hardcode a size.</li>
+        <li>Arabic text always has <code>dir="rtl"</code> and <code>lang="ar"</code>.</li>
+        <li>Use <code>font-family: var(--font-scheherazade), 'Amiri', serif</code> for Arabic.</li>
+        <li>Use <code>font-family: var(--font-inter), 'Segoe UI', Arial, sans-serif</code> for UI/English.</li>
+        <li>Do not load Amiri or static Inter weight files in the app — one variable Inter + subsetted Scheherazade New only.</li>
+        <li>Run <code>npm run subset-fonts</code> once before building for production. Re-run only if the glyph inventory changes.</li>
+      </ul>
+    </section>
+
+    <section id="components">
+      <h2>3. Components</h2>
+      <p>
+        Inventory of UI components with annotated visuals, states, and variants. Update as new
+        components are added.
+      </p>
+      <div class="component-demo">
+        <div class="component-box">
+          <strong>Button</strong><br />
+          <button class="btn">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn" disabled>Disabled</button>
+          <div style="margin-top: 8px; font-size: 0.9em">
+            Dome green remains the main action fill. Aged brass should show up as edge detail on
+            hover, plus focus and selected emphasis.
+          </div>
+        </div>
+        <div class="component-box">
+          <strong>Input</strong><br />
+          <div class="input-demo">
+            <label class="field-label" for="demo-search">Search verse or lemma</label>
+            <input
+              id="demo-search"
+              class="field-input"
+              type="text"
+              placeholder="al-rahman"
+            />
+            <div class="helper-text">Focus ring uses deeper brass on light stone, not electric blue.</div>
+          </div>
+        </div>
+        <div class="component-box">
+          <strong>Card</strong>
+          <div class="card-demo">
+            <div style="font-weight: 700; color: var(--color-primary-strong)">Surah 1:1</div>
+            <div class="helper-text" style="margin-top: 2px">Recitation-ready reference card</div>
+            <div style="margin-top: 10px">Bismillah al-rahman al-rahim</div>
+            <div class="pill-row">
+              <span class="pill">Word-by-word</span>
+              <span class="pill accent">Selected</span>
+            </div>
+          </div>
+          <div style="margin-top: 8px; font-size: 0.9em">
+            Cards sit on warm stone surfaces with green structure and brass selection cues.
+          </div>
+        </div>
+        <div class="component-box dark">
+          <strong>Dark Theme Components</strong>
+          <div class="dark-component-actions">
+            <button class="btn">Primary</button>
+            <button class="btn btn-secondary">
+              Secondary
+            </button>
+          </div>
+          <div class="input-demo">
+            <label class="field-label" for="demo-search-dark">Evening search</label>
+            <input
+              id="demo-search-dark"
+              class="field-input"
+              type="text"
+              placeholder="al-mulk"
+            />
+            <div class="helper-text">Dark focus uses the lifted brass token on deep green planes.</div>
+          </div>
+          <div class="card-demo">
+            <div style="font-weight: 700; color: var(--theme-dark-primary-strong)">Surah 67:1</div>
+            <div class="helper-text" style="margin-top: 2px">Low-glare reference card</div>
+            <div style="margin-top: 10px">Tabaraka alladhi biyadihi al-mulk</div>
+            <div class="pill-row">
+              <span class="pill">Night reading</span>
+              <span class="pill accent">Selected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>Document all new components here with visuals and state annotations.</p>
+    </section>
+
+    <section id="responsive">
+      <h2>4. Responsive Behavior</h2>
+      <p>
+        Breakpoints and layout adaptation demos. The UI adapts to different screen sizes for
+        accessibility and usability.
+      </p>
+      <ul>
+        <li>Mobile (&lt;480px): Single column, stacked layout</li>
+        <li>Tablet (480px–1024px): Adaptive multi-column</li>
+        <li>Desktop (&gt;1024px): Full grid with max-width</li>
+      </ul>
+      <div class="responsive-demo">
+        <div class="responsive-box">Column 1</div>
+        <div class="responsive-box">Column 2</div>
+        <div class="responsive-box">Column 3</div>
+      </div>
+      <p>Resize the browser to see layout adaptation.</p>
+    </section>
+
+    <section id="grid">
+      <h2>5. Grid System</h2>
+      <p>12-column grid with 16px gutters. Use for consistent layout structure.</p>
+      <div class="grid-demo">
+        <div class="grid-col">1</div>
+        <div class="grid-col">2</div>
+        <div class="grid-col">3</div>
+        <div class="grid-col">4</div>
+        <div class="grid-col">5</div>
+        <div class="grid-col">6</div>
+        <div class="grid-col">7</div>
+        <div class="grid-col">8</div>
+        <div class="grid-col">9</div>
+        <div class="grid-col">10</div>
+        <div class="grid-col">11</div>
+        <div class="grid-col">12</div>
+      </div>
+      <p>Example: Place content within grid columns for alignment and rhythm.</p>
+    </section>
+
+    <section id="spacing">
+      <h2>6. Spacing & Scale</h2>
+      <p>Spacing tokens and examples for consistent vertical and horizontal rhythm.</p>
+      <div class="spacing-demo">
+        <div class="space-box space-xs"></div>
+        xs (4px)
+        <div class="space-box space-sm"></div>
+        sm (8px)
+        <div class="space-box space-md"></div>
+        md (16px)
+        <div class="space-box space-lg"></div>
+        lg (24px)
+        <div class="space-box space-xl"></div>
+        xl (40px)
+      </div>
+      <ul>
+        <li>Use spacing tokens for margin, padding, and gaps.</li>
+        <li>Maintain consistent scale throughout the UI.</li>
+        <li>Give hero and search surfaces more breathing room so the palette feels architectural.</li>
+      </ul>
+    </section>
+
+    <section id="accessibility">
+      <h2>7. Accessibility</h2>
+      <p>
+        Ensure all UI meets WCAG AA contrast, keyboard navigation, ARIA labeling, and visible focus
+        states.
+      </p>
+      <ul>
+        <li>Contrast: All text and interactive elements must meet 4.5:1 ratio.</li>
+        <li>Keyboard: All controls are reachable and operable via keyboard (Tab, Enter, Space).</li>
+        <li>ARIA: Use appropriate ARIA roles and labels for screen readers.</li>
+        <li>Focus: On light surfaces, use the deeper brass focus token with a clear 3px ring; on dark surfaces, use the lifted brass token for the same visible emphasis.</li>
+      </ul>
+      <div class="button-demo">
+        <button class="btn">Focusable Button</button>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+      <p>Test with screen readers and keyboard only navigation.</p>
+    </section>
+
+    <section id="interaction">
+      <h2>8. Interaction States</h2>
+      <p>
+        Visuals for hover, focus, active, and disabled states. All interactive elements must provide
+        clear feedback.
+      </p>
+      <div class="button-demo">
+        <button class="btn">Default</button>
+        <button class="btn btn-hover-preview">
+          Hover
+        </button>
+        <button class="btn" style="outline: 3px solid var(--color-focus); outline-offset: 3px">Focus</button>
+        <div class="dark-state-demo">
+          <span style="font-size: var(--font-size-sm)">Dark focus</span>
+          <button class="btn btn-dark-focus-preview">Focus</button>
+        </div>
+        <button class="btn btn-active-preview">Active</button>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+      <p>
+        Apply these states to all buttons, inputs, and interactive components. Hover should keep
+        green as the main fill and pick up brass edge detail; active states should return to
+        grounded green.
+      </p>
+    </section>
+
+    <section id="iconography">
+  <h2>9. Iconography</h2>
+  <p>
+    Icon library: <strong>Lucide React</strong> (<code>lucide-react</code>) — the default companion library for shadcn/ui.
+    Use Lucide icons for all UI icons. Custom inline SVGs are permitted only where no Lucide equivalent exists.
+    Icon-only interactive elements must have <code>aria-label</code> on the button; set <code>aria-hidden="true"</code> on the SVG itself.
+    Decorative icons: <code>aria-hidden="true"</code>. Icons are <strong>not</strong> auto-mirrored for RTL — swap only intentional directional glyphs.
+  </p>
+  <h3>Icon Inventory</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--color-primary);color:#fff;">
+        <th style="padding:8px 12px;text-align:left;">Lucide Icon</th>
+        <th style="padding:8px 12px;text-align:left;">Usage</th>
+        <th style="padding:8px 12px;text-align:left;">Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Search</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">SearchBox input adornment</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Sun</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">ThemeToggle — light mode</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Moon</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">ThemeToggle — dark mode</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Play</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">AudioPlayer — play</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Pause</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">AudioPlayer — pause</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Volume2</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">AudioPlayer — audio playing indicator</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">16</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>VolumeX</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">AudioPlayer — audio error state</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">16</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>ChevronDown</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">VerseList — expand occurrences</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">16</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>ChevronUp</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">VerseList — collapse occurrences</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">16</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>X</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Dismiss error / notification</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">16</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>CircleAlert</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Error state indicator</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>Loader2</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Loading state (CSS spin animation)</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">20</td></tr>
+      <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>WifiOff</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Offline-ready badge</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">16</td></tr>
+      <tr><td style="padding:6px 12px;"><code>ExternalLink</code></td><td style="padding:6px 12px;">Link to external source (everyayah, corpus)</td><td style="padding:6px 12px;">16</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:var(--space-md);">Default icon size is <code>size={20}</code> for primary interactive icons; <code>size={16}</code> for inline, supplementary, or decorative use. Update this inventory as new icons are added.</p>
+      <h3>Visual Demo (Rendered Icons)</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        All icons below are rendered as inline SVG, matching how <code>lucide-react</code> renders them in the app. Each icon is shown at its specified size with a usage label. Dark mode preview uses the dark token palette.
+      </p>
+      <div class="icon-demo" style="flex-wrap:wrap;gap:var(--space-lg);align-items:flex-start;">
+        <!-- Search 20 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <code style="font-size:0.75rem;">Search</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20</span>
+        </div>
+        <!-- Sun 20 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <code style="font-size:0.75rem;">Sun</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20</span>
+        </div>
+        <!-- Moon 20 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+          <code style="font-size:0.75rem;">Moon</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20</span>
+        </div>
+        <!-- Play 20 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <code style="font-size:0.75rem;">Play</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20</span>
+        </div>
+        <!-- Pause 20 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+          <code style="font-size:0.75rem;">Pause</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20</span>
+        </div>
+        <!-- Volume2 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a10 10 0 0 0 0-12.728"/></svg>
+          <code style="font-size:0.75rem;">Volume2</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+        <!-- VolumeX 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+          <code style="font-size:0.75rem;">VolumeX</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+        <!-- ChevronDown 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          <code style="font-size:0.75rem;">ChevronDown</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+        <!-- ChevronUp 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+          <code style="font-size:0.75rem;">ChevronUp</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+        <!-- X 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <code style="font-size:0.75rem;">X</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+        <!-- CircleAlert 20 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          <code style="font-size:0.75rem;">CircleAlert</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20</span>
+        </div>
+        <!-- Loader2 20 with spin animation -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="animation:spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <code style="font-size:0.75rem;">Loader2</code><span style="font-size:0.7rem;color:var(--color-muted);">size 20 · spin</span>
+        </div>
+        <!-- WifiOff 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
+          <code style="font-size:0.75rem;">WifiOff</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+        <!-- ExternalLink 16 -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-xs);min-width:80px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          <code style="font-size:0.75rem;">ExternalLink</code><span style="font-size:0.7rem;color:var(--color-muted);">size 16</span>
+        </div>
+      </div>
+      <!-- Dark mode icon demo -->
+      <div style="margin-top:var(--space-md);background:var(--theme-dark-bg);border-radius:8px;padding:var(--space-md);">
+        <p style="color:var(--theme-dark-fg);font-size:var(--font-size-sm);margin:0 0 var(--space-sm) 0;opacity:0.8;">Dark mode icons</p>
+        <div style="display:flex;flex-wrap:wrap;gap:var(--space-lg);align-items:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--theme-dark-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--theme-dark-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--theme-dark-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="animation:spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          <span style="color:var(--theme-dark-muted);font-size:var(--font-size-sm);">Search · Play · Loader2 (spin) · CircleAlert (error)</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="motion">
+      <h2>10. Motion &amp; Animation</h2>
+      <p>
+        All transitions and animations use <strong>CSS-only</strong> — no JS animation library (Framer Motion etc. is excluded to preserve the ≤ 200 KB initial JS + CSS budget). Use motion purposefully: feedback, transitions, and loading states only.
+      </p>
+
+      <h3>Motion Tokens</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin-bottom:var(--space-lg);">
+        <thead>
+          <tr style="background:var(--color-primary);color:#fff;">
+            <th style="padding:8px 12px;text-align:left;">Token</th>
+            <th style="padding:8px 12px;text-align:left;">Value</th>
+            <th style="padding:8px 12px;text-align:left;">Usage</th>
+            <th style="padding:8px 12px;text-align:left;">Components</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--transition-base</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">150ms ease-in-out</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Interactive state changes</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Button hover/focus, Input focus ring, ThemeToggle, FontSizeControl</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--transition-panel</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">250ms ease-in-out</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Panel open/close</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">VerseList collapsible expand/collapse</td></tr>
+          <tr><td style="padding:6px 12px;"><code>--transition-fade</code></td><td style="padding:6px 12px;">200ms ease-out</td><td style="padding:6px 12px;">State crossfades</td><td style="padding:6px 12px;">UX states: empty → loading → result → error</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Reduced Motion</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        All transitions and animations must respect <code>prefers-reduced-motion: reduce</code>. Under this media query, set <code>transition: none</code> and <code>animation: none</code> globally. For the shimmer skeleton, replace the gradient sweep with static grey blocks.
+      </p>
+      <pre style="background:var(--color-surface-alt);border-radius:8px;padding:var(--space-md);font-size:0.8rem;overflow-x:auto;"><code>@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .skeleton-block { background: var(--color-surface-alt); }
+}</code></pre>
+
+      <h3>Live Demo</h3>
+      <div class="motion-demo">
+        <div class="motion-box" title="Bouncing animation (disabled under prefers-reduced-motion)"></div>
+        <span style="font-size:var(--font-size-sm);color:var(--color-muted);">Bounce demo — disabled when <code>prefers-reduced-motion: reduce</code> is set.</span>
+      </div>
+    </section>
+
+    <section id="usage">
+      <h2>11. Usage Guidelines & Examples</h2>
+      <p>
+        Best practices for using the design system. Reference these examples when building new UI.
+      </p>
+      <ul>
+        <li>Always use tokens for color, spacing, and typography.</li>
+        <li>Follow component states and accessibility guidelines.</li>
+        <li>Reserve brass for focus, highlights, and selected states instead of broad fills.</li>
+        <li>Document any new patterns or exceptions here.</li>
+      </ul>
+      <div class="usage-demo">
+        <strong>Example:</strong> Transliteration input field with label and helper text.<br /><br />
+        <label for="translit-input" class="field-label">Transliteration</label>
+        <input
+          id="translit-input"
+          class="field-input"
+          type="text"
+          placeholder="Enter Arabic or transliteration"
+        />
+        <div class="helper-text">
+          Helper: Enter text to see transliteration suggestions. Default surface is warm stone;
+          selected suggestions should use dome green with brass edge detail.
+        </div>
+      </div>
+    </section>
+
+    <section id="shadcn-primitives">
+      <h2>12. shadcn/ui Primitives Inventory</h2>
+      <p>
+        These six shadcn/ui components are bootstrapped in Stage 4.1. All visual examples below use the project's design tokens. Actual app components are styled via shadcn CSS variables mapped to these tokens in <code>app/globals.css</code>.
+      </p>
+
+      <!-- Token mapping table -->
+      <h3>Token Mapping: design.html → shadcn CSS variables</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-bottom:var(--space-lg);">
+        <thead>
+          <tr style="background:var(--color-primary);color:#fff;">
+            <th style="padding:8px 12px;text-align:left;">shadcn CSS var</th>
+            <th style="padding:8px 12px;text-align:left;">Light value</th>
+            <th style="padding:8px 12px;text-align:left;">Dark value</th>
+            <th style="padding:8px 12px;text-align:left;">design.html token</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--background</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#F7F3EA</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#0F1F1B</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-bg</code> / <code>--theme-dark-bg</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--foreground</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#18352F</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#EDF3EB</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-fg</code> / <code>--theme-dark-fg</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--primary</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#2F6F5C</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#72AB96</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-primary</code> / <code>--theme-dark-primary</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--muted</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#E7EFE8</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#1B352E</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-surface-alt</code> / <code>--theme-dark-surface-alt</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--muted-foreground</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#5F746D</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#AABDB5</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-muted</code> / <code>--theme-dark-muted</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--border</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#CFD8CB</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#315548</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-border</code> / <code>--theme-dark-border</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--ring</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#7C6121</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#D8BF79</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-focus</code> / <code>--theme-dark-focus</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--accent</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#A7863A</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#C6AB63</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-accent</code> / <code>--theme-dark-accent</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--card</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#FFFDFA</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#163029</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-surface</code> / <code>--theme-dark-surface</code></td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--destructive</code></td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#A6463B</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">#A6463B</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);"><code>--color-error</code></td></tr>
+          <tr><td style="padding:6px 12px;"><code>--radius</code></td><td style="padding:6px 12px;">0.5rem</td><td style="padding:6px 12px;">0.5rem</td><td style="padding:6px 12px;">—</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 1. Button -->
+      <h3>1. Button</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">Primary (solid), secondary (outline), and destructive variants. Focus ring uses <code>--color-focus</code> (brass).</p>
+      <div class="button-demo" style="flex-wrap:wrap;gap:var(--space-md);align-items:center;">
+        <!-- Primary -->
+        <button style="background:var(--color-primary);color:#fff;border:none;border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:pointer;transition:background 150ms ease-in-out;box-shadow:0 1px 3px var(--color-primary-shadow);" onmouseover="this.style.background='var(--color-primary-strong)'" onmouseout="this.style.background='var(--color-primary)'">Primary</button>
+        <!-- Secondary / Outline -->
+        <button style="background:transparent;color:var(--color-primary);border:1.5px solid var(--color-primary);border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:pointer;transition:background 150ms ease-in-out;" onmouseover="this.style.background='var(--color-primary-tint)'" onmouseout="this.style.background='transparent'">Secondary</button>
+        <!-- Ghost -->
+        <button style="background:transparent;color:var(--color-fg);border:none;border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:pointer;transition:background 150ms ease-in-out;" onmouseover="this.style.background='var(--color-surface-alt)'" onmouseout="this.style.background='transparent'">Ghost</button>
+        <!-- Destructive -->
+        <button style="background:var(--color-error);color:var(--color-error-fg);border:none;border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:pointer;">Destructive</button>
+        <!-- Disabled -->
+        <button disabled style="background:var(--color-surface-alt);color:var(--color-muted);border:none;border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:not-allowed;opacity:0.6;">Disabled</button>
+      </div>
+      <!-- Dark mode buttons -->
+      <div style="margin-top:var(--space-sm);background:var(--theme-dark-bg);border-radius:8px;padding:var(--space-md);display:flex;flex-wrap:wrap;gap:var(--space-md);align-items:center;">
+        <button style="background:var(--theme-dark-primary);color:var(--theme-dark-bg);border:none;border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:pointer;">Primary (dark)</button>
+        <button style="background:transparent;color:var(--theme-dark-primary);border:1.5px solid var(--theme-dark-primary);border-radius:0.5rem;padding:8px 20px;font-size:var(--font-size-base);font-family:var(--font-sans);cursor:pointer;">Secondary (dark)</button>
+      </div>
+
+      <!-- 2. Input -->
+      <h3>2. Input</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">Text input with search icon adornment, focus ring, and error state.</p>
+      <div style="display:flex;flex-direction:column;gap:var(--space-md);max-width:400px;">
+        <!-- Default -->
+        <div style="position:relative;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Type phonetic Arabic… (e.g. rahman)" style="width:100%;box-sizing:border-box;padding:10px 12px 10px 38px;border:1.5px solid var(--color-border);border-radius:0.5rem;background:var(--color-surface);color:var(--color-fg);font-size:var(--font-size-base);font-family:var(--font-sans);outline:none;transition:border-color 150ms ease-in-out;" onfocus="this.style.borderColor='var(--color-focus)'" onblur="this.style.borderColor='var(--color-border)'"/>
+        </div>
+        <!-- Error state -->
+        <div>
+          <input type="text" value="???" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid var(--color-error);border-radius:0.5rem;background:var(--color-surface);color:var(--color-fg);font-size:var(--font-size-base);font-family:var(--font-sans);outline:none;"/>
+          <p style="color:var(--color-error);font-size:var(--font-size-sm);margin:4px 0 0 0;">No results found.</p>
+        </div>
+      </div>
+      <!-- Dark mode input -->
+      <div style="margin-top:var(--space-sm);background:var(--theme-dark-bg);border-radius:8px;padding:var(--space-md);">
+        <div style="position:relative;max-width:400px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--theme-dark-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Type phonetic Arabic… (dark mode)" style="width:100%;box-sizing:border-box;padding:10px 12px 10px 38px;border:1.5px solid var(--theme-dark-border);border-radius:0.5rem;background:var(--theme-dark-surface);color:var(--theme-dark-fg);font-size:var(--font-size-base);font-family:var(--font-sans);outline:none;"/>
+        </div>
+      </div>
+
+      <!-- 3. Badge -->
+      <h3>3. Badge</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">Used for root letter pills on WordCard. Default (primary), secondary (muted), and accent variants.</p>
+      <div class="pill-row" style="flex-wrap:wrap;gap:var(--space-sm);align-items:center;">
+        <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-primary);color:#fff;font-size:var(--font-size-sm);font-family:var(--font-sans);">ر ح م</span>
+        <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-surface-alt);color:var(--color-fg);font-size:var(--font-size-sm);font-family:var(--font-sans);border:1px solid var(--color-border);">Secondary</span>
+        <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-accent-tint);color:var(--color-accent);font-size:var(--font-size-sm);font-family:var(--font-sans);border:1px solid var(--color-accent-border);">Accent</span>
+        <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-error);color:var(--color-error-fg);font-size:var(--font-size-sm);font-family:var(--font-sans);">Destructive</span>
+      </div>
+      <!-- Dark mode badges -->
+      <div style="margin-top:var(--space-sm);background:var(--theme-dark-bg);border-radius:8px;padding:var(--space-md);display:flex;flex-wrap:wrap;gap:var(--space-sm);">
+        <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--theme-dark-primary);color:var(--theme-dark-bg);font-size:var(--font-size-sm);">ر ح م</span>
+        <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--theme-dark-secondary);color:var(--theme-dark-fg);font-size:var(--font-size-sm);border:1px solid var(--theme-dark-border);">Secondary</span>
+      </div>
+
+      <!-- 4. Skeleton -->
+      <h3>4. Skeleton (WordCard shimmer)</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">Loading shimmer matching the approximate shape of a WordCard. CSS-only shimmer animation using a gradient sweep. Under <code>prefers-reduced-motion: reduce</code>, the animation is replaced with static grey blocks.</p>
+      <style>
+        @keyframes shimmer {
+          0% { background-position: -400px 0; }
+          100% { background-position: 400px 0; }
+        }
+        .skeleton-block {
+          border-radius: 4px;
+          background: linear-gradient(90deg, var(--color-surface-alt) 25%, var(--color-surface-warm) 50%, var(--color-surface-alt) 75%);
+          background-size: 800px 100%;
+          animation: shimmer 1.4s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .skeleton-block { animation: none; background: var(--color-surface-alt); }
+        }
+      </style>
+      <div role="status" aria-label="Loading result…" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:var(--space-lg);max-width:480px;display:flex;flex-direction:column;gap:var(--space-md);">
+        <!-- Arabic headline block -->
+        <div class="skeleton-block" style="height:40px;width:80%;"></div>
+        <!-- Transliteration row -->
+        <div class="skeleton-block" style="height:20px;width:60%;"></div>
+        <!-- English meaning row -->
+        <div class="skeleton-block" style="height:20px;width:50%;"></div>
+        <!-- Root pill row -->
+        <div style="display:flex;gap:8px;">
+          <div class="skeleton-block" style="height:28px;width:60px;border-radius:9999px;"></div>
+          <div class="skeleton-block" style="height:28px;width:60px;border-radius:9999px;"></div>
+          <div class="skeleton-block" style="height:28px;width:60px;border-radius:9999px;"></div>
+        </div>
+        <!-- AudioPlayer button row -->
+        <div class="skeleton-block" style="height:36px;width:140px;border-radius:0.5rem;"></div>
+      </div>
+
+      <!-- 5. Separator -->
+      <h3>5. Separator</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">Horizontal rule using <code>--color-border</code>. Used as a visual divider between layout regions.</p>
+      <div style="max-width:480px;">
+        <p style="margin:0 0 var(--space-sm) 0;">Content above the separator</p>
+        <hr style="border:none;border-top:1px solid var(--color-border);margin:0;" aria-orientation="horizontal" role="separator"/>
+        <p style="margin:var(--space-sm) 0 0 0;">Content below the separator</p>
+      </div>
+      <!-- Dark mode separator -->
+      <div style="margin-top:var(--space-sm);background:var(--theme-dark-bg);border-radius:8px;padding:var(--space-md);max-width:480px;">
+        <p style="color:var(--theme-dark-fg);margin:0 0 var(--space-sm) 0;">Content above (dark)</p>
+        <hr style="border:none;border-top:1px solid var(--theme-dark-border);margin:0;"/>
+        <p style="color:var(--theme-dark-fg);margin:var(--space-sm) 0 0 0;">Content below (dark)</p>
+      </div>
+
+      <!-- 6. Tooltip -->
+      <h3>6. Tooltip</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">Used for icon-only buttons (e.g., ThemeToggle, AudioPlayer play/pause). Tooltip appears above the trigger. The live app uses <code>@radix-ui/react-tooltip</code> via shadcn; this demo uses CSS hover.</p>
+      <div style="display:flex;gap:var(--space-lg);align-items:flex-end;padding-top:var(--space-xl);">
+        <!-- Tooltip demo: Play button -->
+        <div style="position:relative;display:inline-block;">
+          <div style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--color-fg);color:var(--color-surface);font-size:0.75rem;padding:4px 10px;border-radius:4px;white-space:nowrap;pointer-events:none;">Play audio</div>
+          <div style="position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid var(--color-fg);pointer-events:none;"></div>
+          <button aria-label="Play audio" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:0.5rem;background:var(--color-primary);color:#fff;border:none;cursor:pointer;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          </button>
+        </div>
+        <!-- Tooltip demo: Theme toggle -->
+        <!-- Icon convention: shows TARGET mode — Moon when in light mode (click → go dark); Sun when in dark mode (click → go light) -->
+        <!-- Placement: header top-right corner, inside the nav row, 40×40px icon button -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-sm);align-items:center;">
+          <div style="position:relative;display:inline-block;">
+            <div style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--color-fg);color:var(--color-surface);font-size:0.75rem;padding:4px 10px;border-radius:4px;white-space:nowrap;pointer-events:none;">Switch to dark mode</div>
+            <div style="position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid var(--color-fg);pointer-events:none;"></div>
+            <button aria-label="Switch to dark mode" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:0.5rem;background:transparent;border:1.5px solid var(--color-border);cursor:pointer;color:var(--color-fg);">
+              <!-- Moon icon shown when currently in LIGHT mode — clicking switches to dark -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+            </button>
+          </div>
+          <span style="font-size:0.7rem;color:var(--color-muted);">Light mode → Moon (target: dark)</span>
+          <!-- Dark mode state: Sun icon shown when in dark mode -->
+          <div style="position:relative;display:inline-block;margin-top:var(--space-sm);">
+            <button aria-label="Switch to light mode" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:0.5rem;background:var(--theme-dark-surface);border:1.5px solid var(--theme-dark-border);cursor:pointer;color:var(--theme-dark-fg);">
+              <!-- Sun icon shown when currently in DARK mode — clicking switches to light -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </button>
+          </div>
+          <span style="font-size:0.7rem;color:var(--color-muted);">Dark mode → Sun (target: light)</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="phase-4-3-theme-tokens">
+      <h2>Phase 4.3: Theme &amp; Tokens — Dark Mode, ThemeProvider &amp; Tailwind</h2>
+      <p class="section-lead">
+        This section specifies the implementation contract for dark mode activation, the ThemeProvider setup, and the Tailwind v4 <code>@theme</code> mapping. All implementation is downstream from this specification.
+      </p>
+
+      <h3>Dark Mode Activation: <code>.dark</code> Class on <code>&lt;html&gt;</code></h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        Dark mode is activated by adding the <code>.dark</code> class to the <code>&lt;html&gt;</code> element. This causes the CSS variables in the <code>.dark {}</code> override block (see below) to take effect globally, remapping all semantic tokens to their dark-palette values.
+      </p>
+      <ul style="font-size:var(--font-size-sm);">
+        <li><strong>Library:</strong> <code>next-themes</code> manages the class toggle, localStorage persistence, and system preference sync.</li>
+        <li><strong>Attribute:</strong> <code>attribute="class"</code> — next-themes adds/removes the <code>dark</code> class on <code>&lt;html&gt;</code>.</li>
+        <li><strong>Default:</strong> <code>defaultTheme="system"</code> — respects <code>prefers-color-scheme</code> on first visit.</li>
+        <li><strong>localStorage key:</strong> <code>"theme"</code> (next-themes default). Stored value is <code>"light"</code>, <code>"dark"</code>, or <code>"system"</code>.</li>
+        <li><strong>FOUC prevention:</strong> next-themes injects a small blocking script before React hydration — no flash of wrong theme.</li>
+        <li><strong>System sync:</strong> When stored as <code>"system"</code>, theme tracks <code>prefers-color-scheme</code> changes in real time.</li>
+      </ul>
+
+      <h3>ThemeProvider Setup (<code>app/layout.tsx</code>)</h3>
+      <pre style="background:var(--color-surface-alt);border-radius:8px;padding:var(--space-md);font-size:0.8rem;overflow-x:auto;"><code>// app/layout.tsx
+import { ThemeProvider } from 'next-themes'
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="en" suppressHydrationWarning&gt;
+      &lt;body&gt;
+        &lt;ThemeProvider attribute="class" defaultTheme="system" enableSystem&gt;
+          {children}
+        &lt;/ThemeProvider&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  )
+}</code></pre>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        <code>suppressHydrationWarning</code> on <code>&lt;html&gt;</code> is required — next-themes modifies the class attribute server-side vs. client-side.
+      </p>
+
+      <h3>ThemeToggle Component Spec</h3>
+      <ul style="font-size:var(--font-size-sm);">
+        <li><strong>Placement:</strong> Header, top-right corner, inside the nav row.</li>
+        <li><strong>Size:</strong> 40×40px icon button, <code>border-radius: 0.5rem</code>, transparent background, <code>1.5px solid var(--color-border)</code> border.</li>
+        <li><strong>Icon convention:</strong> Shows the <em>target</em> mode — not the current mode.
+          <ul>
+            <li>Currently <strong>light</strong>: show <code>Moon</code> icon (aria-label: "Switch to dark mode")</li>
+            <li>Currently <strong>dark</strong>: show <code>Sun</code> icon (aria-label: "Switch to light mode")</li>
+          </ul>
+        </li>
+        <li><strong>Transition:</strong> Use <code>var(--transition-base)</code> on hover/focus states.</li>
+        <li><strong>ARIA:</strong> <code>aria-label</code> on <code>&lt;button&gt;</code>; <code>aria-hidden="true"</code> on the icon SVG.</li>
+      </ul>
+
+      <h3>CSS Dark Mode Override Block (globals.css)</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        The following <code>.dark {}</code> block must be added to <code>app/globals.css</code> inside <code>@layer base</code>. When next-themes adds <code>class="dark"</code> to <code>&lt;html&gt;</code>, these overrides remap all semantic tokens globally.
+      </p>
+      <pre style="background:var(--color-surface-alt);border-radius:8px;padding:var(--space-md);font-size:0.8rem;overflow-x:auto;"><code>.dark {
+  /* Shadcn/ui base overrides */
+  --background: #0f1f1b;
+  --foreground: #edf3eb;
+  --card: #163029;
+  --card-foreground: #edf3eb;
+  --popover: #163029;
+  --popover-foreground: #edf3eb;
+  --primary: #72ab96;
+  --primary-foreground: #0f1f1b;
+  --secondary: #1b352e;
+  --secondary-foreground: #edf3eb;
+  --muted: #1b352e;
+  --muted-foreground: #aabdb5;
+  --accent: #c6ab63;
+  --accent-foreground: #0f1f1b;
+  --destructive: #a6463b;
+  --destructive-foreground: #fff3f0;
+  --border: #315548;
+  --input: #315548;
+  --ring: #d8bf79;
+
+  /* Extended project tokens — dark */
+  --color-bg: #0f1f1b;
+  --color-surface: #163029;
+  --color-surface-alt: #1e4137;
+  --color-fg: #edf3eb;
+  --color-primary: #72ab96;
+  --color-primary-strong: #8dc2ad;
+  --color-accent: #c6ab63;
+  --color-accent-soft: #8f7740;
+  --color-muted: #aabdb5;
+  --color-border: #315548;
+  --color-focus: #d8bf79;
+  --color-error: #a6463b;
+  --color-error-fg: #fff3f0;
+  --color-success: #48896b;
+  --color-success-fg: #f4fbf5;
+  --color-shadow: rgba(15, 31, 27, 0.28);
+  --color-primary-tint: rgba(114, 171, 150, 0.12);
+  --color-accent-tint: rgba(198, 171, 99, 0.14);
+  --color-accent-border: rgba(198, 171, 99, 0.32);
+  --color-accent-shadow: rgba(198, 171, 99, 0.22);
+  --color-surface-overlay: rgba(22, 48, 41, 0.95);
+  --token-chip-border: rgba(255, 255, 255, 0.14);
+}</code></pre>
+
+      <h3>Tailwind v4 <code>@theme</code> Mapping</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        Tailwind CSS v4 uses an <code>@theme {}</code> inline block in CSS (replacing the <code>tailwind.config.js</code> theme object) to declare design tokens that become Tailwind utility classes. The following block maps the project's CSS variables to Tailwind utilities via <code>--color-*</code> namespace. Add this to <code>app/globals.css</code> after the <code>@import 'tailwindcss'</code> line and before <code>@layer base</code>.
+      </p>
+      <pre style="background:var(--color-surface-alt);border-radius:8px;padding:var(--space-md);font-size:0.8rem;overflow-x:auto;"><code>@theme {
+  /* Map shadcn CSS variables → Tailwind utility classes */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}</code></pre>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        This generates Tailwind utility classes: <code>bg-background</code>, <code>text-foreground</code>, <code>bg-primary</code>, <code>text-primary-foreground</code>, <code>bg-muted</code>, <code>text-muted-foreground</code>, <code>border-border</code>, <code>ring-ring</code>, <code>bg-card</code>, <code>text-card-foreground</code>, <code>bg-destructive</code>, <code>text-destructive-foreground</code>, <code>rounded-sm/md/lg/xl</code>, etc.
+      </p>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        <strong>Note:</strong> Extended project tokens (<code>--color-primary-strong</code>, <code>--color-surface-arabic</code>, etc.) are accessed directly via <code>var()</code> in component CSS — they do not need <code>@theme</code> entries unless Tailwind utility classes are needed for them.
+      </p>
+    </section>
+
+      <section id="integrated-result-card">
+        <h2>Integrated Result Card</h2>
+      <p class="section-lead">
+        The implementation unit is a single result card: <strong>WordCard</strong> provides the outer structure, <strong>RootDisplay</strong> sits inside the meaning block, <strong>AudioPlayer</strong> is the first interactive control, and <strong>VerseList</strong> expands beneath the card content. These components should be reviewed as one reading flow, not as isolated primitives.
+      </p>
+
+      <h3>Integrated Structure</h3>
+      <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        <li><strong>WordCard shell:</strong> rounded card, soft raised surface, Arabic headline first, supporting transliteration and English gloss directly below.</li>
+        <li><strong>RootDisplay placement:</strong> root pills remain visually tied to the lexical meaning block, not detached into a separate footer.</li>
+        <li><strong>AudioPlayer row:</strong> sits above the occurrences divider so playback is available before the user opens VerseList.</li>
+        <li><strong>VerseList region:</strong> collapsed by default, then expands inline below the separator using <code>--transition-panel</code>.</li>
+      </ul>
+
+      <div class="component-demo" style="align-items:flex-start;">
+        <div class="component-box" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:var(--space-md);padding:var(--space-lg);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);">
+            <strong>Default result card</strong>
+            <span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;background:var(--color-surface-alt);border:1px solid var(--color-border);font-size:var(--font-size-sm);">Collapsed VerseList</span>
+          </div>
+          <div lang="ar" dir="rtl" style="font-family:var(--font-arabic);font-size:var(--font-size-arabic);line-height:1.35;background:linear-gradient(135deg,var(--color-surface-alt),var(--color-surface-arabic));border-radius:14px;padding:var(--space-md);">رَحْمَة</div>
+          <div>
+            <div style="font-size:var(--font-size-lg);font-weight:700;">rahmah</div>
+            <div style="color:var(--color-muted);">mercy, compassion</div>
+          </div>
+          <div>
+            <div style="font-size:var(--font-size-sm);text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:var(--space-xs);">RootDisplay</div>
+            <div class="pill-row" style="margin:0;gap:var(--space-sm);justify-content:flex-start;">
+              <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-primary);color:#fff;font-size:var(--font-size-sm);">ر</span>
+              <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-primary);color:#fff;font-size:var(--font-size-sm);">ح</span>
+              <span style="display:inline-flex;align-items:center;padding:3px 12px;border-radius:9999px;background:var(--color-primary);color:#fff;font-size:var(--font-size-sm);">م</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap;">
+            <button aria-label="Play audio for rahmah" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:0.5rem;background:var(--color-primary);color:#fff;padding:10px 14px;font:inherit;box-shadow:0 10px 20px var(--color-primary-shadow);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              <span>Play audio</span>
+            </button>
+            <span style="font-size:var(--font-size-sm);color:var(--color-muted);">AudioPlayer idle. Tooltip label mirrors the button label.</span>
+          </div>
+          <hr style="border:none;border-top:1px solid var(--color-border);margin:0;" />
+          <div>
+            <button aria-expanded="false" aria-controls="verse-list-collapsed-demo" style="display:inline-flex;align-items:center;gap:8px;border:none;background:transparent;color:var(--color-fg);padding:0;font:inherit;font-weight:600;cursor:pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              <span>Show 3 verse occurrences</span>
+            </button>
+            <div id="verse-list-collapsed-demo" style="margin-top:var(--space-sm);font-size:var(--font-size-sm);color:var(--color-muted);">VerseList stays collapsed on first render so the lexical card remains scannable before the user opts into context.</div>
+          </div>
+          <p style="margin:0;font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Annotation:</strong> Default state is optimized for one-screen scanning: Arabic, transliteration, meaning, root letters, then controls.</p>
+        </div>
+
+        <div class="component-box" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:var(--space-md);padding:var(--space-lg);background:var(--color-bg-raised);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);flex-wrap:wrap;">
+            <strong>Interactive states</strong>
+            <span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;background:var(--color-accent-tint);border:1px solid var(--color-accent-border);font-size:var(--font-size-sm);color:var(--color-fg);">Expanded VerseList</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap;">
+            <button aria-label="Pause audio for rahmah" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:0.5rem;background:var(--color-primary-strong);color:#fff;padding:10px 14px;font:inherit;box-shadow:0 10px 20px var(--color-primary-shadow);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              <span>Pause audio</span>
+            </button>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:9999px;background:var(--color-primary-tint);color:var(--color-primary-strong);font-size:var(--font-size-sm);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              Playing
+            </span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:var(--space-sm);padding:var(--space-sm) var(--space-md);border-radius:12px;background:var(--color-error-fg);border:1px solid rgba(166,70,59,0.18);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-top:2px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+            <div style="font-size:var(--font-size-sm);color:var(--color-error);">
+              <strong>Audio error</strong><br />
+              Recommended decision: keep the error inline inside the result card and preserve the play button so retry is one action away.
+            </div>
+          </div>
+          <div>
+            <button aria-expanded="true" aria-controls="verse-list-expanded-demo" style="display:inline-flex;align-items:center;gap:8px;border:none;background:transparent;color:var(--color-fg);padding:0;font:inherit;font-weight:600;cursor:pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+              <span>Hide verse occurrences</span>
+            </button>
+            <div id="verse-list-expanded-demo" style="margin-top:var(--space-sm);display:flex;flex-direction:column;gap:var(--space-sm);padding:var(--space-md);border-radius:12px;background:var(--color-surface);border:1px solid var(--color-border);max-height:210px;overflow:auto;">
+              <div style="padding-bottom:var(--space-sm);border-bottom:1px solid var(--color-border);">
+                <div style="font-size:var(--font-size-sm);font-weight:700;">1. Al-Fatihah 1:3</div>
+                <div lang="ar" dir="rtl" style="font-family:var(--font-arabic);font-size:1.5rem;line-height:1.45;">الرَّحْمَٰنِ الرَّحِيمِ</div>
+                <div style="font-size:var(--font-size-sm);color:var(--color-muted);">The Entirely Merciful, the Especially Merciful.</div>
+              </div>
+              <div style="padding-bottom:var(--space-sm);border-bottom:1px solid var(--color-border);">
+                <div style="font-size:var(--font-size-sm);font-weight:700;">2. Al-Baqarah 2:37</div>
+                <div style="font-size:var(--font-size-sm);color:var(--color-muted);">VerseList expanded state keeps verse metadata, Arabic text, and translation grouped in one tab stop sequence.</div>
+              </div>
+              <div>
+                <div style="font-size:var(--font-size-sm);font-weight:700;">3. Long-content behavior</div>
+                <div style="font-size:var(--font-size-sm);color:var(--color-muted);">Long translations wrap normally, the card grows until the occurrences region reaches a practical max height, then VerseList alone scrolls.</div>
+              </div>
+            </div>
+          </div>
+          <p style="margin:0;font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Annotation:</strong> Playing, error, and expanded occurrences are sibling states of the same card; they should not reflow into separate detached widgets.</p>
+        </div>
+      </div>
+
+      <h3>Loading Handoff</h3>
+      <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+          Loading stays defined by the existing <strong>Skeleton (WordCard shimmer)</strong> demo above. The handoff rule is simple: skeleton shape matches the WordCard layout, then content swaps in-place so the result card does not jump when Arabic text, RootDisplay pills, AudioPlayer, and VerseList metadata appear.
+      </p>
+
+      <h3>Accessibility Notes</h3>
+      <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+        <li><strong>Arabic text:</strong> set <code>lang="ar"</code> and <code>dir="rtl"</code> on Arabic headline and verse text regions; surrounding UI remains LTR.</li>
+        <li><strong>Button labels:</strong> AudioPlayer labels should expose the action, not the icon name: “Play audio for …”, “Pause audio for …”, “Retry audio for …”.</li>
+        <li><strong>Result announcement:</strong> when a search resolves, announce the result count through a nearby <code>role="status"</code> / <code>aria-live="polite"</code> region while keeping keyboard focus in the SearchBox.</li>
+        <li><strong>Focus order:</strong> SearchBox remains first, then the next Tab target is AudioPlayer, then the VerseList trigger, then verse items if expanded.</li>
+          <li><strong>Collapsible semantics:</strong> VerseList trigger uses <code>button</code>, <code>aria-expanded</code>, and <code>aria-controls</code>; move focus to the first verse item only on explicit expand by keyboard.</li>
+        <li><strong>Reduced motion:</strong> keep VerseList open/close and loading shimmer aligned with <code>prefers-reduced-motion: reduce</code>; remove non-essential animation, keep state changes instant.</li>
+      </ul>
+
+      <h3>Review Checklist</h3>
+      <ol style="font-size:var(--font-size-sm);color:var(--color-muted);padding-left:1.25rem;">
+        <li>WordCard, RootDisplay, AudioPlayer, and VerseList read as one integrated result-card flow.</li>
+        <li>Default, loading handoff, audio playing/error, collapsed/expanded VerseList, and long-content behavior are all represented.</li>
+        <li>Arabic regions are explicitly marked for RTL and language, and button labels describe the user action.</li>
+        <li>Result announcement, focus order, collapsible semantics, and reduced-motion handling are clear enough to implement without further design guesswork.</li>
+      </ol>
+          <p style="font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Sign-off note:</strong> User approval recorded on 2026-05-17 after confirming the review checklist and explicitly approving this section for implementation reference. Treat this section as approved unless a later revision supersedes this note.</p>
+    </section>
+
+  <!--
+  ====================================================================
+  Meta: Frameworks, Packages & Conventions
+  ====================================================================
+  -->
+  <section id="meta-frameworks-packages-conventions">
+    <h2>Meta: Frameworks, Packages &amp; Conventions</h2>
+    <ul>
+      <li><strong>No external CSS/JS frameworks</strong> (e.g., Tailwind, shadcn, Bootstrap, Material UI) are used in this design reference file; all styles are custom CSS. The production app uses Tailwind CSS v4, shadcn/ui (new-york style), and <code>lucide-react</code> as documented in Sections 9 and 12.</li>
+      <li><strong>All icons in this design reference file are inline SVGs</strong>; no external icon packages are used <em>in this file</em>. The production app uses <code>lucide-react</code> (named imports only) as documented in Section 9. Custom inline SVGs are permitted only where no Lucide equivalent exists.</li>
+      <li><strong>No external UI or animation packages</strong> are referenced; all interactivity is native HTML/CSS.</li>
+      <li><strong>All responsiveness is handled by the custom CSS in this file.</strong> For new UI elements, use the documented class patterns (e.g., <code>.component-box</code>, <code>.input-demo</code>, <code>.card-demo</code>, <code>.pill-row</code>, <code>.motion-demo</code>, etc.) or wrap in a responsive container.</li>
+      <li>If a framework, package, or new pattern is added in the future, <strong>update this section</strong> and reference the relevant docs.</li>
+    </ul>
+    <h3>Checklist for Future Contributors</h3>
+    <ol>
+      <li>When adding new UI, document its structure, classes, and responsive behavior here.</li>
+      <li>Reference or update this section if introducing new frameworks, packages, or patterns.</li>
+      <li>Ensure all styles and interactivity remain consistent with the documented conventions.</li>
+    </ol>
+  </section>
+  </body>
+</html>

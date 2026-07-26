@@ -1,6 +1,7 @@
 .next
 out
 node_modules
+.venv
 coverage
 playwright-report
 test-results

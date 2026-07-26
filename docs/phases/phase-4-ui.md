@@ -6,9 +6,20 @@ Deliver the reverent, accessible search experience defined in [../ux-design.md](
 turning the transliteration engine and lookup pipeline into an interface that English speakers can
 use comfortably to learn Quranic vocabulary.
 
+## Canonicality and scope
+
+- This file is the canonical Phase 4 execution and gating source of truth.
+- [phase-4-ui-stages.md](phase-4-ui-stages.md) is a temporary execution aid and does not override any gate, dependency, or exit criteria in this file.
+- Step 1 is a documentation-only truth-alignment pass and does not modify runtime, app, test, or config code.
+
+## Design-first gate
+
+No Phase 4 implementation may begin until the corresponding design artifact is present in [../design/design.html](../design/design.html), has design-review approval, and is referenced by implementation PRs.
+
 ## Inputs
 
-- Phases 0, 2, and 3 complete: tooling, transliteration engine, and search pipeline available.
+- Current truth state: Phase 0 and Phase 2 are complete; Phase 3 is planned next.
+- Execution prerequisite: Phase 3 must be complete before Phase 4 implementation begins.
 - Design tokens and component inventory from [../ux-design.md](../ux-design.md).
 
 ## Deliverables
