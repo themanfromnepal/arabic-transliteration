@@ -13,26 +13,26 @@ export default function AboutPage() {
       <nav className="mb-8">
         <Link
           href="/"
-          className="text-sm text-[#2f6f5c] underline underline-offset-2 hover:text-[#a7863a]"
+          className="text-sm text-(--color-primary) underline underline-offset-2 hover:text-(--color-primary-strong)"
         >
           ← Home
         </Link>
       </nav>
 
-      <h1 className="mb-6 text-3xl font-bold text-[#18352f]">About</h1>
+      <h1 className="text-foreground mb-6 text-3xl font-bold">About</h1>
 
-      <p className="mb-6 text-base leading-7 text-[#18352f]">
+      <p className="text-foreground mb-6 text-base leading-7">
         Arabic Transliteration is a free tool that helps English speakers bridge the sound of
         Quranic Arabic they already know and the written Uthmani script.
       </p>
 
-      <h2 className="mt-8 mb-3 text-xl font-semibold text-[#2f6f5c]">How it works</h2>
-      <p className="mb-4 text-base leading-7 text-[#18352f]">
+      <h2 className="mt-8 mb-3 text-xl font-semibold text-(--color-primary)">How it works</h2>
+      <p className="text-foreground mb-4 text-base leading-7">
         Type the way a word sounds to you in English — for example, <em>rahman</em>,{' '}
         <em>bismillah</em>, or <em>alhamdulillah</em> — and the tool finds the exact Quranic word.
         Each result shows:
       </p>
-      <ul className="mb-6 list-disc space-y-2 pl-6 text-base leading-7 text-[#18352f]">
+      <ul className="text-foreground mb-6 list-disc space-y-2 pl-6 text-base leading-7">
         <li>The Arabic word in full Uthmani script with all diacritics</li>
         <li>A scholarly transliteration using standard notation</li>
         <li>The English meaning at the word level</li>
@@ -40,12 +40,12 @@ export default function AboutPage() {
         <li>Every verse in the Quran where the word appears (sura:ayah)</li>
         <li>Audio pronunciation from a recitation of the Quran</li>
       </ul>
-      <p className="mb-6 text-base leading-7 text-[#18352f]">
+      <p className="text-foreground mb-6 text-base leading-7">
         Arabic script is also accepted directly as input.
       </p>
 
-      <h2 className="mt-8 mb-3 text-xl font-semibold text-[#2f6f5c]">Who it is for</h2>
-      <ul className="mb-6 list-disc space-y-3 pl-6 text-base leading-7 text-[#18352f]">
+      <h2 className="mt-8 mb-3 text-xl font-semibold text-(--color-primary)">Who it is for</h2>
+      <ul className="text-foreground mb-6 list-disc space-y-3 pl-6 text-base leading-7">
         <li>
           A new Muslim who has memorized short suras by sound and wants to begin reading them from
           the written page.
@@ -60,26 +60,28 @@ export default function AboutPage() {
         </li>
       </ul>
 
-      <h2 className="mt-8 mb-3 text-xl font-semibold text-[#2f6f5c]">Coverage</h2>
-      <p className="mb-6 text-base leading-7 text-[#18352f]">
+      <h2 className="mt-8 mb-3 text-xl font-semibold text-(--color-primary)">Coverage</h2>
+      <p className="text-foreground mb-6 text-base leading-7">
         Version 1 covers approximately 3,500 Quranic lemmas — the core vocabulary of the Quran. Each
         entry is drawn from authoritative, cited sources.
       </p>
 
-      <h2 className="mt-8 mb-3 text-xl font-semibold text-[#2f6f5c]">Privacy and offline use</h2>
-      <p className="mb-6 text-base leading-7 text-[#18352f]">
+      <h2 className="mt-8 mb-3 text-xl font-semibold text-(--color-primary)">
+        Privacy and offline use
+      </h2>
+      <p className="text-foreground mb-6 text-base leading-7">
         No server, no accounts, no tracking. Everything runs in your browser. After your first
         visit, the site works without an internet connection. Your theme and font size preferences
         are saved locally on your device only.
       </p>
 
-      <h2 className="mt-8 mb-3 text-xl font-semibold text-[#2f6f5c]">Open source</h2>
-      <p className="mb-6 text-base leading-7 text-[#18352f]">
+      <h2 className="mt-8 mb-3 text-xl font-semibold text-(--color-primary)">Open source</h2>
+      <p className="text-foreground mb-6 text-base leading-7">
         MIT-licensed. Project code is MIT; data sources are used under their respective licenses —
         see the{' '}
         <Link
           href="/credits"
-          className="text-[#a7863a] underline underline-offset-2 hover:text-[#2f6f5c]"
+          className="text-(--color-primary) underline underline-offset-2 hover:text-(--color-primary-strong)"
         >
           Credits page
         </Link>

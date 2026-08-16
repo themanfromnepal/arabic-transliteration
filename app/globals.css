@@ -39,7 +39,12 @@
     --secondary: #e7efe8;
     --secondary-foreground: #18352f;
     --muted: #e7efe8;
-    --muted-foreground: #5f746d;
+    /*
+     * Darkened from #5f746d, which measured 4.44:1 against --color-surface-warm-soft and so failed
+     * WCAG AA for normal text by a hair on the warm surfaces. #596c65 clears it on every light
+     * surface (4.97 warm-soft, 5.50 surface) at a difference the eye does not register.
+     */
+    --muted-foreground: #596c65;
     --accent: #a7863a;
     --accent-foreground: #fffdfa;
     --destructive: #a6463b;
@@ -68,7 +73,7 @@
     --color-success: #3f7752;
     --color-success-fg: #f4fbf5;
     --color-success-strong: #2f6142;
-    --color-muted: #5f746d;
+    --color-muted: #596c65; /* keep in step with --muted-foreground above */
     --color-border: #cfd8cb;
     --color-focus: #7c6121;
     --color-shadow: rgba(24, 53, 47, 0.12);
