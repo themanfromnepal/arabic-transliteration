@@ -15,6 +15,8 @@ const lemma = (id: string, occ: Array<[number, number, number]> = []): LemmaEntr
   arabic: 'ا',
   lemma: 'a',
   root: 'abc',
+  rootArabic: 'جذر',
+  transliteration: 'abc',
   phoneticKeys: [id],
   meaning: `m-${id}`,
   partOfSpeech: 'noun',

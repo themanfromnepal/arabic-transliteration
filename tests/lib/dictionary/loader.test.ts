@@ -33,6 +33,8 @@ const FAKE_DICT: DictionaryShard = {
       arabic: 'بِ',
       lemma: 'بِ',
       root: 'ب',
+      rootArabic: 'جذر',
+      transliteration: 'ب',
       phoneticKeys: ['bi'],
       meaning: 'in/with',
       partOfSpeech: 'PREP',

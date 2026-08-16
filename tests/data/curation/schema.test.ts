@@ -14,6 +14,8 @@ const validCells = (
     arabic: 'رَبّ',
     lemma: 'rabb',
     root: 'rbb',
+    rootArabic: 'جذر',
+    transliteration: 'rbb',
     partOfSpeech: 'noun',
     phoneticKeys: 'rabb',
     occurrenceCount: '5',

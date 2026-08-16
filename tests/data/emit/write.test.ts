@@ -13,6 +13,8 @@ const makeCorpus = (): MergedCorpus => ({
       arabic: 'ا',
       lemma: 'a',
       root: 'abc',
+      rootArabic: 'جذر',
+      transliteration: 'abc',
       phoneticKeys: ['a'],
       meaning: '',
       partOfSpeech: 'noun',

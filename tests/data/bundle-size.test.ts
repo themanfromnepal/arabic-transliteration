@@ -13,9 +13,13 @@ describe('bundle size', () => {
 
   const raw = readFileSync(INDEX_PATH);
 
-  it('index.json gzipped ≤ 75 KB', () => {
+  // Raised from 75 KB when glosses were derived: the index carries `meaning` for all 4,199 lemmas,
+  // and populating it grew the shard from 64 KB to about 102 KB gzipped. This is a lazy-fetched
+  // shard rather than part of the initial bundle, so the cost is off the critical path — see the
+  // budget table in docs/architecture.md.
+  it('index.json gzipped ≤ 125 KB', () => {
     const gzipped = gzipSync(raw);
-    expect(gzipped.byteLength).toBeLessThanOrEqual(75 * 1024);
+    expect(gzipped.byteLength).toBeLessThanOrEqual(125 * 1024);
   });
 
   it('index.json is valid JSON with entries array', () => {

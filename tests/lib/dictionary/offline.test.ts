@@ -35,6 +35,8 @@ const FAKE_DICT: DictionaryShard = {
       arabic: 'كِتَابٌ',
       lemma: 'كِتَاب',
       root: 'ktb',
+      rootArabic: 'جذر',
+      transliteration: 'ktb',
       phoneticKeys: ['ktb'],
       meaning: 'book',
       partOfSpeech: 'noun',

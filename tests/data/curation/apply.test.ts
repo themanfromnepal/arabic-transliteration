@@ -12,6 +12,8 @@ const makeLemma = (overrides: Partial<LemmaEntry> = {}): LemmaEntry => ({
   arabic: 'رَبّ',
   lemma: 'rabb',
   root: 'rbb',
+  rootArabic: 'جذر',
+  transliteration: 'rbb',
   phoneticKeys: ['rabb'],
   meaning: '',
   partOfSpeech: 'noun',
@@ -117,7 +119,11 @@ describe('applyCuration', () => {
     await applyCuration(corpus, { csvPath, dryRun: false, suraFilter: null });
 
     let text = await fs.readFile(csvPath, 'utf8');
-    text = text.replace('"rabb","rbb","noun","rabb"', '"rab-b","rbb","noun","rab|rabb"');
+    // Column order is lemma, root, rootArabic, transliteration, partOfSpeech, phoneticKeys.
+    text = text.replace(
+      '"rabb","rbb","جذر","rbb","noun","rabb"',
+      '"rab-b","rbb","جذر","rbb","noun","rab|rabb"',
+    );
     await fs.writeFile(csvPath, text, 'utf8');
 
     const corpus2 = makeCorpus([makeLemma()]);

@@ -153,7 +153,7 @@ documents reference it instead of restating these numbers.
 | Asset                      | Size (gzipped) | Delivery                                    |
 | -------------------------- | -------------- | ------------------------------------------- |
 | Initial JS + CSS           | ≤ 200 KB       | Static, CDN-cached, immutable hashed assets |
-| Lemma index (`index.json`) | ≤ 75 KB        | Lazy-fetched shard, not inlined             |
+| Lemma index (`index.json`) | ≤ 125 KB       | Lazy-fetched shard, not inlined             |
 | Full dictionary            | ≤ 3 MB         | Lazy-loaded JSON shard on first real use    |
 | Verses (Uthmani text)      | ≤ 2 MB         | Lazy-loaded JSON shard on first real use    |
 | Word-occurrences           | ≤ 1 MB         | Lazy-loaded JSON shard on first real use    |

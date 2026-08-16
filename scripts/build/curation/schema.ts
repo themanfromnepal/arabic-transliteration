@@ -6,6 +6,8 @@ export const CURATION_HEADER = [
   'arabic',
   'lemma',
   'root',
+  'rootArabic',
+  'transliteration',
   'partOfSpeech',
   'phoneticKeys',
   'occurrenceCount',
@@ -19,6 +21,8 @@ export type CurationRow = {
   arabic: string;
   lemma: string;
   root: string;
+  rootArabic: string;
+  transliteration: string;
   partOfSpeech: string;
   phoneticKeys: string;
   occurrenceCount: number;
@@ -36,6 +40,8 @@ export const CurationRowSchema = z
     arabic: NonEmpty,
     lemma: NonEmpty,
     root: NonEmpty,
+    rootArabic: NonEmpty,
+    transliteration: NonEmpty,
     partOfSpeech: NonEmpty,
     phoneticKeys: NonEmpty,
     occurrenceCount: z.number().int().nonnegative(),
@@ -69,12 +75,14 @@ export const parseRow = (cells: string[], rowNumber: number): CurationRow => {
     arabic: cells[1] ?? '',
     lemma: cells[2] ?? '',
     root: cells[3] ?? '',
-    partOfSpeech: cells[4] ?? '',
-    phoneticKeys: cells[5] ?? '',
-    occurrenceCount: Number.parseInt(cells[6] ?? '', 10),
-    firstRef: cells[7] ?? '',
-    meaning: cells[8] ?? '',
-    reviewStatus: cells[9] ?? '',
+    rootArabic: cells[4] ?? '',
+    transliteration: cells[5] ?? '',
+    partOfSpeech: cells[6] ?? '',
+    phoneticKeys: cells[7] ?? '',
+    occurrenceCount: Number.parseInt(cells[8] ?? '', 10),
+    firstRef: cells[9] ?? '',
+    meaning: cells[10] ?? '',
+    reviewStatus: cells[11] ?? '',
   };
   if (!Number.isInteger(raw.occurrenceCount) || raw.occurrenceCount < 0) {
     throw new Error(`row ${rowNumber}: occurrenceCount must be a non-negative integer`);

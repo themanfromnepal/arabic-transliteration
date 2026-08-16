@@ -25,9 +25,13 @@ export type ApplyCurationResult = {
   readOnlyEditWarnings: string[];
 };
 
+// Derived from the corpus on every build, so an edit here is silently overwritten. rootArabic and
+// transliteration join the set for that reason: both come from the Buckwalter forms mechanically.
 const READ_ONLY_COLUMNS = [
   'arabic',
   'root',
+  'rootArabic',
+  'transliteration',
   'partOfSpeech',
   'occurrenceCount',
   'firstRef',
@@ -49,6 +53,8 @@ const rowFromLemma = (entry: LemmaEntry): string[] => {
     entry.arabic,
     entry.lemma,
     entry.root,
+    entry.rootArabic,
+    entry.transliteration,
     entry.partOfSpeech,
     entry.phoneticKeys.join('|'),
     String(entry.occurrences.length),
