@@ -2038,6 +2038,89 @@ export default function RootLayout({ children }) {
 
   <!--
   ====================================================================
+  Search Interaction Flow (Stage 4.8)
+  ====================================================================
+  -->
+  <section id="search-interaction-flow">
+    <h2>Search Interaction Flow</h2>
+    <p class="section-lead">
+      How a keystroke becomes a result card. This section governs the wiring between the SearchBox, the dictionary pipeline, and the five states in <a href="#ux-states">UX States</a>. It does not restate those states; it defines what moves the region between them.
+    </p>
+
+    <h3>Trigger and cadence</h3>
+    <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      <li><strong>As-you-type, debounced.</strong> A lookup runs 200 ms after the last keystroke. This is the cadence the warm-lookup target in <a href="../performance.md">performance.md</a> is written against — it measures a per-keystroke query, so the interface must actually query per keystroke.</li>
+      <li><strong>Minimum two characters.</strong> A single character matches most of the corpus and produces noise, so a query shorter than two characters returns the region to the empty state rather than searching.</li>
+      <li><strong>Explicit submit still works.</strong> Enter, or the Search button, runs the query immediately and bypasses the debounce. As-you-type does not remove the affordance: submitting is what many learners, and most screen reader users, expect a search form to do.</li>
+      <li><strong>Stale responses are discarded.</strong> Lookups are asynchronous and can resolve out of order; only the newest query may render. A slow response for an earlier query must never overwrite a newer result.</li>
+    </ul>
+
+    <h3>Result model: single best match</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      The pipeline ranks candidates and the card renders the top one. Lower-ranked candidates are not shown. A suggestion list — the "Input plus Command palette" in the component inventory of <a href="../ux-design.md">ux-design.md</a> — is deliberately deferred: it needs combobox semantics, arrow-key navigation, and its own design artifact, and the single-card reading flow already approved in <a href="#integrated-result-card">Integrated Result Card</a> is the v1 experience. Revisit if testing shows learners frequently need the second-best match.
+    </p>
+
+    <h3>Did-you-mean on zero matches</h3>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      When the ranked set is empty, a second pass at a relaxed match tolerance supplies the suggestion shown in the no-results state. If the relaxed pass is also empty, the suggestion line is omitted rather than filled with something arbitrary — the state is specified to degrade that way. The suggestion is a real candidate from the corpus, never a generated spelling.
+    </p>
+
+    <h3>State transitions</h3>
+    <div style="overflow-x:auto;">
+      <table style="border-collapse:collapse;font-size:var(--font-size-sm);min-width:640px;">
+        <thead>
+          <tr style="text-align:left;background:var(--color-surface-alt);">
+            <th style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Event</th>
+            <th style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Resulting state</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Input below two characters, or cleared</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Empty</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Debounce elapsed, lookup dispatched</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Loading</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Lookup resolved, at least one candidate</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Result, top match</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Lookup resolved, no candidates</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">No-results, with a relaxed-pass suggestion when one exists</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Shard fetch or parse failed, nothing cached to fall back on</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Error</td></tr>
+          <tr><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Retry pressed</td><td style="padding:6px 12px;border-bottom:1px solid var(--color-border);">Loading, re-running the last query</td></tr>
+          <tr><td style="padding:6px 12px;">Dismiss pressed</td><td style="padding:6px 12px;">Empty</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>First lookup of a session</h3>
+    <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      <li>The first lookup pays for the lazy shard fetch and the one-time index construction. On a modest connection this is seconds, not milliseconds — the measured figures and the reason are recorded in <a href="../performance.md">performance.md</a>.</li>
+      <li>The skeleton is what makes that wait legible. Do not add a spinner, a progress bar, or a percentage: the cost is a single fetch whose progress the application cannot honestly report.</li>
+      <li>Shards may be warmed during idle time after first paint, so that a learner who reads the page before typing finds the first lookup already warm. Warming is opportunistic and must never block input.</li>
+      <li>When a fetch fails but a cached copy exists, serve the cached copy — a stale result beats an error. This is the path that produces the offline-ready badge.</li>
+    </ul>
+
+    <h3>Audio</h3>
+    <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      <li>Playback is per-ayah from everyayah.com, resolved from the first preview occurrence and requested only when the learner presses play. Nothing about audio loads with the card.</li>
+      <li>The control toggles between the Play and Pause states already specified in <a href="#integrated-result-card">Integrated Result Card</a>. A failed request moves it to the error state, which keeps the control available so retry is one press away.</li>
+      <li>A new search stops any playing audio. Recitation of a word the learner has navigated away from is disorienting.</li>
+    </ul>
+
+    <h3>Focus and announcement</h3>
+    <ul style="font-size:var(--font-size-sm);color:var(--color-muted);">
+      <li>Focus stays in the SearchBox across every transition. Nothing in this flow moves focus on the learner's behalf.</li>
+      <li>Outcomes are announced through the single shared live region defined in <a href="#ux-states">UX States</a>. A debounced flow must not announce intermediate states, or a learner typing a six-letter word hears six announcements.</li>
+      <li>The input is never marked invalid for a search that returned nothing. Zero matches is an outcome of a valid query.</li>
+    </ul>
+
+    <h3>Review Checklist</h3>
+    <ol style="font-size:var(--font-size-sm);color:var(--color-muted);padding-left:1.25rem;">
+      <li>The trigger cadence, minimum query length, and submit behavior are unambiguous.</li>
+      <li>Every event that changes the results region maps to exactly one state.</li>
+      <li>The first-lookup cost is acknowledged rather than hidden, and the loading affordance is specified.</li>
+      <li>Audio load timing, failure handling, and interaction with a new search are defined.</li>
+      <li>Focus and announcement behavior hold under a debounced, per-keystroke flow.</li>
+    </ol>
+    <p style="font-size:var(--font-size-sm);color:var(--color-muted);"><strong>Sign-off note:</strong> The result model was selected by the user on 2026-07-26 — as-you-type with a single best match, in preference to a suggestion list or submit-only search — and the revised first-lookup targets were approved the same day. This section records those decisions and the details derived from them; raise a revision if any derived detail does not match the intent.</p>
+  </section>
+
+  <!--
+  ====================================================================
   Meta: Frameworks, Packages & Conventions
   ====================================================================
   -->

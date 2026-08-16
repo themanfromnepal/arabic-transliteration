@@ -20,15 +20,6 @@ vi.mock('@/src/lib/storage', () => ({
   _resetCacheForTesting: vi.fn(),
 }));
 
-// Mock the static import used by getInlineIndex
-vi.mock('@/public/data/index.json', () => ({
-  default: {
-    _meta: { generatedAt: '2026-05-04T00:00:00Z', sources: [] },
-    version: '1.0.0',
-    entries: [],
-  },
-}));
-
 const FAKE_MANIFEST: ManifestShard = {
   _meta: { generatedAt: '2026-05-04T00:00:00Z', sources: [] },
   schemaVersion: '1.0.0',

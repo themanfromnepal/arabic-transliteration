@@ -670,3 +670,87 @@ class name in source is not evidence of a rule in the output.
 - `components/ui/tooltip.tsx` still carries `animate-in` / `zoom-in-95` classes from the shadcn
   default that compile to nothing for the same reason as the VerseList finding. Cosmetic only — the
   tooltip appears and dismisses without animation — but worth cleaning up alongside Stage 4.9.
+
+## Blocker register additions (2026-07-26)
+
+Raised while scoping Stage 4.8. B1-B4 above are unchanged.
+
+| ID | Severity | Blocker | Evidence | Exit impact |
+| --- | --- | --- | --- | --- |
+| B5 | High | `verses.json` and `yusufali.json` are monolithic, so rendering one result card fetches the entire verse and translation corpus | 967 KB gzipped for the first card (`dictionary.json` 331 KB + `verses.json` 300 KB + `yusufali.json` 336 KB); `LemmaEntry.occurrences` carries only sura/ayah/wordIndex, so snippets cannot be resolved without both shards | First-lookup latency is roughly 0.9 s on 4G and 4.8 s on Slow 4G. Splitting both shards by sura (114 files, ~13 KB each) would take the first card to about 350 KB. Data-pipeline work; the Phase 4 targets in `docs/performance.md` were revised to measurable figures on 2026-07-26 pending this fix |
+| B6 | Low | Data shards are written pretty-printed | `dictionary.json` is 5.48 MB on disk for 2.49 MB of data; same ratio across shards | Roughly doubles static export and CDN storage size. Gzip hides most of it on the wire and IndexedDB stores the parsed clone, so runtime impact is minimal. One-line fix in `scripts/build-dictionary.ts` |
+| B8 | **Blocking for 4.8a** | The curated dataset cannot satisfy the result card contract: three of its six fields have no source in `LemmaEntry` | `meaning` is empty for **4,199 of 4,199 lemmas (100%)**, and every lemma is `reviewStatus: 'auto'`. There is no scholarly transliteration field at all — `phoneticKeys` holds search keys such as `DaaHk@`, not a reader-facing transliteration. `root` is Buckwalter-encoded (`$Am`, `DHk`) across 28 distinct characters, and the transliterator's `CONSONANTS` map covers only the 23-character user-input subset, so it cannot produce the Arabic root letters the spec requires (`ر-ح-م`) | Live search would render cards with a blank English meaning and no root pills, failing AC1 in `docs/phases/phase-4-ui.md`. Not a UI defect and not fixable in Phase 4. Fix path exists and is mechanical: `wbw.json` carries English for all 83,665 words keyed by sura/ayah/wordIndex, which is exactly what `LemmaEntry.occurrences` holds, so `scripts/build-dictionary.ts` can derive a lemma-level gloss; the Buckwalter root map is a ~30-line table |
+| B7 | Medium | `occurrences` are duplicated between `dictionary.json` and `occurrences.json` | 49,841 occurrence rows embedded in `dictionary.json` account for 2.01 MB of its 2.49 MB parsed size, while `occurrences.json` holds the same relation separately | Removing them would take the dictionary shard to 0.77 MB parsed / 92 KB gzipped. One lemma carries 2,699 occurrences while the card previews three, so the full list belongs behind the expand action rather than in the lemma record |
+
+### Resolved while scoping
+
+- The ≤ 7 MB IndexedDB ceiling is **not** breached. All three cached shards total 5.05 MB parsed,
+  leaving roughly 2 MB of headroom. An earlier reading of 8.44 MB came from summing pretty-printed
+  file sizes rather than parsed size, which is not what IndexedDB stores.
+- The inline-index bundle risk is resolved by fetching `index.json` instead of importing it. Had it
+  stayed a static import, wiring search would have taken initial JS from 139 KB to roughly 207 KB,
+  past the ≤ 200 KB budget. Recorded in `docs/architecture.md`.
+
+## Stage 4.8b / 4.9 Delivery Record (2026-07-26)
+
+Stage 4.8 was split: **4.8b** is the PWA and SEO shell, which has no design-gate dependency and no
+data dependency. **4.8a** — live search wiring — is blocked by B8 and is not started.
+
+### Stage 4.8b — PWA and SEO shell: Green
+
+Closes B1 and B2.
+
+| Deliverable | Implementation |
+| --- | --- |
+| Service worker | `public/sw.js`, hand-written. `next-pwa` was removed from `devDependencies`: it does not work with `output: 'export'` in Next 15, and `docs/architecture.md` already specified a minimal worker at this path |
+| Registration | `components/service-worker-registration.tsx`, production-only, deferred to the `load` event |
+| Manifest | `public/manifest.json` per the Stage 4.8 spec, linked via the `manifest` metadata key; verified present in `out/index.html` |
+| Icons | `public/icons/icon-192.png`, `icon-512.png`, and a 1200×630 `public/og-card.png`, generated from `public/favicon.svg` by `scripts/generate-icons.mjs` (`npm run generate-icons`) rasterising through the Chromium that Playwright already provides, so the icons cannot drift from the favicon |
+| SEO metadata | Title, description, OpenGraph, and Twitter card in `app/layout.tsx`; `themeColor` moved to the `viewport` export as Next 15 requires. Verified in the built HTML |
+| robots / sitemap | `app/robots.ts` and `app/sitemap.ts` with `dynamic = 'force-static'`, emitted as `/robots.txt` and `/sitemap.xml` in the export |
+| Site identity | `src/lib/site.ts` centralises the URL, titles, and route list so the sitemap cannot drift from the app |
+
+Two things to know:
+
+- **Absolute URLs point at localhost until the domain is set.** `NEXT_PUBLIC_SITE_URL` drives
+  `metadataBase`, the OpenGraph URLs, and the sitemap. The production domain is still a placeholder
+  throughout the docs, so this must be set in the deployment before launch.
+- **The service worker deviates from `docs/performance.md` deliberately.** That document describes
+  HTML as served "cache-first from precache". Taken literally, a cached shell would outrank a newer
+  deployment indefinitely. Navigations are network-first with a cache fallback, which satisfies both
+  stated intents. The reasoning is recorded in the file header.
+- The worker registers in production only, so the e2e suite (which runs against `next dev`) does not
+  exercise it. Offline verification remains the manual DevTools check in the Stage 4.8 spec.
+
+### Stage 4.9 — Responsive QA and accessibility: Green
+
+Closes B3 and B4's accessibility half. The Lighthouse budget half of B4 is unchanged.
+
+- **Tablet profile added.** `playwright.config.ts` gains a `tablet-1024` project at 1024×768. Every
+  spec runs at both widths — 32 tests per run.
+- **axe gate added and enforced.** `e2e/a11y.spec.ts` runs `@axe-core/playwright` with the
+  `wcag2a`/`wcag2aa`/`wcag21a`/`wcag21aa` tags across all four routes, in both themes. A CI `e2e` job
+  was added to `.github/workflows/ci.yml`, because the gate existed only as an installed dependency
+  before: `@axe-core/playwright` was never invoked and Playwright never ran in CI at all.
+- **Keyboard flow test added,** tabbing to the verse expander and operating it without a pointer.
+
+The gate found real defects on its first run, all `color-contrast`, all serious:
+
+| Finding | Fix |
+| --- | --- |
+| The three static pages used **70 hardcoded hex colours** instead of tokens | Replaced with semantic tokens throughout `app/about`, `app/credits`, `app/privacy` |
+| Consequently those pages **did not respond to dark mode at all** — body text measured **1.07:1** against the dark background, effectively invisible. The light-mode axe run was clean, so this was invisible to the gate as first written | Tokens fixed it; a dark-mode axe run was added per route so the class of bug cannot recur |
+| Brass accent `#a7863a` used as text measured 3.05–3.38:1 on every light surface, failing AA | Replaced with `--color-primary`. This also realigns with `design.md`, which reserves brass for highlights and edge detail rather than text |
+| `--muted-foreground` `#5f746d` measured **4.44:1** on the warm surfaces, failing AA by a hair | Darkened to `#596c65` (4.97 warm-soft, 5.50 surface), a change the eye does not register |
+
+### Verification (4.8b / 4.9)
+
+`npm run lint`, `npm run format:check`, `npm run typecheck`, `npm test` (303 tests),
+`npm run build`, and `npx playwright test` (32 tests across both viewports) all pass.
+
+### Note on running the suites locally
+
+`npm run build` overwrites `.next` while a Playwright-spawned `next dev` server is still running,
+which corrupts that server and produces spurious e2e failures — missing CSS and broken hydration,
+affecting pre-existing tests too. Run `build` before `e2e`, or stop the dev server in between. CI is
+unaffected because `reuseExistingServer` is false when `CI` is set.
