@@ -6,8 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useSearchShortcut } from '@/hooks/useSearchShortcut';
 
-export function SearchBox() {
+type SearchBoxProps = {
+  value?: string;
+  onValueChange?: (next: string) => void;
+  onSubmit?: () => void;
+};
+
+export function SearchBox({ value, onValueChange, onSubmit }: SearchBoxProps = {}) {
   useSearchShortcut('home-search');
+  const isLive = onValueChange !== undefined;
 
   return (
     <section
@@ -27,8 +34,8 @@ export function SearchBox() {
               Search Quranic words and verses
             </h2>
             <p className="text-muted-foreground mt-2 max-w-2xl text-sm sm:text-[0.95rem]">
-              The search interactions will be wired in a later phase. This shell establishes the
-              layout, semantics, and visual framing.
+              Type a word the way it sounds. Results appear as you type, and Arabizi digits work
+              too.
             </p>
           </div>
         </div>
@@ -39,6 +46,7 @@ export function SearchBox() {
           className="flex flex-col gap-3 sm:flex-row sm:items-center"
           onSubmit={(event) => {
             event.preventDefault();
+            onSubmit?.();
           }}
         >
           <label htmlFor="home-search" className="sr-only">
@@ -52,13 +60,19 @@ export function SearchBox() {
             <Input
               id="home-search"
               type="search"
-              placeholder="Search will be enabled in the next slice"
+              placeholder="Try rahman, kitab, or 7abibi"
               autoComplete="off"
               aria-keyshortcuts="/"
+              value={value}
+              onChange={(event) => onValueChange?.(event.target.value)}
               className="border-border/80 bg-background/80 h-12 rounded-xl pl-10 text-base shadow-none md:text-base"
             />
           </div>
-          <Button type="submit" size="lg" className="min-w-32 rounded-xl px-5" disabled>
+          {/*
+            Submit stays available even though results appear as you type: it is what most learners,
+            and most screen reader users, expect a search form to offer.
+          */}
+          <Button type="submit" size="lg" className="min-w-32 rounded-xl px-5" disabled={!isLive}>
             Search
           </Button>
         </form>

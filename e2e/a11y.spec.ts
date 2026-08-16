@@ -54,8 +54,11 @@ test('the result card flow is reachable and operable by keyboard alone', async (
   await expect(page.locator('#home-search')).toBeFocused();
 
   // Typing must reach the input rather than being swallowed by the shortcut handler.
-  await page.keyboard.type('rahmah');
-  await expect(page.locator('#home-search')).toHaveValue('rahmah');
+  await page.keyboard.type('rahman');
+  await expect(page.locator('#home-search')).toHaveValue('rahman');
+
+  // Wait for the live result before tabbing: the card is what the expander lives in.
+  await expect(page.getByRole('region', { name: 'Word details' })).toBeVisible({ timeout: 30_000 });
 
   // Tab forward until the verse expander takes focus, proving the card is operable without a
   // pointer. Bounded so a regression fails fast instead of hanging.

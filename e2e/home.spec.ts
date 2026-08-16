@@ -1,32 +1,46 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
-test('home renders title and the results region', async ({ page }) => {
+/**
+ * Drive a real lookup and wait for the card.
+ *
+ * The first search of a session pays for the lazy shard fetch — roughly 967 KB across three shards
+ * plus index construction — so this allows well beyond the default expect timeout.
+ */
+async function search(page: Page, query: string) {
+  await page.goto('/');
+  await page.locator('#home-search').fill(query);
+  const card = page.getByRole('region', { name: 'Word details' });
+  await expect(card).toBeVisible({ timeout: 30_000 });
+  return card;
+}
+
+test('home opens in the empty state inviting a first query', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Read Quranic Arabic with transliteration support',
   );
-  await expect(page.getByRole('heading', { level: 2, name: 'Results' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 3, name: 'Start with a word you have heard' }),
+  ).toBeVisible();
 });
 
-test('home renders the staged result card', async ({ page }) => {
-  await page.goto('/');
+test('a query resolves to a live result card', async ({ page }) => {
+  const wordCard = await search(page, 'rahman');
 
-  const wordCard = page.getByRole('region', { name: 'Word details' });
-
-  await expect(wordCard).toBeVisible();
-  await expect(wordCard.getByRole('heading', { level: 2 })).toHaveText('رحمة');
-  await expect(wordCard.getByText('rahmah')).toBeVisible();
-  await expect(wordCard.getByText('mercy')).toBeVisible();
+  // Contract fields: Uthmani script, a readable transliteration, and root letters.
+  await expect(wordCard.getByRole('heading', { level: 2 })).toContainText('ر');
+  await expect(wordCard.getByText('Root')).toBeVisible();
+  await expect(page.getByRole('status', { name: 'Search status' })).toHaveText('1 result.');
 });
+
+// The no-results state is covered by tests/components/results-region.test.tsx. It is not asserted
+// here because no query is reliably a non-match against a 4,199-entry fuzzy index — picking one
+// would be tuning a magic string against Fuse's threshold rather than testing behaviour.
 
 test('the Arabic headline renders in the self-hosted Arabic font', async ({ page }) => {
-  await page.goto('/');
-
-  const headline = page.getByRole('region', { name: 'Word details' }).getByRole('heading', {
-    level: 2,
-  });
-  const gloss = page.getByText('mercy', { exact: true });
+  const headline = (await search(page, 'rahman')).getByRole('heading', { level: 2 });
+  const gloss = page.getByRole('region', { name: 'Word details' }).locator('p').first();
 
   // The :lang(ar) rule is what applies the family; before it existed the Arabic inherited Inter,
   // which carries no Arabic glyphs, and fell through to whatever the OS happened to substitute.
@@ -39,12 +53,8 @@ test('the Arabic headline renders in the self-hosted Arabic font', async ({ page
 });
 
 test('the font size control scales the Arabic headline and nothing else', async ({ page }) => {
-  await page.goto('/');
-
-  const headline = page.getByRole('region', { name: 'Word details' }).getByRole('heading', {
-    level: 2,
-  });
-  const gloss = page.getByText('mercy', { exact: true });
+  const headline = (await search(page, 'rahman')).getByRole('heading', { level: 2 });
+  const gloss = page.getByRole('region', { name: 'Word details' }).locator('p').first();
 
   const readFontSize = (locator: typeof headline) =>
     locator.evaluate((el) => Number.parseFloat(getComputedStyle(el).fontSize));
