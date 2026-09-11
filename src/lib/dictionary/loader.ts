@@ -11,13 +11,37 @@ import {
   setCachedManifestVersion,
   clearCache,
 } from '@/src/lib/storage';
-import indexData from '@/public/data/index.json';
-
 let memoryCache: DictionaryShard | null = null;
 let inflightPromise: Promise<DictionaryShard> | null = null;
+let indexCache: InlineIndexEntry[] | null = null;
+let indexInflight: Promise<InlineIndexEntry[]> | null = null;
 
-export function getInlineIndex(): InlineIndexEntry[] {
-  return (indexData as unknown as InlineIndexShard).entries;
+/**
+ * Fetches the lemma index shard.
+ *
+ * This was previously a static `import` of `public/data/index.json`. That import placed all 4,199
+ * entries — 64 KB gzipped — into the initial JS bundle of every visitor, and because this module is
+ * on the import path of `lookup`, any client component that searched would have pulled it in and
+ * taken initial JS from 139 KB past the 200 KB budget in docs/architecture.md. It also duplicated
+ * data that `dictionary.json` already carries, so the copy bought nothing.
+ */
+export async function getInlineIndex(): Promise<InlineIndexEntry[]> {
+  if (indexCache) return indexCache;
+  if (indexInflight) return indexInflight;
+
+  indexInflight = (async () => {
+    const res = await fetch('/data/index.json');
+    if (!res.ok) throw new Error(`Index fetch failed: ${res.status}`);
+    const shard = (await res.json()) as InlineIndexShard;
+    indexCache = shard.entries;
+    return shard.entries;
+  })();
+
+  try {
+    return await indexInflight;
+  } finally {
+    indexInflight = null;
+  }
 }
 
 export async function loadFullDictionary(): Promise<DictionaryShard> {
@@ -75,4 +99,6 @@ async function doLoad(): Promise<DictionaryShard> {
 export function _resetForTesting(): void {
   memoryCache = null;
   inflightPromise = null;
+  indexCache = null;
+  indexInflight = null;
 }

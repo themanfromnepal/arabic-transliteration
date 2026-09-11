@@ -15,8 +15,20 @@ export type LemmaEntry = {
   lemmaId: string;
   arabic: string;
   lemma: string;
+  /** Buckwalter form, e.g. `rHm`. Kept as the search key and the lemmaId component. */
   root: string;
+  /** The same root in Arabic letters, e.g. `رحم`. Derived at build time; what the card displays. */
+  rootArabic: string;
+  /**
+   * Reader-facing scholarly romanization in DIN 31635, e.g. `raḥmān`. Distinct from
+   * `phoneticKeys`, which are vowel-stripped lookup keys and are not readable.
+   */
+  transliteration: string;
   phoneticKeys: string[];
+  /**
+   * English gloss. Auto-derived from the word-by-word translation when `reviewStatus` is `auto`,
+   * and overridden by `data/curation/lemmas.csv` once a human reviews it.
+   */
   meaning: string;
   partOfSpeech: string;
   occurrences: Occurrence[];

@@ -10,14 +10,6 @@ import {
 import { getInlineIndex, loadFullDictionary } from '@/src/lib/dictionary';
 import { _resetForTesting } from '@/src/lib/dictionary/loader';
 
-vi.mock('@/public/data/index.json', () => ({
-  default: {
-    _meta: { generatedAt: '2026-05-04T00:00:00Z', sources: [] },
-    version: '1.0.0',
-    entries: [{ lemmaId: 'L001', arabic: 'بِ', phoneticKeys: ['bi'], meaning: 'in/with' }],
-  },
-}));
-
 vi.mock('@/src/lib/storage', () => ({
   getShardFromCache: vi.fn(),
   putShardToCache: vi.fn(),
@@ -41,6 +33,8 @@ const FAKE_DICT: DictionaryShard = {
       arabic: 'بِ',
       lemma: 'بِ',
       root: 'ب',
+      rootArabic: 'جذر',
+      transliteration: 'ب',
       phoneticKeys: ['bi'],
       meaning: 'in/with',
       partOfSpeech: 'PREP',
@@ -81,12 +75,46 @@ afterEach(() => {
 });
 
 describe('getInlineIndex', () => {
-  it('returns InlineIndexEntry[] from the static import synchronously', () => {
-    const result = getInlineIndex();
-    expect(result).toEqual([
-      { lemmaId: 'L001', arabic: 'بِ', phoneticKeys: ['bi'], meaning: 'in/with' },
-    ]);
-    expect(fetchSpy).not.toHaveBeenCalled();
+  const INDEX_ENTRIES = [
+    { lemmaId: 'L001', arabic: 'بِ', phoneticKeys: ['bi'], meaning: 'in/with' },
+  ];
+
+  function mockIndexFetch() {
+    fetchSpy.mockImplementation((input: RequestInfo | URL) => {
+      if (String(input).includes('index.json')) {
+        return Promise.resolve(
+          new Response(JSON.stringify({ version: '1.0.0', entries: INDEX_ENTRIES }), {
+            status: 200,
+          }),
+        );
+      }
+      return Promise.reject(new Error(`unexpected fetch: ${String(input)}`));
+    });
+  }
+
+  it('fetches the index shard rather than bundling it', async () => {
+    mockIndexFetch();
+
+    await expect(getInlineIndex()).resolves.toEqual(INDEX_ENTRIES);
+
+    // A static import would have put all 4,199 entries in the initial JS bundle for every visitor
+    // and pushed it past the budget in docs/architecture.md. It must be a fetch.
+    expect(fetchSpy).toHaveBeenCalledWith('/data/index.json');
+  });
+
+  it('fetches once and serves the rest from memory', async () => {
+    mockIndexFetch();
+
+    await getInlineIndex();
+    await getInlineIndex();
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects on a failed index fetch', async () => {
+    fetchSpy.mockResolvedValue(new Response('nope', { status: 503 }));
+
+    await expect(getInlineIndex()).rejects.toThrow(/Index fetch failed: 503/);
   });
 });
 

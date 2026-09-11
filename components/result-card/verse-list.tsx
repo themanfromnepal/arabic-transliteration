@@ -15,10 +15,11 @@ type VerseListProps = {
 
 type VerseListItemProps = React.ComponentPropsWithoutRef<'li'> & {
   occurrence: ResultCardVerseOccurrence;
+  position: number;
 };
 
 const VerseListItem = React.forwardRef<HTMLLIElement, VerseListItemProps>(function VerseListItem(
-  { occurrence, className, ...props },
+  { occurrence, position, className, ...props },
   ref,
 ) {
   return (
@@ -29,6 +30,9 @@ const VerseListItem = React.forwardRef<HTMLLIElement, VerseListItemProps>(functi
       {...props}
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <span className="text-muted-foreground text-sm font-semibold" aria-hidden="true">
+          {position}.
+        </span>
         <span className="text-foreground text-sm font-semibold">{occurrence.referenceLabel}</span>
         <span className="text-muted-foreground text-xs">
           Surah {occurrence.sura}:{occurrence.ayah}
@@ -109,10 +113,21 @@ export function VerseList({ occurrences, className }: VerseListProps) {
         </Button>
       </div>
 
+      {/*
+        The panel caps its height and scrolls on its own so a lemma with many occurrences grows the
+        card only to a practical limit, per the long-content rule in the design. tabIndex makes the
+        scroll container reachable without a pointer — the verse items themselves are only focused
+        programmatically on an explicit keyboard expand.
+
+        panel-fade-in is a real CSS animation from globals.css. This previously carried
+        `animate-in fade-in-0` utilities from tailwindcss-animate, which is not installed, so the
+        classes compiled to nothing and the panel never actually animated.
+      */}
       <div
         id={listId}
         hidden={!isExpanded}
-        className="motion-safe:data-[state=open]:animate-in motion-safe:data-[state=open]:fade-in-0 motion-reduce:data-[state=open]:animate-none"
+        tabIndex={0}
+        className={cn('max-h-52.5 overflow-y-auto rounded-2xl', isExpanded && 'panel-fade-in')}
         data-state={isExpanded ? 'open' : 'closed'}
       >
         <ul className="space-y-3">
@@ -120,6 +135,7 @@ export function VerseList({ occurrences, className }: VerseListProps) {
             <VerseListItem
               key={occurrence.id}
               occurrence={occurrence}
+              position={index + 1}
               ref={index === 0 ? firstItemRef : undefined}
               className="outline-none"
             />

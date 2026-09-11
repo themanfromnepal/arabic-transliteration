@@ -9,6 +9,12 @@ export type ResultCardAudio = {
   controlLabels: ResultCardAudioControlLabels;
   state: ResultCardAudioState;
   statusMessage?: string;
+  /**
+   * The everyayah.com recitation for the card's primary occurrence, resolved eagerly at card-build
+   * time so this stays plain serializable state. Undefined only when a lemma somehow has zero
+   * occurrences — the control renders disabled rather than pointing at a broken URL.
+   */
+  url?: string;
 };
 
 export type ResultCardVerseOccurrence = {
@@ -35,3 +41,17 @@ export type ResultCard = {
   audio: ResultCardAudio;
   occurrences: ResultCardOccurrences;
 };
+
+/**
+ * The canonical UX states from docs/ux-design.md, modelled as one discriminated union because they
+ * are alternate contents of a single results region rather than separate screens.
+ *
+ * Callbacks are intentionally not part of the state: they belong to the component that renders it,
+ * so the state stays serializable and can cross the server/client boundary.
+ */
+export type ResultsState =
+  | { kind: 'empty' }
+  | { kind: 'loading' }
+  | { kind: 'ready'; result: ResultCard; servedFromCache?: boolean }
+  | { kind: 'no-results'; query: string; suggestion?: string }
+  | { kind: 'error'; message: string };

@@ -68,6 +68,8 @@ export const LemmaEntrySchema = z.object({
   arabic: z.string().min(1),
   lemma: z.string().min(1),
   root: RootSchema,
+  rootArabic: z.string().min(1),
+  transliteration: z.string().min(1),
   phoneticKeys: PhoneticKeysSchema,
   meaning: z.string(),
   partOfSpeech: z.string(),

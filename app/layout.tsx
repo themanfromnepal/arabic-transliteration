@@ -1,7 +1,9 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { Providers } from '@/components/providers';
+import { ServiceWorkerRegistration } from '@/components/service-worker-registration';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from '@/src/lib/site';
 
 // Inter — variable font covering weights 100–900 and optical sizes
 // font-display: swap ensures text is always visible during font load
@@ -54,13 +56,17 @@ const scheherazadeNew = localFont({
 });
 
 export const metadata: Metadata = {
+  // Resolves the relative OpenGraph and canonical URLs below. Driven by NEXT_PUBLIC_SITE_URL
+  // because the production domain is still a placeholder across the docs.
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Arabic Transliteration',
-    template: '%s | Arabic Transliteration',
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    'A focused shell for searching Quranic Arabic, transliteration, and translation locally.',
-  applicationName: 'Arabic Transliteration',
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  manifest: '/manifest.json',
+  alternates: { canonical: '/' },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -69,6 +75,25 @@ export const metadata: Metadata = {
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     shortcut: '/favicon.ico',
   },
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: '/',
+    images: [{ url: '/og-card.png', width: 1200, height: 630, alt: SITE_TITLE }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ['/og-card.png'],
+  },
+};
+
+export const viewport: Viewport = {
+  // Matches theme_color in public/manifest.json.
+  themeColor: '#2f6f5c',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -81,6 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body>
         <Providers>{children}</Providers>
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

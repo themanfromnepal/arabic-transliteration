@@ -12,14 +12,21 @@ type WordCardProps = {
 export function WordCard({ word, className }: WordCardProps) {
   return (
     <section className={cn('space-y-3', className)} aria-label="Word details">
+      {/*
+        The headline is the only text that scales with FontSizeControl: it reads --font-size-arabic,
+        which useArabicFontSize writes onto <html>. Verse snippets stay at a fixed size per the
+        approved design, so the control affects Arabic display text only. The Arabic family and
+        shaping features arrive through the :lang(ar) rule in globals.css.
+      */}
+      <h2
+        lang="ar"
+        dir="rtl"
+        className="text-foreground rounded-[14px] bg-[linear-gradient(135deg,var(--color-surface-alt),var(--color-surface-arabic))] p-4 text-right text-(length:--font-size-arabic) leading-tight font-semibold"
+      >
+        {word.arabicHeadline}
+      </h2>
+
       <div className="space-y-1">
-        <h2
-          lang="ar"
-          dir="rtl"
-          className="text-foreground text-right text-3xl leading-tight font-semibold sm:text-4xl"
-        >
-          {word.arabicHeadline}
-        </h2>
         <p className="text-foreground text-lg leading-7 font-medium">{word.transliteration}</p>
         <p className="text-muted-foreground text-sm leading-6">{word.englishGloss}</p>
       </div>

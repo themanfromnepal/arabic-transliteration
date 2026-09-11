@@ -7,13 +7,16 @@ export const lemmaResultCardFixture: ResultCard = {
   englishGloss: 'mercy',
   rootLetters: ['\u0631', '\u062d', '\u0645'],
   audio: {
-    label: 'Play audio for rahmah',
+    // `label` names the audio row; the control labels name the action, per the design's
+    // accessibility note that a button label exposes what it does, not what the state is.
+    label: 'Recitation of rahmah',
     controlLabels: {
       idle: 'Play audio for rahmah',
-      playing: 'Audio playing for rahmah',
+      playing: 'Pause audio for rahmah',
       error: 'Retry audio for rahmah',
     },
     state: 'idle',
+    url: 'https://everyayah.com/data/Ghamadi_40kbps/002218.mp3',
   },
   occurrences: {
     previewCount: 3,

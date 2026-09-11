@@ -148,6 +148,31 @@ Motion is intentionally restrained. The sample animation is a light bounce used 
 
 Transitions in the source are short and functional, mainly on buttons and interactive affordances.
 
+## UX States
+
+The five canonical states in [../ux-design.md](../ux-design.md#states) are alternate contents of one
+results region beneath the SearchBox, not separate screens. `design.html` carries the full visual
+specification and annotations; this is the summary.
+
+| State | Treatment | Announcement | Focus |
+| --- | --- | --- | --- |
+| Empty | Invitation copy plus example phonetic chips (`rahman`, `kitab`, `salaam`, `7abibi`). No card chrome, no skeleton. | None | SearchBox |
+| Loading | Shimmer skeleton matching the WordCard shape (never a spinner). Static grey blocks under reduced motion. | Skeleton `role="status"`, "Loading result…" | SearchBox |
+| No-results | Neutral surface, muted search icon, echoed query, and a suggested alternate spelling as a button. | Shared live region | SearchBox |
+| Error | Inline block on the error tint with Retry and Dismiss. Recoverable failures only. | `role="alert"` | SearchBox; Retry is the first stop inside the block |
+| Offline-ready | Discreet success-tinted badge reading "Offline copy" with `WifiOff`, top-right of the card header. | None; part of the card | Unchanged |
+
+Rules that apply across all of them:
+
+- The region reserves a minimum height matching the collapsed result card so the page does not
+  reflow between states, protecting the CLS budget.
+- State changes crossfade with `--transition-fade`; the swap is instant under
+  `prefers-reduced-motion: reduce`.
+- One shared `role="status"` region reports outcomes. Individual states do not each carry a live
+  region, which would double-announce.
+- Keyboard focus never moves on its own. It moves only on explicit user action.
+- No-results is not an error: it uses neither the error tokens nor the invalid input state.
+
 ## Usage Guidelines
 
 - Always use design tokens for color, spacing, and type.

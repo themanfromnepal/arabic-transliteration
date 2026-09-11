@@ -15,7 +15,18 @@ export function RootDisplay({ rootLetters, className }: RootDisplayProps) {
       <span className="text-muted-foreground text-xs font-semibold tracking-[0.24em] uppercase">
         Root
       </span>
-      <div className="flex flex-wrap gap-2" aria-label="Root letters">
+
+      {/*
+        Assistive technology gets the hyphenated form the spec calls for (ر-ح-م) as a single
+        utterance; the pills are the visual form from the approved design and are hidden from the
+        accessibility tree so screen readers do not spell out isolated letters one badge at a time.
+        An aria-label on the plain wrapper would not have been exposed at all — it carried no role.
+      */}
+      <span className="sr-only" lang="ar" dir="rtl">
+        {rootLetters.join('-')}
+      </span>
+
+      <div className="flex flex-wrap gap-2" aria-hidden="true">
         {rootLetters.map((letter, index) => (
           <Badge
             key={`${letter}-${index}`}

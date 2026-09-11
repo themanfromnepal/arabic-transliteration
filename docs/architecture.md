@@ -150,15 +150,21 @@ sequenceDiagram
 This table is the canonical source for bundle and storage sizes across the project. Other
 documents reference it instead of restating these numbers.
 
-| Asset                     | Size (gzipped) | Delivery                                    |
-| ------------------------- | -------------- | ------------------------------------------- |
-| Initial JS + CSS          | ≤ 200 KB       | Static, CDN-cached, immutable hashed assets |
-| Top-N lemma index inline  | ≤ 50 KB        | Inlined into the initial bundle             |
-| Full dictionary           | ≤ 3 MB         | Lazy-loaded JSON shard on first real use    |
-| Verses (Uthmani text)     | ≤ 2 MB         | Lazy-loaded JSON shard on first real use    |
-| Word-occurrences          | ≤ 1 MB         | Lazy-loaded JSON shard on first real use    |
-| Word-by-word translations | ≤ 1 MB         | Lazy-loaded JSON shard on first real use    |
-| Total cached ceiling      | ≤ 7 MB         | IndexedDB cache via idb-keyval              |
+| Asset                      | Size (gzipped) | Delivery                                    |
+| -------------------------- | -------------- | ------------------------------------------- |
+| Initial JS + CSS           | ≤ 200 KB       | Static, CDN-cached, immutable hashed assets |
+| Lemma index (`index.json`) | ≤ 125 KB       | Lazy-fetched shard, not inlined             |
+| Full dictionary            | ≤ 3 MB         | Lazy-loaded JSON shard on first real use    |
+| Verses (Uthmani text)      | ≤ 2 MB         | Lazy-loaded JSON shard on first real use    |
+| Word-occurrences           | ≤ 1 MB         | Lazy-loaded JSON shard on first real use    |
+| Word-by-word translations  | ≤ 1 MB         | Lazy-loaded JSON shard on first real use    |
+| Ayah translations          | ≤ 1 MB         | Lazy-loaded JSON shard on first real use    |
+| Total cached ceiling       | ≤ 7 MB         | IndexedDB cache via idb-keyval              |
+
+The lemma index was previously budgeted at ≤ 50 KB as a "Top-N lemma index inline". No top-N
+index was ever built: `index.json` carries all 4,199 lemmas at 64 KB gzipped, and inlining it into
+the bundle would have pushed initial JS past its own budget while duplicating data that
+`dictionary.json` already supplies. It is fetched rather than inlined, and budgeted accordingly.
 
 ## Why no backend
 
