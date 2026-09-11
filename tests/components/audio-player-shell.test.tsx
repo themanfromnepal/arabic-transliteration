@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 
 import { AudioPlayerShell } from '@/components/result-card/audio-player-shell';
 import { lemmaResultCardFixture } from '@/src/lib/fixtures/result-card';
@@ -48,5 +49,21 @@ describe('AudioPlayerShell', () => {
     render(<AudioPlayerShell audio={{ ...audio, statusMessage: 'Buffering the recitation.' }} />);
 
     expect(screen.getByRole('status')).toHaveTextContent('Buffering the recitation.');
+  });
+
+  it('calls onToggle when the control is activated', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    render(<AudioPlayerShell audio={audio} onToggle={onToggle} />);
+
+    await user.click(screen.getByRole('button', { name: audio.controlLabels.idle }));
+
+    expect(onToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it('disables the control when there is no resolvable audio URL', () => {
+    render(<AudioPlayerShell audio={{ ...audio, url: undefined }} />);
+
+    expect(screen.getByRole('button', { name: audio.controlLabels.idle })).toBeDisabled();
   });
 });

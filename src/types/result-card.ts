@@ -9,6 +9,12 @@ export type ResultCardAudio = {
   controlLabels: ResultCardAudioControlLabels;
   state: ResultCardAudioState;
   statusMessage?: string;
+  /**
+   * The everyayah.com recitation for the card's primary occurrence, resolved eagerly at card-build
+   * time so this stays plain serializable state. Undefined only when a lemma somehow has zero
+   * occurrences — the control renders disabled rather than pointing at a broken URL.
+   */
+  url?: string;
 };
 
 export type ResultCardVerseOccurrence = {

@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 
 import { IntegratedResultCard } from '@/components/result-card/integrated-result-card';
 import { lemmaResultCardFixture } from '@/src/lib/fixtures/result-card';
@@ -30,45 +31,48 @@ describe('IntegratedResultCard', () => {
     ).toBeInTheDocument();
   });
 
-  it('exposes a pause action while playing', () => {
-    render(
-      <IntegratedResultCard
-        result={{
-          ...lemmaResultCardFixture,
-          audio: {
-            ...lemmaResultCardFixture.audio,
-            state: 'playing',
-          },
-        }}
-      />,
+  it('plays and pauses real audio when the control is activated', async () => {
+    const user = userEvent.setup();
+    render(<IntegratedResultCard result={lemmaResultCardFixture} />);
+
+    await user.click(
+      screen.getByRole('button', { name: lemmaResultCardFixture.audio.controlLabels.idle }),
     );
 
-    expect(
-      screen.getByRole('button', {
-        name: lemmaResultCardFixture.audio.controlLabels.playing,
-      }),
-    ).toHaveTextContent('Pause audio');
+    // play() resolves and dispatches `playing` asynchronously (see tests/setup.ts), so the button
+    // relabels once that event lands.
+    const pauseButton = await screen.findByRole('button', {
+      name: lemmaResultCardFixture.audio.controlLabels.playing,
+    });
+    expect(pauseButton).toHaveTextContent('Pause audio');
     expect(screen.getByText('Playing')).toBeInTheDocument();
+
+    await user.click(pauseButton);
+
+    expect(
+      await screen.findByRole('button', {
+        name: lemmaResultCardFixture.audio.controlLabels.idle,
+      }),
+    ).toHaveTextContent('Play audio');
   });
 
-  it('keeps the audio button available in the error state for retry semantics', () => {
-    render(
-      <IntegratedResultCard
-        result={{
-          ...lemmaResultCardFixture,
-          audio: {
-            ...lemmaResultCardFixture.audio,
-            state: 'error',
-          },
-        }}
-      />,
+  it('keeps the audio button available for retry when playback fails', async () => {
+    vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockImplementationOnce(() =>
+      Promise.reject(new Error('playback failed')),
     );
 
-    expect(
-      screen.getByRole('button', {
-        name: lemmaResultCardFixture.audio.controlLabels.error,
-      }),
-    ).toBeEnabled();
+    const user = userEvent.setup();
+    render(<IntegratedResultCard result={lemmaResultCardFixture} />);
+
+    await user.click(
+      screen.getByRole('button', { name: lemmaResultCardFixture.audio.controlLabels.idle }),
+    );
+
+    const retryButton = await screen.findByRole('button', {
+      name: lemmaResultCardFixture.audio.controlLabels.error,
+    });
+    expect(retryButton).toBeEnabled();
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Audio error'));
   });
 
   it('shows the offline-ready badge only for a cache-served result', () => {

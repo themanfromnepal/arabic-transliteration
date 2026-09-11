@@ -48,6 +48,9 @@ export function toResultCard(lemma: LemmaEntry, context: VerseContext): ResultCa
         error: `Retry audio for ${reading}`,
       },
       state: 'idle',
+      // Resolved from the primary (first preview) occurrence. The card has one audio slot, not one
+      // per occurrence — see the Stage 4.8a scope note in phase-4-ui-stages.md.
+      url: preview[0] ? audioUrlFor(preview[0].sura, preview[0].ayah) : undefined,
     },
     occurrences: {
       previewCount: PREVIEW_COUNT,

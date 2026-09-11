@@ -16,6 +16,7 @@ export const lemmaResultCardFixture: ResultCard = {
       error: 'Retry audio for rahmah',
     },
     state: 'idle',
+    url: 'https://everyayah.com/data/Ghamadi_40kbps/002218.mp3',
   },
   occurrences: {
     previewCount: 3,

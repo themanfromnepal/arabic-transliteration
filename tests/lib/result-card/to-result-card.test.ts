@@ -76,6 +76,18 @@ describe('toResultCard', () => {
     expect(audio.state).toBe('idle');
   });
 
+  it('resolves the audio URL from the primary (first preview) occurrence', () => {
+    const { audio } = toResultCard(LEMMA, CONTEXT);
+
+    expect(audio.url).toBe('https://everyayah.com/data/Ghamadi_40kbps/002157.mp3');
+  });
+
+  it('leaves the audio URL undefined for a lemma with no occurrences', () => {
+    const { audio } = toResultCard({ ...LEMMA, occurrences: [] }, CONTEXT);
+
+    expect(audio.url).toBeUndefined();
+  });
+
   it('falls back to a phonetic key when no transliteration exists', () => {
     const card = toResultCard({ ...LEMMA, transliteration: '' }, CONTEXT);
 

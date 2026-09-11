@@ -14,6 +14,31 @@ async function search(page: Page, query: string) {
   return card;
 }
 
+/**
+ * A minimal valid mono 8-bit PCM WAV (a handful of silent samples at 8 kHz). Real Chromium needs
+ * bytes it can actually decode to fire `playing` — an arbitrary fake response would instead fire
+ * `error`. The Content-Type header, not the .mp3 URL extension, is what the <audio> element uses to
+ * pick a decoder, so serving this as `audio/wav` decodes correctly despite the URL.
+ */
+function silentWav(sampleCount = 800): Buffer {
+  const dataSize = sampleCount;
+  const header = Buffer.alloc(44);
+  header.write('RIFF', 0);
+  header.writeUInt32LE(36 + dataSize, 4);
+  header.write('WAVE', 8);
+  header.write('fmt ', 12);
+  header.writeUInt32LE(16, 16); // Subchunk1Size (PCM)
+  header.writeUInt16LE(1, 20); // AudioFormat = PCM
+  header.writeUInt16LE(1, 22); // NumChannels
+  header.writeUInt32LE(8000, 24); // SampleRate
+  header.writeUInt32LE(8000, 28); // ByteRate
+  header.writeUInt16LE(1, 32); // BlockAlign
+  header.writeUInt16LE(8, 34); // BitsPerSample
+  header.write('data', 36);
+  header.writeUInt32LE(dataSize, 40);
+  return Buffer.concat([header, Buffer.alloc(dataSize, 128)]);
+}
+
 test('home opens in the empty state inviting a first query', async ({ page }) => {
   await page.goto('/');
 
@@ -37,6 +62,24 @@ test('a query resolves to a live result card', async ({ page }) => {
 // The no-results state is covered by tests/components/results-region.test.tsx. It is not asserted
 // here because no query is reliably a non-match against a 4,199-entry fuzzy index — picking one
 // would be tuning a magic string against Fuse's threshold rather than testing behaviour.
+
+test('pressing play starts real audio playback for the primary occurrence', async ({ page }) => {
+  // Route everyayah.com to a local, decodable fixture rather than hitting the third-party CDN in
+  // CI — the URL pattern and card wiring are what this test is verifying, not the CDN's uptime.
+  await page.route('https://everyayah.com/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'audio/wav', body: silentWav() });
+  });
+
+  await search(page, 'rahman');
+  const audioRegion = page.getByRole('region', { name: 'Audio preview' });
+
+  await audioRegion.getByRole('button', { name: /^Play audio/ }).click();
+
+  await expect(audioRegion.getByRole('button', { name: /^Pause audio/ })).toBeVisible({
+    timeout: 10_000,
+  });
+  await expect(audioRegion.getByText('Playing', { exact: true })).toBeVisible();
+});
 
 test('the Arabic headline renders in the self-hosted Arabic font', async ({ page }) => {
   const headline = (await search(page, 'rahman')).getByRole('heading', { level: 2 });

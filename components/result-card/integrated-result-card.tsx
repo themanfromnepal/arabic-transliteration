@@ -5,6 +5,7 @@ import { OfflineBadge } from '@/components/result-card/offline-badge';
 import { VerseList } from '@/components/result-card/verse-list';
 import { WordCard } from '@/components/result-card/word-card';
 import { Separator } from '@/components/ui/separator';
+import { useAudioPlayback } from '@/hooks/useAudioPlayback';
 import { cn } from '@/lib/utils';
 import type { ResultCard } from '@/src/types/result-card';
 
@@ -20,6 +21,13 @@ export function IntegratedResultCard({
   servedFromCache = false,
   className,
 }: IntegratedResultCardProps) {
+  const playback = useAudioPlayback(result.audio.url);
+  const audio = {
+    ...result.audio,
+    state: playback.state,
+    statusMessage: playback.statusMessage,
+  };
+
   return (
     <article
       className={cn(
@@ -37,7 +45,7 @@ export function IntegratedResultCard({
       <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,0.9fr)_auto_minmax(0,1.1fr)] lg:items-start lg:gap-6">
         <div className="space-y-5">
           <WordCard word={result} />
-          <AudioPlayerShell audio={result.audio} />
+          <AudioPlayerShell audio={audio} onToggle={playback.toggle} />
         </div>
 
         <Separator className="lg:hidden" />

@@ -8,6 +8,11 @@ import type { ResultCardAudio } from '@/src/types/result-card';
 
 type AudioPlayerShellProps = {
   audio: ResultCardAudio;
+  /**
+   * Wired by the caller that owns playback (see `useAudioPlayback`). Left undefined in tests/
+   * previews that just want to render a given `audio.state` without real playback behavior.
+   */
+  onToggle?: () => void;
   className?: string;
 };
 
@@ -34,12 +39,15 @@ const stateCopy = {
   },
 } as const;
 
-export function AudioPlayerShell({ audio, className }: AudioPlayerShellProps) {
+export function AudioPlayerShell({ audio, onToggle, className }: AudioPlayerShellProps) {
   const { actionText, helperText, icon: Icon } = stateCopy[audio.state];
   const controlLabel = audio.controlLabels[audio.state];
   const statusMessage = audio.statusMessage ?? helperText;
   const isPlaying = audio.state === 'playing';
   const isUnavailable = audio.state === 'error';
+  // No resolvable URL (a lemma with no occurrences) means there is nothing to play — disable
+  // rather than point the control at a broken request.
+  const isDisabled = !audio.url;
 
   return (
     <section className={cn('space-y-3', className)} aria-label="Audio preview">
@@ -59,6 +67,8 @@ export function AudioPlayerShell({ audio, className }: AudioPlayerShellProps) {
             isUnavailable && 'border-destructive/40 text-destructive hover:bg-destructive/10',
           )}
           aria-label={controlLabel}
+          onClick={onToggle}
+          disabled={isDisabled}
         >
           <Icon aria-hidden />
           <span>{actionText}</span>
