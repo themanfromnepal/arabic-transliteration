@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { LemmaEntry } from '@/src/types/dictionary';
+import type { DictionaryLemmaEntry } from '@/src/types/dictionary';
 
 vi.mock('@/src/lib/transliterator', () => ({
   transliterate: vi.fn(),
@@ -24,7 +24,7 @@ const mockedLoadFullDictionary = vi.mocked(loadFullDictionary);
 const mockedCreateSearchIndex = vi.mocked(createSearchIndex);
 const mockedFuzzySearch = vi.mocked(fuzzySearch);
 
-const KITAB_ENTRY: LemmaEntry = {
+const KITAB_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'ktb-ktb',
   arabic: 'كِتَابٌ',
   lemma: 'كِتَاب',
@@ -34,11 +34,12 @@ const KITAB_ENTRY: LemmaEntry = {
   phoneticKeys: ['ktb'],
   meaning: 'book',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+  occurrencesPreview: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 
-const RAHMAN_ENTRY: LemmaEntry = {
+const RAHMAN_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'rHm-rHmn',
   arabic: 'ٱلرَّحْمَٰنِ',
   lemma: 'رَّحْمَٰن',
@@ -48,11 +49,12 @@ const RAHMAN_ENTRY: LemmaEntry = {
   phoneticKeys: ['rHmn'],
   meaning: 'The Most Gracious',
   partOfSpeech: 'adjective',
-  occurrences: [{ sura: 1, ayah: 1, wordIndex: 3 }],
+  occurrencesPreview: [{ sura: 1, ayah: 1, wordIndex: 3 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 
-const SALAAM_ENTRY: LemmaEntry = {
+const SALAAM_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'Slm-Slm',
   arabic: 'سَلَامٌ',
   lemma: 'سَلَام',
@@ -62,7 +64,8 @@ const SALAAM_ENTRY: LemmaEntry = {
   phoneticKeys: ['Slm'],
   meaning: 'peace',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 36, ayah: 58, wordIndex: 1 }],
+  occurrencesPreview: [{ sura: 36, ayah: 58, wordIndex: 1 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 

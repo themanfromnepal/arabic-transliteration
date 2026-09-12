@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { LemmaEntry, DictionaryShard, ManifestShard } from '@/src/types/dictionary';
+import type { DictionaryLemmaEntry, DictionaryShard, ManifestShard } from '@/src/types/dictionary';
 
 vi.mock('@/public/data/index.json', () => ({
   default: {
@@ -27,7 +27,7 @@ import {
   clearCache,
 } from '@/src/lib/storage';
 
-function generateEntries(count: number): LemmaEntry[] {
+function generateEntries(count: number): DictionaryLemmaEntry[] {
   return Array.from({ length: count }, (_, i) => ({
     lemmaId: `lemma-${i}`,
     arabic: `عرب${i}`,
@@ -38,12 +38,13 @@ function generateEntries(count: number): LemmaEntry[] {
     phoneticKeys: [`key${i}`, `phonetic${i}`],
     meaning: `meaning ${i}`,
     partOfSpeech: 'noun',
-    occurrences: [{ sura: 1, ayah: i + 1, wordIndex: 1 }],
+    occurrencesPreview: [{ sura: 1, ayah: i + 1, wordIndex: 1 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto' as const,
   }));
 }
 
-const KITAB_ENTRY: LemmaEntry = {
+const KITAB_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'ktb-ktb',
   arabic: 'كِتَابٌ',
   lemma: 'كِتَاب',
@@ -53,7 +54,8 @@ const KITAB_ENTRY: LemmaEntry = {
   phoneticKeys: ['ktb', 'kitab'],
   meaning: 'book',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+  occurrencesPreview: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 

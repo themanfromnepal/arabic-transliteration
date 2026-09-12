@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import type { LemmaEntry } from '@/src/types/dictionary';
+import type { DictionaryLemmaEntry } from '@/src/types/dictionary';
 
 const ARABIZI_MAP: Record<string, string> = { '7': 'H', '9': 'S', '5': 'kh', '3': 'a' };
 const LATIN_VOWELS = /[aeiou]/gi;
@@ -28,7 +28,7 @@ export function normalizeQuery(raw: string): string {
   return substituted.replace(LATIN_VOWELS, '');
 }
 
-export function createSearchIndex(entries: LemmaEntry[]): Fuse<LemmaEntry> {
+export function createSearchIndex(entries: DictionaryLemmaEntry[]): Fuse<DictionaryLemmaEntry> {
   return new Fuse(entries, {
     keys: [
       { name: 'phoneticKeys', weight: 2 },
@@ -39,7 +39,7 @@ export function createSearchIndex(entries: LemmaEntry[]): Fuse<LemmaEntry> {
     threshold: 0.4,
     shouldSort: true,
     includeScore: true,
-    getFn: (obj: LemmaEntry, path: string | string[]): ReadonlyArray<string> | string => {
+    getFn: (obj: DictionaryLemmaEntry, path: string | string[]): ReadonlyArray<string> | string => {
       const value = Fuse.config.getFn(obj, path);
       const pathStr = Array.isArray(path) ? path[0] : path;
 
@@ -64,10 +64,10 @@ export function createSearchIndex(entries: LemmaEntry[]): Fuse<LemmaEntry> {
 }
 
 export function fuzzySearch(
-  index: Fuse<LemmaEntry>,
+  index: Fuse<DictionaryLemmaEntry>,
   query: string,
   limit = 10,
-): Array<{ item: LemmaEntry; score: number }> {
+): Array<{ item: DictionaryLemmaEntry; score: number }> {
   const normalized = normalizeQuery(query);
   if (!normalized) return [];
 

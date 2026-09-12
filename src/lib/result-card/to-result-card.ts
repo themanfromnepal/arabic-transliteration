@@ -1,9 +1,18 @@
-import type { LemmaEntry } from '@/src/types/dictionary';
+import {
+  RESULT_CARD_OCCURRENCE_PREVIEW_COUNT,
+  type DictionaryLemmaEntry,
+} from '@/src/types/dictionary';
 import type { ResultCard, ResultCardRootLetters } from '@/src/types/result-card';
 import type { VerseContext } from '@/src/lib/dictionary/verse-context';
 
-/** How many occurrences the card carries before the "show all" expansion. */
-export const PREVIEW_COUNT = 3;
+/**
+ * How many occurrences the card carries before the "show all" expansion.
+ *
+ * `dictionary.json` already embeds only this many per lemma (see `DictionaryLemmaEntry` and B7 in
+ * phase-4-ui-stages.md), so this is documentation of that contract, not a runtime bound — there is
+ * nothing left to slice here.
+ */
+export const PREVIEW_COUNT = RESULT_CARD_OCCURRENCE_PREVIEW_COUNT;
 
 /**
  * Per-ayah recitation from everyayah.com, resolved by sura:ayah, matching the Credits attribution
@@ -30,8 +39,8 @@ function toRootLetters(rootArabic: string): ResultCardRootLetters {
  * The verse context supplies the Uthmani text and translation for each previewed occurrence; a
  * missing verse degrades that one snippet rather than failing the card.
  */
-export function toResultCard(lemma: LemmaEntry, context: VerseContext): ResultCard {
-  const preview = lemma.occurrences.slice(0, PREVIEW_COUNT);
+export function toResultCard(lemma: DictionaryLemmaEntry, context: VerseContext): ResultCard {
+  const preview = lemma.occurrencesPreview;
   const reading = lemma.transliteration || lemma.phoneticKeys[0] || lemma.lemmaId;
 
   return {
@@ -54,7 +63,7 @@ export function toResultCard(lemma: LemmaEntry, context: VerseContext): ResultCa
     },
     occurrences: {
       previewCount: PREVIEW_COUNT,
-      totalCount: lemma.occurrences.length,
+      totalCount: lemma.occurrenceCount,
       allLoadedItems: preview.map((occ) => ({
         id: `${occ.sura}:${occ.ayah}:${occ.wordIndex}`,
         sura: occ.sura,

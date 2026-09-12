@@ -35,6 +35,27 @@ export type LemmaEntry = {
   reviewStatus: ReviewStatus;
 };
 
+/**
+ * How many occurrences the result card shows before "show all N"; also how many are embedded per
+ * lemma in `dictionary.json` (see `DictionaryLemmaEntry`). Shared between the build pipeline and
+ * the runtime so the two can never drift.
+ */
+export const RESULT_CARD_OCCURRENCE_PREVIEW_COUNT = 3;
+
+/**
+ * The shape of a lemma as emitted into `dictionary.json` and consumed at runtime — distinct from
+ * `LemmaEntry`, which is the build-time, full-fidelity type used while merging and curating.
+ *
+ * A lemma's full occurrence list belongs in `occurrences.json` alone; embedding it here too used to
+ * duplicate up to 2,699 rows per lemma into the dictionary shard for a card that only ever previews
+ * `RESULT_CARD_OCCURRENCE_PREVIEW_COUNT` of them. `occurrencesPreview` carries only that bounded
+ * slice, and `occurrenceCount` is the true total the card reports.
+ */
+export type DictionaryLemmaEntry = Omit<LemmaEntry, 'occurrences'> & {
+  occurrencesPreview: Occurrence[];
+  occurrenceCount: number;
+};
+
 export type Verse = {
   sura: number;
   ayah: number;
@@ -81,12 +102,14 @@ export type ShardMeta = {
 export type DictionaryShard = {
   _meta?: ShardMeta;
   version: string;
-  lemmas: LemmaEntry[];
+  lemmas: DictionaryLemmaEntry[];
 };
 
 export type VersesShard = {
   _meta?: ShardMeta;
   version: string;
+  /** Every verse shard is scoped to one sura — see `docs/data-pipeline.md` (B5). */
+  sura: number;
   verses: Verse[];
 };
 
@@ -112,6 +135,8 @@ export type InlineIndexShard = {
 export type TranslationsShard = {
   _meta?: ShardMeta;
   version: string;
+  /** Every translation shard is scoped to one sura — see `docs/data-pipeline.md` (B5). */
+  sura: number;
   translations: AyahTranslation[];
 };
 

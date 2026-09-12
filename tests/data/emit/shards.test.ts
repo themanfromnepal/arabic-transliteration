@@ -4,8 +4,8 @@ import {
   buildDictionaryShard,
   buildInlineIndexShard,
   buildOccurrencesShard,
-  buildTranslationsShard,
-  buildVersesShard,
+  buildTranslationShardsBySura,
+  buildVerseShardsBySura,
   buildWbwShard,
 } from '../../../scripts/build/emit/shards';
 import type { LemmaEntry } from '../../../src/types/dictionary';
@@ -51,10 +51,17 @@ describe('shard builders', () => {
     expect(s.lemmas.length).toBe(corpus.lemmas.length);
   });
 
-  it('verses: version + (sura,ayah)-sorted', () => {
-    const s = buildVersesShard(corpus);
-    expect(s.version).toBe('1.0.0');
-    expect(s.verses.map((v) => `${v.sura}:${v.ayah}`)).toEqual(['1:1', '1:2', '2:1']);
+  it('verses: one shard per sura, each (sura,ayah)-sorted', () => {
+    const bySura = buildVerseShardsBySura(corpus);
+    expect([...bySura.keys()].sort((a, b) => a - b)).toEqual([1, 2]);
+
+    const sura1 = bySura.get(1)!;
+    expect(sura1.version).toBe('1.0.0');
+    expect(sura1.sura).toBe(1);
+    expect(sura1.verses.map((v) => `${v.sura}:${v.ayah}`)).toEqual(['1:1', '1:2']);
+
+    const sura2 = bySura.get(2)!;
+    expect(sura2.verses.map((v) => `${v.sura}:${v.ayah}`)).toEqual(['2:1']);
   });
 
   it('occurrences: version + lemmaId-sorted entries', () => {
@@ -74,10 +81,17 @@ describe('shard builders', () => {
     ]);
   });
 
-  it('translations: version + (sura,ayah)-sorted', () => {
-    const s = buildTranslationsShard(corpus);
-    expect(s.version).toBe('1.0.0');
-    expect(s.translations.map((t) => `${t.sura}:${t.ayah}`)).toEqual(['1:1', '2:1']);
+  it('translations: one shard per sura, each (sura,ayah)-sorted', () => {
+    const bySura = buildTranslationShardsBySura(corpus);
+    expect([...bySura.keys()].sort((a, b) => a - b)).toEqual([1, 2]);
+
+    const sura1 = bySura.get(1)!;
+    expect(sura1.version).toBe('1.0.0');
+    expect(sura1.sura).toBe(1);
+    expect(sura1.translations.map((t) => `${t.sura}:${t.ayah}`)).toEqual(['1:1']);
+
+    const sura2 = bySura.get(2)!;
+    expect(sura2.translations.map((t) => `${t.sura}:${t.ayah}`)).toEqual(['2:1']);
   });
 
   it('inline index: version + lemmaId-sorted, projected fields', () => {

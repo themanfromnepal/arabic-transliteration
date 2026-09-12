@@ -219,7 +219,13 @@ const main = async (): Promise<void> => {
       defaultOutDir,
       meta,
     });
-    console.log(`[Stage E] wrote ${written.length} shards to ${outDir}: ${written.join(' ')}`);
+    // Per-sura verses/yusufali splitting (B5) can push `written` past 200 entries; list the fixed
+    // shards in full and summarize the sharded directories rather than printing every filename.
+    const shardedCount = written.filter((w) => w.includes('/')).length;
+    const fixedNames = written.filter((w) => !w.includes('/'));
+    console.log(
+      `[Stage E] wrote ${written.length} shards to ${outDir}: ${fixedNames.join(' ')} +${shardedCount} per-sura verses/yusufali files`,
+    );
   }
   console.log('Done.');
 

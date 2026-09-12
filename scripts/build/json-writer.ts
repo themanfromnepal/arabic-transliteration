@@ -6,7 +6,12 @@ const isPlainObject = (v: unknown): v is Record<string, unknown> =>
   v !== null &&
   (Object.getPrototypeOf(v) === Object.prototype || Object.getPrototypeOf(v) === null);
 
-const encode = (value: unknown, indent: number, seen: WeakSet<object>): string => {
+// Compact (no whitespace): shards were previously pretty-printed, which made dictionary.json
+// 5.48 MB on disk for 2.49 MB of parsed data (B6 in phase-4-ui-stages.md) for no runtime benefit —
+// IndexedDB stores the parsed structured clone, not the whitespace, and gzip on the wire hides most
+// of the difference but not all of it. Determinism (the drift check's actual concern) comes from
+// the alphabetical key sort below, not from indentation.
+const encode = (value: unknown, seen: WeakSet<object>): string => {
   if (value === null) return 'null';
   const t = typeof value;
   if (t === 'string') return JSON.stringify(value);
@@ -26,17 +31,14 @@ const encode = (value: unknown, indent: number, seen: WeakSet<object>): string =
   if (seen.has(obj)) throw new TypeError('Cannot serialize circular reference');
   seen.add(obj);
 
-  const pad = ' '.repeat(indent + 2);
-  const closePad = ' '.repeat(indent);
-
   if (Array.isArray(obj)) {
     if (obj.length === 0) {
       seen.delete(obj);
       return '[]';
     }
-    const items = obj.map((item) => `${pad}${encode(item, indent + 2, seen)}`);
+    const items = obj.map((item) => encode(item, seen));
     seen.delete(obj);
-    return `[\n${items.join(',\n')}\n${closePad}]`;
+    return `[${items.join(',')}]`;
   }
 
   if (isPlainObject(obj)) {
@@ -46,18 +48,17 @@ const encode = (value: unknown, indent: number, seen: WeakSet<object>): string =
       return '{}';
     }
     const entries = keys.map(
-      (k) =>
-        `${pad}${JSON.stringify(k)}: ${encode((obj as Record<string, unknown>)[k], indent + 2, seen)}`,
+      (k) => `${JSON.stringify(k)}:${encode((obj as Record<string, unknown>)[k], seen)}`,
     );
     seen.delete(obj);
-    return `{\n${entries.join(',\n')}\n${closePad}}`;
+    return `{${entries.join(',')}}`;
   }
 
   throw new TypeError(`Cannot serialize value of type ${Object.prototype.toString.call(obj)}`);
 };
 
 export const canonicalStringify = (value: unknown): string => {
-  return `${encode(value, 0, new WeakSet())}\n`;
+  return `${encode(value, new WeakSet())}\n`;
 };
 
 export const writeCanonicalJson = async (filePath: string, value: unknown): Promise<void> => {

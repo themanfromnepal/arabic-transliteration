@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { LemmaEntry, DictionaryShard, ManifestShard } from '@/src/types/dictionary';
+import type { DictionaryLemmaEntry, DictionaryShard, ManifestShard } from '@/src/types/dictionary';
 
 // Hoisted mocks BEFORE imports
 vi.mock('@/public/data/index.json', () => ({
@@ -33,7 +33,7 @@ import {
 // Fixture data (5 entries)
 // ---------------------------------------------------------------------------
 
-const KITAB_ENTRY: LemmaEntry = {
+const KITAB_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'ktb-ktb',
   arabic: 'كِتَابٌ',
   lemma: 'كِتَاب',
@@ -43,11 +43,12 @@ const KITAB_ENTRY: LemmaEntry = {
   phoneticKeys: ['ktb', 'kitab'],
   meaning: 'book',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+  occurrencesPreview: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 
-const RAHMAN_ENTRY: LemmaEntry = {
+const RAHMAN_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'rHm-rHmn',
   arabic: 'ٱلرَّحْمَٰنِ',
   lemma: 'رَّحْمَٰن',
@@ -57,11 +58,12 @@ const RAHMAN_ENTRY: LemmaEntry = {
   phoneticKeys: ['rHmn', 'rahman'],
   meaning: 'The Most Gracious',
   partOfSpeech: 'adjective',
-  occurrences: [{ sura: 1, ayah: 1, wordIndex: 3 }],
+  occurrencesPreview: [{ sura: 1, ayah: 1, wordIndex: 3 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 
-const SALAAM_ENTRY: LemmaEntry = {
+const SALAAM_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'Slm-Slm',
   arabic: 'سَلَامٌ',
   lemma: 'سَلَام',
@@ -71,11 +73,12 @@ const SALAAM_ENTRY: LemmaEntry = {
   phoneticKeys: ['Slm', 'salaam'],
   meaning: 'peace',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 36, ayah: 58, wordIndex: 1 }],
+  occurrencesPreview: [{ sura: 36, ayah: 58, wordIndex: 1 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 
-const SAMAD_ENTRY: LemmaEntry = {
+const SAMAD_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'Smd-Smd',
   arabic: 'ٱلصَّمَدُ',
   lemma: 'صَّمَد',
@@ -85,11 +88,12 @@ const SAMAD_ENTRY: LemmaEntry = {
   phoneticKeys: ['Smd', 'samad'],
   meaning: 'The Eternal',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 112, ayah: 2, wordIndex: 2 }],
+  occurrencesPreview: [{ sura: 112, ayah: 2, wordIndex: 2 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 
-const ILAH_ENTRY: LemmaEntry = {
+const ILAH_ENTRY: DictionaryLemmaEntry = {
   lemmaId: 'Elh-Elh',
   arabic: 'إِلَٰهٌ',
   lemma: 'إِلَٰه',
@@ -99,7 +103,8 @@ const ILAH_ENTRY: LemmaEntry = {
   phoneticKeys: ['Elh', 'ilah'],
   meaning: 'god/deity',
   partOfSpeech: 'noun',
-  occurrences: [{ sura: 2, ayah: 163, wordIndex: 4 }],
+  occurrencesPreview: [{ sura: 2, ayah: 163, wordIndex: 4 }],
+  occurrenceCount: 1,
   reviewStatus: 'auto',
 };
 

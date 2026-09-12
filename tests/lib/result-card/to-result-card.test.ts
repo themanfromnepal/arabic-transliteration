@@ -2,9 +2,12 @@ import { describe, it, expect } from 'vitest';
 
 import { audioUrlFor, PREVIEW_COUNT, toResultCard } from '@/src/lib/result-card/to-result-card';
 import type { VerseContext } from '@/src/lib/dictionary/verse-context';
-import type { LemmaEntry } from '@/src/types/dictionary';
+import type { DictionaryLemmaEntry } from '@/src/types/dictionary';
 
-const LEMMA: LemmaEntry = {
+// occurrencesPreview is already bounded to PREVIEW_COUNT by the build pipeline (dictionary.json
+// embeds only the preview, per B7 in phase-4-ui-stages.md) — occurrenceCount carries the true total
+// (4 here) independently, the way a lemma with far more occurrences than its preview would.
+const LEMMA: DictionaryLemmaEntry = {
   lemmaId: 'rHm-rHm@',
   arabic: 'رَحْمَةً',
   lemma: 'رَحْمَة',
@@ -14,12 +17,12 @@ const LEMMA: LemmaEntry = {
   phoneticKeys: ['rHm@'],
   meaning: 'mercy',
   partOfSpeech: 'noun',
-  occurrences: [
+  occurrencesPreview: [
     { sura: 2, ayah: 157, wordIndex: 3 },
     { sura: 3, ayah: 8, wordIndex: 5 },
     { sura: 6, ayah: 54, wordIndex: 2 },
-    { sura: 7, ayah: 56, wordIndex: 1 },
   ],
+  occurrenceCount: 4,
   reviewStatus: 'auto',
 };
 
@@ -45,10 +48,12 @@ describe('toResultCard', () => {
     expect(card.rootLetters).toEqual(['ز', 'ل', 'ز', 'ل']);
   });
 
-  it('previews a bounded number of occurrences while reporting the true total', () => {
+  it('passes through the already-bounded preview while reporting the true total', () => {
     const card = toResultCard(LEMMA, CONTEXT);
 
-    // One lemma in the corpus carries 2,699 occurrences; the card must not try to render them all.
+    // The bounding happens at build time (dictionary.json embeds only occurrencesPreview); this
+    // just confirms the card doesn't re-derive totalCount from the preview's own length, which
+    // would be wrong the moment a lemma's real count (one carries 2,699) differs from the preview.
     expect(card.occurrences.allLoadedItems).toHaveLength(PREVIEW_COUNT);
     expect(card.occurrences.totalCount).toBe(4);
   });
