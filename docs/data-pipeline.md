@@ -44,6 +44,12 @@ flowchart LR
     WBWOUT --> OUT
 ```
 
+`VERSES` above (and the ayah-translation shard, not separately boxed in this diagram) each emit one
+file per sura — `public/data/verses/<sura>.json` and `public/data/yusufali/<sura>.json`, 114 files
+each — rather than a single monolithic file. A result card only ever fetches the suras its previewed
+occurrences touch; see [performance.md](performance.md#search-latency-targets) for the measured
+first-lookup cost this enables.
+
 ## LemmaEntry shape
 
 The following type sketch documents the lemma record that the result card consumes. It is

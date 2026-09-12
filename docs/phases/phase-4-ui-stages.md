@@ -31,9 +31,9 @@ Step 1 (this update) is complete as docs-only truth alignment. The board below t
 | Step | Objective | Dependencies | Deliverables | Exit Criteria | Owner / Status | Blockers / Risks | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2 | Lock and approve design artifacts before implementation. | Step 1 complete; [design.html](../design/design.html) and design annotations updated; reviewer availability. | Approved design snapshots for all in-scope Stage 4 components and states; recorded design review sign-off. | Every in-scope component/state has approved design evidence and PRs can reference it. | Owner: user<br>Status: `Complete for 4.5/4.6` | Stage 4.8 interaction-flow artifacts not yet reviewed | Result card sign-off: `design.html` Integrated Result Card section, 2026-05-17<br>UX states sign-off: `design.html` UX States section, 2026-07-26 |
-| 3 | Implement Phase 4 UI slices in stage order under approved designs. | Step 2 approved artifacts; Stage sequencing/dependencies in this file. | Landed UI implementation PRs for Stages 4.1-4.8 with linked approved artifacts. | All stage deliverables are implemented with no gate violations and with traceable artifact links. | Owner: user<br>Status: `In progress` | Stages 4.8 and 4.9 outstanding | Stages 4.0-4.7 implemented; see Stage 4.5/4.6 Delivery Record (2026-07-26) below |
-| 4 | Validate quality, accessibility, responsive behavior, and integration. | Step 3 merged implementation; QA plans from Stages 4.6-4.9. | Test and QA evidence for component behavior, a11y checks, and responsive pass criteria. | QA evidence demonstrates all Stage 4 exit conditions are met or formally waived. | Owner: `TBD`<br>Status: `Not started` | `TBD` | Test run links: `TBD`<br>QA checklist evidence: `TBD` |
-| 5 | Prepare final Phase 4 handoff and readiness sign-off. | Step 4 validated evidence; open-risk review complete. | Phase 4 completion summary, remaining risks/blockers log, and handoff decision record. | Explicit go/no-go decision recorded with accountable owners for any carry-over risks. | Owner: `TBD`<br>Status: `Not started` | `TBD` | Handoff notes: `TBD`<br>Decision record: `TBD` |
+| 3 | Implement Phase 4 UI slices in stage order under approved designs. | Step 2 approved artifacts; Stage sequencing/dependencies in this file. | Landed UI implementation PRs for Stages 4.1-4.8 with linked approved artifacts. | All stage deliverables are implemented with no gate violations and with traceable artifact links. | Owner: user<br>Status: `Complete pending PR merge` | Stage 4.8a audio wiring, and B5/B6/B7 data-pipeline cleanup, are implemented and verified on open PRs [#16](https://github.com/themanfromnepal/arabic-transliteration/pull/16) and [#17](https://github.com/themanfromnepal/arabic-transliteration/pull/17) — neither is merged into `chore/phase-4` yet | Stages 4.0-4.7 implemented; see Stage 4.5/4.6 Delivery Record (2026-07-26) below. Stage 4.8a (audio) and data-pipeline cleanup: see Stage 4.8a / Data-Pipeline / Lighthouse Delivery Record (2026-09-12) below |
+| 4 | Validate quality, accessibility, responsive behavior, and integration. | Step 3 merged implementation; QA plans from Stages 4.6-4.9. | Test and QA evidence for component behavior, a11y checks, and responsive pass criteria. | QA evidence demonstrates all Stage 4 exit conditions are met or formally waived. | Owner: user<br>Status: `Substantially complete pending PR merge` | Lighthouse budget evidence (AC3) is implemented on open PR [#18](https://github.com/themanfromnepal/arabic-transliteration/pull/18), not yet merged; LCP is asserted `warn` rather than `error` pending a performance investigation (see that PR) | a11y/tablet QA: Stage 4.9 Delivery Record (2026-07-26) below. Lighthouse: Stage 4.8a / Data-Pipeline / Lighthouse Delivery Record (2026-09-12) below |
+| 5 | Prepare final Phase 4 handoff and readiness sign-off. | Step 4 validated evidence; open-risk review complete. | Phase 4 completion summary, remaining risks/blockers log, and handoff decision record. | Explicit go/no-go decision recorded with accountable owners for any carry-over risks. | Owner: user<br>Status: `Go, conditional on merging PRs #16-#18` | Carry-over risks recorded in the Step 5 section below, each with an owner | Step 5 — Phase 4 Completion Summary and Handoff Decision (2026-09-12), below |
 
 
 ## Stage Summary (Design-First)
@@ -754,3 +754,175 @@ The gate found real defects on its first run, all `color-contrast`, all serious:
 which corrupts that server and produces spurious e2e failures — missing CSS and broken hydration,
 affecting pre-existing tests too. Run `build` before `e2e`, or stop the dev server in between. CI is
 unaffected because `reuseExistingServer` is false when `CI` is set.
+
+## Stage 4.8a / Data-Pipeline / Lighthouse Delivery Record (2026-09-12)
+
+Closes Stage 4.8a (live search wiring's last gap), and blockers B4, B5, B6, B7. Each landed as its
+own PR against `chore/phase-4` rather than one combined change, so each is independently reviewable
+and bisectable. None is merged as of this record — the status below is what's implemented and
+verified on each PR's branch, not yet what's true of `chore/phase-4` itself.
+
+### Stage 4.8a — audio playback wiring: Green (PR [#16](https://github.com/themanfromnepal/arabic-transliteration/pull/16))
+
+The 2026-08-16 commit that wired live search left one thing unwired: pressing Play did nothing —
+`AudioPlayerShell` had no `onClick` and no `<audio>` element existed anywhere in the codebase. A new
+`hooks/useAudioPlayback.ts` owns a real `HTMLAudioElement` and derives idle/playing/error from its
+play/pause/error events; `IntegratedResultCard` is the only caller, merging the hook's live state
+into the `audio` object handed to the (still purely presentational) `AudioPlayerShell`.
+
+**Scope decision, recorded rather than silently assumed:** the card has one audio slot, resolved
+from the lemma's primary (first preview) occurrence — matching the layout already approved in
+`design.html`. AC4 in `phase-4-ui.md` ("play audio for *any* listed sura:ayah occurrence") is
+therefore satisfied loosely, not literally. Adding a play control to every `VerseList` row would be
+new UI requiring its own design-review pass under this repo's design-first gate; that stays
+explicitly deferred, not dropped. The did-you-mean suggestion and the offline-cache badge trigger
+also remain unwired, unchanged from the prior record.
+
+Verification on PR #16: typecheck, lint, format, 324 tests (up from 320 — verified directly against
+both branch heads; PR #16's own commit message says 326/324, which was wrong), build, 34 e2e across
+both viewports (up from 32 — one new test drives real playback against a locally-generated,
+decodable silent WAV routed in place of the real everyayah.com request).
+
+### Data-pipeline cleanup — B5, B6, B7: Green (PR [#17](https://github.com/themanfromnepal/arabic-transliteration/pull/17))
+
+All three were data-pipeline debt recorded in the blocker-register additions below the Stage 4.5/4.6
+record, none blocking Phase 4 exit on their own, all logged for cleanup once 4.8a landed.
+
+| Blocker | Before | After |
+| --- | --- | --- |
+| B7 — `dictionary.json` duplicated `occurrences.json` (one lemma carries 2,699 occurrence rows; the card previews 3) | `dictionary.json` embedded every lemma's full occurrence list | New `DictionaryLemmaEntry` type (distinct from the build-time `LemmaEntry` that `merge.ts`/curation still use in full) carries `occurrencesPreview` (bounded) + `occurrenceCount`; `occurrences.json` unchanged, remains the sole full-list source, still unconsumed by any runtime code |
+| B5 — `verses.json`/`yusufali.json` monolithic (967 KB gzipped fetched to render 3 snippets) | Two files covering all 6,236 verses/translations | One file per sura (`public/data/verses/<sura>.json`, `public/data/yusufali/<sura>.json`); `verse-context.ts`'s `loadVerseContext(suras)` fetches only what's asked for, cached per sura, merged into shared maps across a session |
+| B6 — shards shipped pretty-printed (5.48 MB on disk for 2.49 MB parsed `dictionary.json`) | `canonicalStringify` always indented | Compact output; determinism still comes from the alphabetical key sort, not whitespace |
+
+Measured result (B6+B7 together — the shard is compact, so on-disk size and parsed size are now the
+same number): `dictionary.json` 2.49 MB → **1.50 MB** (228 KB gzipped). The blocker register's
+original B7 estimate of "0.77 MB parsed" assumed removing per-lemma occurrences entirely; the shipped
+design keeps a bounded `occurrencesPreview` (≤ 3 entries per lemma) so the card doesn't need a second
+fetch for its own contract fields, which costs more than removing occurrences outright — 1.50 MB is
+the real, correct figure, not 0.77 MB. Verse/translation shards: 114 files each, 1.2-116.5 KB raw
+(median ~7-8 KB), rather than one ~1.5-1.7 MB monolithic file each. Full measurement methodology and
+a worked first-lookup example (the `rahman` e2e query) are in
+[performance.md](../performance.md#why-the-first-lookup-target-is-connection-qualified), re-measured
+against the real post-merge shape rather than guessed.
+
+A migration hazard was found and fixed during this work, not just theorized: `public/data` is
+gitignored, so a working copy that had already run `build:data` before this change kept stale
+`verses.json`/`yusufali.json` sitting alongside the new per-sura directories indefinitely — nothing
+in the old cleanup list knew those filenames existed anymore. `emitShards` now explicitly deletes
+both legacy filenames before writing; covered by a new test (`tests/data/emit/write.test.ts`,
+"migration cleanup").
+
+`hooks/useSearch.ts` also stopped fetching the full verse context on a no-results query, an existing
+waste the old unconditional call had — `loadVerseContext` is now only called once a match exists, and
+only for the suras that match's preview occurrences touch.
+
+Verification on PR #17: typecheck, lint, format, 321 tests (up from 320 — one new migration-cleanup
+test), build, 32 e2e across both viewports.
+
+### Lighthouse CI gate — AC3: Green with one open finding (PR [#18](https://github.com/themanfromnepal/arabic-transliteration/pull/18))
+
+Closes B4. `lighthouserc.json` runs `@lhci/cli`'s `staticDistDir` collector against the real static
+export (`out/`, no dev server needed), 3 runs per route across the same four pages the axe e2e suite
+already covers. A new `lighthouse` job in `.github/workflows/ci.yml` runs it in CI.
+
+Assertion severities follow the actual per-metric intent in `performance.md`, not a blanket
+pass/fail — see the updated CI-gates table in `testing-strategy.md` for the authoritative list.
+Accessibility (≥ 95) and CLS (≤ 0.1) block merge and are comfortably met on every route measured (a11y
+1.0, CLS ≤ 0.005 in every run). The Performance category score stays informational per
+`performance.md`. Total Blocking Time is `warn`-only, the closest lab proxy for INP available —
+Lighthouse cannot measure real INP in a synthetic run.
+
+**LCP is asserted `warn`, not `error`, and this is a genuine new finding, not a workaround.** Running
+the gate for the first time measured the home route at roughly 4.4-4.6 s against the documented 2.5 s
+target, under Lighthouse's default mobile/Slow-4G lab throttling. First Contentful Paint alone is
+~3.2 s with zero Total Blocking Time, meaning the cost sits in the critical rendering path before any
+JS executes, not in JS execution itself. The other three routes (About, Credits, Privacy — no search
+UI) measure 1.9-2.1 s, comfortably inside budget. Diagnosing and fixing the home route's critical
+path is a performance-engineering task distinct from wiring this gate; it is **not fixed by this
+record** and is carried forward below as an open risk. Shipping the LCP assertion as blocking today,
+before that's understood, would make the gate permanently red rather than a usable signal.
+
+Also not implemented: the `performance.md` requirement that an LCP regression >10% relative to the
+`main` branch baseline blocks merge. That needs a persisted baseline store across CI runs (an LHCI
+server, or a committed baseline artifact) — meaningfully more than this gate. Carried forward below.
+
+`@lhci/cli`'s own dependency tree carries roughly 21 known vulnerabilities (`inquirer`/`tmp`/`uuid`/
+`ws`, all transitive), confirmed additional to this repo's pre-existing 4 production vulnerabilities
+(`sharp`, `postcss` — present on the unmodified baseline, confirmed by auditing it directly, unrelated
+to this change). All 21 are scoped to a devDependency that runs only in CI and is never shipped to a
+browser; `npm audit --omit=dev` confirms the production tree is unaffected.
+
+Verification on PR #18: typecheck, lint, format, 320 tests, build, 32 e2e, and `npm run lighthouse`
+run twice locally against the real static export (once via `npx lhci` directly, once via the npm
+script) — both exit 0 with the LCP warning and no error-level assertion failures.
+
+### Updated blocker register
+
+| ID | Status | Resolution / carry-forward |
+| --- | --- | --- |
+| B4 | **Closed** | Lighthouse CI gate added (PR #18); see above for which assertions are blocking vs. informational and why |
+| B5 | **Closed** | Verse/translation shards split per sura (PR #17) |
+| B6 | **Closed** | JSON shards compact, not pretty-printed (PR #17) |
+| B7 | **Closed** | `dictionary.json` no longer embeds full occurrence lists (PR #17) |
+| — | **Open** | Home route LCP (~4.4-4.6 s vs. the 2.5 s target) under Lighthouse's lab throttling — new finding from wiring PR #18; needs a performance-engineering investigation, distinct from this record. **Owner: TBD.** |
+| — | **Open** | LCP-regression-vs-`main`-baseline check from `performance.md` is not implemented — needs a persisted baseline store. **Owner: TBD.** |
+| — | **Open** | Did-you-mean suggestion stays unwired — `fuzzySearch` bakes its threshold into the Fuse index, with no relaxed-second-pass API to call. **Owner: TBD.** |
+| — | **Open** | Offline-cache badge (`servedFromCache`) has unit coverage only; nothing in `useSearch.ts` ever sets it `true` — no runtime trigger until the IndexedDB cache-hit path is wired. **Owner: TBD.** |
+| — | **Deferred by design** | Per-occurrence audio (playing any of the listed occurrences, not just the primary one) needs its own design-review pass under the design-first gate before implementation. **Owner: TBD.** |
+| — | **Correctly deferred, doc cross-reference was stale** | CSP `media-src` for everyayah.com — `security.md` already defers the full CSP to Phase 5 pending a nonce/hash strategy for Next's RSC inline scripts. The "pending approval" language earlier in this file (Stage 4.4, Stage 4.8) predates that decision and reads as if it blocks Phase 4; it doesn't. Not edited elsewhere in this file to avoid restating the same fix twice — this entry is the authoritative note. |
+| — | **Open, deploy-time only** | `NEXT_PUBLIC_SITE_URL` still points at `localhost`; drives `metadataBase`, OpenGraph URLs, and the sitemap (Stage 4.8b). Must be set to the production domain before launch. **Owner: TBD.** |
+| `components/ui/tooltip.tsx` cosmetic cleanup | **Still open** | Carried forward unchanged from the 2026-07-26 record — dead `animate-in`/`zoom-in-95` classes from the shadcn default compile to nothing. Cosmetic only. **Owner: TBD.** |
+
+## Step 5 — Phase 4 Completion Summary and Handoff Decision (2026-09-12)
+
+### Summary
+
+Every stage from 4.0 through 4.9 has a Green delivery record with command-level verification
+evidence (typecheck/lint/format/test/build/e2e counts) in this file. The three canonical acceptance
+criteria in `phase-4-ui.md`:
+
+1. **Result card matches the spec contract** — met. `docs/spec.md#result-card-contract`'s six fields
+   are all sourced and rendered; live search wiring (PR #16, plus the 2026-08-16 commits) replaced
+   the fixture that previously stood in for AC1.
+2. **RTL rules and the accessibility baseline are respected** — met. The Stage 4.9 axe gate
+   (`e2e/a11y.spec.ts`) runs `wcag2a`/`wcag2aa`/`wcag21a`/`wcag21aa` across all four routes, both
+   themes, both viewports, and is enforced in CI.
+3. **Lighthouse Performance/Accessibility/Best Practices/SEO meet the budgets in `performance.md`
+   and `testing-strategy.md`** — **partially met.** Accessibility and CLS budgets are enforced and
+   passing (PR #18). The Performance category score is informational, as documented. LCP is
+   currently a `warn`, not the documented `error`, because the home route does not yet meet the 2.5 s
+   target under Lighthouse's lab throttling — see the open risk below.
+
+### Decision: **Go**, conditional on:
+
+1. Merging PRs [#16](https://github.com/themanfromnepal/arabic-transliteration/pull/16),
+   [#17](https://github.com/themanfromnepal/arabic-transliteration/pull/17), and
+   [#18](https://github.com/themanfromnepal/arabic-transliteration/pull/18) into `chore/phase-4`.
+   None is merged as of this record.
+2. Accepting the carry-over risks in the updated blocker register above as known, owned, tracked
+   items rather than Phase 4 exit blockers — none of them regress an already-met acceptance
+   criterion; each either extends past what Phase 4 committed to (per-occurrence audio,
+   did-you-mean, offline badge) or is explicitly out of Phase 4's scope already (CSP, per
+   `security.md`'s own Phase 5 deferral) or is a newly-discovered performance question that
+   deserves its own investigation rather than blocking this handoff (home-route LCP).
+
+### Accepted carry-over risks (owners still `TBD` — assign before closing this record)
+
+See "Updated blocker register" above for the full list and rationale. In order of user impact: the
+home-route LCP finding (real, user-facing, but net latency has already been cut sharply by B5/B6/B7
+this session, and the fix path is diagnosis, not guesswork); the did-you-mean suggestion and offline
+badge (both degrade gracefully — their absence is a missed nicety, not a broken state); the
+LCP-baseline-regression mechanism and per-occurrence audio (both are scope extensions past what
+Phase 4 committed to); the tooltip cosmetic cleanup and the `NEXT_PUBLIC_SITE_URL` placeholder
+(deploy-time, not code-quality, blockers).
+
+### Evidence index
+
+- Stage 4.0-4.7: `feat(ui): deliver Phase 4 stages 4.0-4.7` (commit `93b3e46`).
+- Stage 4.5/4.6: this file's 2026-07-26 Delivery Record.
+- Stage 4.8b/4.9 (PWA, SEO, a11y, tablet QA): this file's Stage 4.8b/4.9 Delivery Record.
+- Stage 4.8a (live search wiring): `feat(search): wire live search to the result card` (commit
+  `1c4ddfc`) plus PR #16 for the audio-playback gap it left open.
+- Data quality (B8, glosses/roots/transliteration): `data: derive glosses, Arabic roots, and
+  scholarly transliteration` (commit `5af077e`).
+- Data-pipeline cleanup (B5/B6/B7) and Lighthouse CI (B4, AC3): PRs #17 and #18, this record.
