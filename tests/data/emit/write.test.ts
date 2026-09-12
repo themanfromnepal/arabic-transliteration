@@ -41,7 +41,7 @@ describe('emitShards', () => {
         defaultOutDir: path.resolve(process.cwd(), 'public/data'),
       };
       const r1 = await emitShards(makeCorpus(), opts);
-      expect(r1.written).toEqual([...KNOWN_SHARD_FILES]);
+      expect(r1.written).toEqual([...KNOWN_SHARD_FILES, 'verses/001.json', 'yusufali/001.json']);
       const before = await Promise.all(
         KNOWN_SHARD_FILES.map((n) => fs.readFile(path.join(outDir, n))),
       );
@@ -85,6 +85,32 @@ describe('emitShards', () => {
     }
   });
 
+  it('migration cleanup: removes pre-B5 monolithic verses.json/yusufali.json', async () => {
+    const outDir = tmp('emit-migrate-');
+    try {
+      await fs.mkdir(outDir, { recursive: true });
+      await fs.writeFile(path.join(outDir, 'verses.json'), '{"stale":true}\n');
+      await fs.writeFile(path.join(outDir, 'yusufali.json'), '{"stale":true}\n');
+      await emitShards(makeCorpus(), {
+        outDir,
+        validate: true,
+        suraFilter: null,
+        defaultOutDir: path.resolve(process.cwd(), 'public/data'),
+      });
+      const exists = (p: string) =>
+        fs
+          .access(p)
+          .then(() => true)
+          .catch(() => false);
+      expect(await exists(path.join(outDir, 'verses.json'))).toBe(false);
+      expect(await exists(path.join(outDir, 'yusufali.json'))).toBe(false);
+      expect(await exists(path.join(outDir, 'verses', '001.json'))).toBe(true);
+      expect(await exists(path.join(outDir, 'yusufali', '001.json'))).toBe(true);
+    } finally {
+      await fs.rm(outDir, { recursive: true, force: true });
+    }
+  });
+
   it('Q4 guard: --sura with default outDir rejects with --sura/--out message', async () => {
     const defaultOutDir = path.resolve(process.cwd(), 'public/data');
     await expect(
@@ -106,7 +132,7 @@ describe('emitShards', () => {
         suraFilter: 1,
         defaultOutDir: path.resolve(process.cwd(), 'public/data'),
       });
-      expect(r.written).toEqual([...KNOWN_SHARD_FILES]);
+      expect(r.written).toEqual([...KNOWN_SHARD_FILES, 'verses/001.json', 'yusufali/001.json']);
     } finally {
       await fs.rm(outDir, { recursive: true, force: true });
     }

@@ -44,7 +44,6 @@ export function useSearch(): UseSearchResult {
 
     try {
       const matches = await lookup(trimmed, 5);
-      const context = await loadVerseContext();
       if (requestId !== requestIdRef.current) return;
 
       const best = matches[0];
@@ -54,6 +53,12 @@ export function useSearch(): UseSearchResult {
         setState({ kind: 'no-results', query: trimmed });
         return;
       }
+
+      // Only the suras the previewed occurrences actually touch — each verse/translation shard is
+      // now split per sura (B5), so this no longer pulls the whole Quran for three snippets.
+      const suras = best.occurrencesPreview.map((occ) => occ.sura);
+      const context = await loadVerseContext(suras);
+      if (requestId !== requestIdRef.current) return;
 
       setState({ kind: 'ready', result: toResultCard(best, context) });
     } catch {

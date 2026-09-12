@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type {
   AyahTranslation,
+  DictionaryLemmaEntry,
   DictionaryShard,
   InlineIndexEntry,
   InlineIndexShard,
@@ -23,6 +24,7 @@ const SemverString = z.string().regex(/^\d+\.\d+\.\d+$/, 'must be semver-like (X
 const SuraNumber = z.number().int().min(1).max(114);
 const AyahNumber = z.number().int().positive();
 const WordIndex = z.number().int().nonnegative();
+const NonNegInt = z.number().int().nonnegative();
 
 export const ShardMetaSourceSchema = z.object({
   name: z.string().min(1),
@@ -104,15 +106,21 @@ export const InlineIndexEntrySchema = z.object({
   meaning: z.string(),
 }) satisfies z.ZodType<InlineIndexEntry>;
 
+export const DictionaryLemmaEntrySchema = LemmaEntrySchema.omit({ occurrences: true }).extend({
+  occurrencesPreview: z.array(OccurrenceSchema),
+  occurrenceCount: NonNegInt,
+}) satisfies z.ZodType<DictionaryLemmaEntry>;
+
 export const DictionaryShardSchema = z.object({
   _meta: ShardMetaSchema.optional(),
   version: SemverString,
-  lemmas: z.array(LemmaEntrySchema),
+  lemmas: z.array(DictionaryLemmaEntrySchema),
 }) satisfies z.ZodType<DictionaryShard>;
 
 export const VersesShardSchema = z.object({
   _meta: ShardMetaSchema.optional(),
   version: SemverString,
+  sura: SuraNumber,
   verses: z.array(VerseSchema),
 }) satisfies z.ZodType<VersesShard>;
 
@@ -142,10 +150,9 @@ export const InlineIndexShardSchema = z.object({
 export const TranslationsShardSchema = z.object({
   _meta: ShardMetaSchema.optional(),
   version: SemverString,
+  sura: SuraNumber,
   translations: z.array(AyahTranslationSchema),
 }) satisfies z.ZodType<TranslationsShard>;
-
-const NonNegInt = z.number().int().nonnegative();
 
 export const ManifestShardSchema = z
   .object({

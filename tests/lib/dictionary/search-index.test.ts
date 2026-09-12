@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import Fuse from 'fuse.js';
-import type { LemmaEntry } from '@/src/types/dictionary';
+import type { DictionaryLemmaEntry } from '@/src/types/dictionary';
 import { normalizeQuery, createSearchIndex, fuzzySearch } from '@/src/lib/dictionary/search-index';
 
-const FIXTURES: LemmaEntry[] = [
+const FIXTURES: DictionaryLemmaEntry[] = [
   {
     lemmaId: 'rHm-rHmn',
     arabic: 'ٱلرَّحْمَٰنِ',
@@ -14,7 +14,8 @@ const FIXTURES: LemmaEntry[] = [
     phoneticKeys: ['rHmn'],
     meaning: 'The Most Gracious',
     partOfSpeech: 'adjective',
-    occurrences: [{ sura: 1, ayah: 1, wordIndex: 3 }],
+    occurrencesPreview: [{ sura: 1, ayah: 1, wordIndex: 3 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto',
   },
   {
@@ -27,7 +28,8 @@ const FIXTURES: LemmaEntry[] = [
     phoneticKeys: ['rHym'],
     meaning: 'The Most Merciful',
     partOfSpeech: 'adjective',
-    occurrences: [{ sura: 1, ayah: 1, wordIndex: 4 }],
+    occurrencesPreview: [{ sura: 1, ayah: 1, wordIndex: 4 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto',
   },
   {
@@ -40,7 +42,8 @@ const FIXTURES: LemmaEntry[] = [
     phoneticKeys: ['rHm@'],
     meaning: 'mercy',
     partOfSpeech: 'noun',
-    occurrences: [{ sura: 2, ayah: 157, wordIndex: 3 }],
+    occurrencesPreview: [{ sura: 2, ayah: 157, wordIndex: 3 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto',
   },
   {
@@ -53,7 +56,8 @@ const FIXTURES: LemmaEntry[] = [
     phoneticKeys: ['ktb'],
     meaning: 'book',
     partOfSpeech: 'noun',
-    occurrences: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+    occurrencesPreview: [{ sura: 2, ayah: 2, wordIndex: 3 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto',
   },
   {
@@ -66,7 +70,8 @@ const FIXTURES: LemmaEntry[] = [
     phoneticKeys: ['Hsn'],
     meaning: 'good',
     partOfSpeech: 'adjective',
-    occurrences: [{ sura: 2, ayah: 201, wordIndex: 5 }],
+    occurrencesPreview: [{ sura: 2, ayah: 201, wordIndex: 5 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto',
   },
   {
@@ -79,7 +84,8 @@ const FIXTURES: LemmaEntry[] = [
     phoneticKeys: ['Slm'],
     meaning: 'peace',
     partOfSpeech: 'noun',
-    occurrences: [{ sura: 36, ayah: 58, wordIndex: 1 }],
+    occurrencesPreview: [{ sura: 36, ayah: 58, wordIndex: 1 }],
+    occurrenceCount: 1,
     reviewStatus: 'auto',
   },
 ];
@@ -141,7 +147,7 @@ describe('createSearchIndex', () => {
   // construction is a one-time cold-path cost inside the cold-cache budget, not
   // part of the warm lookup path.
   it('constructs the index without algorithmic blowup for ~4200 entries', () => {
-    const bigList: LemmaEntry[] = [];
+    const bigList: DictionaryLemmaEntry[] = [];
     for (let i = 0; i < 4200; i++) {
       const base = FIXTURES[i % FIXTURES.length]!;
       bigList.push({ ...base, lemmaId: `${base.lemmaId}-${i}` });
@@ -162,7 +168,7 @@ describe('createSearchIndex', () => {
 });
 
 describe('fuzzySearch', () => {
-  let index: Fuse<LemmaEntry>;
+  let index: Fuse<DictionaryLemmaEntry>;
 
   beforeEach(() => {
     index = createSearchIndex(FIXTURES);

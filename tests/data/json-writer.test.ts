@@ -54,7 +54,7 @@ describe('writeCanonicalJson', () => {
     const target = path.join(tmp, 'nested', 'dir', 'out.json');
     await writeCanonicalJson(target, { b: 2, a: 1 });
     const content = await fs.readFile(target, 'utf8');
-    expect(content).toBe('{\n  "a": 1,\n  "b": 2\n}\n');
+    expect(content).toBe('{"a":1,"b":2}\n');
     await fs.rm(tmp, { recursive: true, force: true });
   });
 });
