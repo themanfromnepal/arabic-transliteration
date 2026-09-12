@@ -23,6 +23,7 @@
     "subset-fonts": "python scripts/subset-fonts.py",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
+    "lighthouse": "lhci autorun --config=lighthouserc.json",
     "generate-icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.0.0",
     "@eslint/eslintrc": "^3",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.48",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.0.0",
