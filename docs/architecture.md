@@ -166,6 +166,15 @@ index was ever built: `index.json` carries all 4,199 lemmas at 64 KB gzipped, an
 the bundle would have pushed initial JS past its own budget while duplicating data that
 `dictionary.json` already supplies. It is fetched rather than inlined, and budgeted accordingly.
 
+"Verses" and "Ayah translations" above are ceilings on the full corpus, not on what a single lookup
+fetches. Both shards are split one file per sura (`public/data/verses/<sura>.json`,
+`public/data/yusufali/<sura>.json`) rather than one monolithic file each — a result card only ever
+fetches the handful of suras its previewed occurrences touch, typically 1-3 files of roughly 13 KB
+each, not the whole corpus. See [performance.md](performance.md#search-latency-targets) for the
+resulting first-lookup figures. "Full dictionary" no longer embeds full per-lemma occurrence lists
+(that duplicated `occurrences.json`); actual parsed size dropped from roughly 2.49 MB to 0.77 MB,
+well inside the existing ≤ 3 MB ceiling, which is left unchanged as headroom rather than tightened.
+
 ## Why no backend
 
 A static site is the smallest possible attack surface, has no per-request server cost, and degrades
